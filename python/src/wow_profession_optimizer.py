@@ -63,6 +63,20 @@ def clean_json(jso: dict | list) -> dict | list | None:
     return clean
 
 
+def get_and_save(url: str, filename: str) -> None:
+    """
+    :param url: URL to retrieve table data
+    :param filename: Filename (without extension) to be saved
+    """
+    raw = get_raw_table_data(url)
+    if not raw:
+        raise RuntimeError("No matching <script> tag detected on the web page.")
+    jso = parse_json(raw)
+    cleaned = [clean_json(e) for e in jso if clean_json(e) is not None]
+    with open(filename + ".json", 'w') as file:
+        json.dump(cleaned, file, indent=4)
+
+
 def main():
     # Create an argument parser
     parser = argparse.ArgumentParser(description="Retrieves table information from specified profession page")
@@ -70,17 +84,7 @@ def main():
     parser.add_argument("profession", type=str, help="Name of the profession, used for JSON file output")
     args = parser.parse_args()
 
-    raw = get_raw_table_data(args.url)
-    if raw:
-        jso = parse_json(raw)
-        if jso:
-            cleaned = [clean_json(e) for e in jso if clean_json(e) is not None]
-            with open(args.profession + ".json", 'w') as file:
-                json.dump(cleaned, file, indent=4)
-        else:
-            print("JSON object could not be parsed.")
-    else:
-        print("No such script tag detected in web page.")
+    get_and_save(args.url, args.profession)
 
 
 if __name__ == '__main__':
