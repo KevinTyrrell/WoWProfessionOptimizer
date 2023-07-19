@@ -1,0 +1,8 @@
+## Interface: 30402
+## Title: Lib: FadestormLib
+## Author: Kevin Tyrrell
+## Notes: Powerful high-level programming functions by Fadestorm-Faerlina
+## X-Category: Library
+## X-License: GNU General Public License
+
+FadestormLib.lua
