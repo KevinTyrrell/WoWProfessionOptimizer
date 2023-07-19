@@ -1,8 +1,10 @@
 ## Interface: 30402
 ## Title: WoW|cFFB157FFProfessionOptimizer
-## Author: Kevin Tyrrel
+## Author: Kevin Tyrrell
 ## Notes: World of Warcraft: Classic Addon that optimizes profession leveling using TradeSkillMaster price data and an efficient brute force algorithm. 
 ## Version: 1.0.0
 ## DefaultState: enabled
+## LoadOnDemand: 0
 
-# TODO:
+# External Libraries
+embeds.xml
