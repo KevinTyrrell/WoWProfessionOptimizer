@@ -1,5 +1,5 @@
 --[[
---    Copyright (C) 20223 Fadestorm-Faerlina (Discord: hatefiend)
+--    Copyright (C) 2023 Fadestorm-Faerlina (Discord: hatefiend)
 --
 --    This program is free software: you can redistribute it and/or modify
 --    it under the terms of the GNU General Public License as published by
@@ -32,7 +32,8 @@ local env = setmetatable({ _G = _G },
 						v = _G[key] end
 					return v
 				end
-			end)()
+			end)(),
+			__metatable = false
 		})
 setfenv(1, env) -- Switch environment to FSL
 
