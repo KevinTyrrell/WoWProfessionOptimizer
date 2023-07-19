@@ -3,6 +3,7 @@ import requests
 import re
 import json
 from bs4 import BeautifulSoup
+from math import floor
 
 
 def get_raw_table_data(url: str) -> str:
@@ -49,17 +50,27 @@ def clean_json(jso: dict | list) -> dict | list | None:
     if "colors" not in jso or "creates" not in jso or "reagents" not in jso:
         return  # Entries without 'colors', 'creates', or 'reagents' are not actual crafting skills
 
+    product = jso["creates"]
     clean = {
         "name": jso["name"],
         "levels": [jso["learnedat"]] + jso["colors"],  # Merge 'learnedat' with 'colors'
-        "reagents": {sub[0]: sub[1] for sub in jso["reagents"]}
+        "reagents": {sub[0]: sub[1] for sub in jso["reagents"]},
+        "product": product[0]
     }
 
     if "specialization" in jso:  # Certain crafts require specializations in their given profession
         clean["spec"] = jso["specialization"]
-    p = jso["creates"]
-    # Associate item ID with number of items crafted, taking the average if it varies
-    clean["product"] = {p[0]: (p[1] + p[2]) / 2} if len(p) > 2 else {p[0]: p[1]}
+
+    low = product[1]
+    high = low if len(product) <= 2 else product[2]
+    if high != low:  # Crafting recipe varies in how much it produces
+        low = (low + high) / 2
+    high = floor(low)
+    if low == high:  # Whole number
+        if high != 1:  # 'produces' of 1 is implied and is thus omitted
+            clean["produces"] = high
+    else:
+        clean["produces"] = low
     return clean
 
 
