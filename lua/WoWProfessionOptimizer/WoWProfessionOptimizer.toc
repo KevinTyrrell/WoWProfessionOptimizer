@@ -9,6 +9,9 @@
 # External Libraries
 embeds.xml
 
+# Initialization
+init.lua
+
 # Data
 data\embeds.xml
 

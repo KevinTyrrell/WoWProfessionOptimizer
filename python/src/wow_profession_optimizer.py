@@ -1,9 +1,29 @@
-import argparse
+
+"""
+    Copyright (C) 2023 Kevin Tyrrell
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
 import requests
+from bs4 import BeautifulSoup
+
 import re
 import json
-from bs4 import BeautifulSoup
+import argparse
 from math import floor
+from os import path
 
 
 def get_raw_table_data(url: str) -> str:
@@ -55,7 +75,8 @@ def clean_json(jso: dict | list) -> dict | list | None:
         "name": jso["name"],
         "levels": [jso["learnedat"]] + jso["colors"],  # Merge 'learnedat' with 'colors'
         "reagents": {sub[0]: sub[1] for sub in jso["reagents"]},
-        "product": product[0]
+        "product": str(product[0]),  # Turn into string since most IDs are already strings
+        "source": [6] if "source" not in jso else jso["source"]  # [6] is 'Trainer'
     }
 
     if "specialization" in jso:  # Certain crafts require specializations in their given profession
@@ -74,6 +95,38 @@ def clean_json(jso: dict | list) -> dict | list | None:
     return clean
 
 
+def save_json_file(jso: dict | list, path: str, filename: str):
+    """
+    :param jso: JSON object
+    :param path: Absolute path to the directory of where the file will be saved
+    :param filename: Name of the output file, without extension
+    """
+    with open(f"{path}/{filename}.json", "w") as file:
+        json.dump(jso, file, indent=4)
+
+
+def save_lua_file(jso: dict | list, path: str, filename: str):
+    """
+    Saves the JSON object, making it compatible with the Lua programming language
+
+    Certain changes are made to accommodate Lua's environment:
+    * JSON object is single-lined, spaces removed, and surrounded by asteriks
+    * JSON string is assigned to a Lua table variable, based on 'filename'
+    * JSON string has asteriks escaped out
+    * JSON string has quotes escaped out
+
+    This function modifies the JSON object
+    """
+    for e in jso:
+        name: str = e["name"]
+        name = name.replace("'", "\\'")  # Escape asteriks
+        name = name.replace('"', '\\"')  # Escape quotation
+        e["name"] = name
+    with open(f"{path}/{filename}.lua", "w") as file:
+        s = json.dumps(jso, separators=(",", ":"))
+        file.write(f"select(2, ...)[\"data\"][\"{filename}\"] = '{s}'")
+
+
 def get_and_save(url: str, filename: str) -> None:
     """
     :param url: URL to retrieve table data
@@ -84,10 +137,12 @@ def get_and_save(url: str, filename: str) -> None:
         raise RuntimeError("No matching <script> tag detected on the web page.")
     jso = parse_json(raw)
     cleaned = [clean_json(e) for e in jso if clean_json(e) is not None]
-    with open(filename + ".json", 'w') as file:
-        s = json.dumps(cleaned, separators=(",", ":"))
-        s = "local jso='" + s.replace("'", "\\'") + "'"
-        file.write(s)
+
+    DATA_RELATIVE_PATH = "../../lua/WoWProfessionOptimizer/data/"
+    abs_path = path.join(path.dirname(path.abspath(__file__)), DATA_RELATIVE_PATH)
+
+    save_json_file(cleaned, f"{abs_path}/json/", filename)
+    save_lua_file(cleaned, f"{abs_path}/strings/", filename)
 
 
 def main():
