@@ -16,10 +16,6 @@
 ]]--
 
 local ADDON_NAME, WSO = ...
-local lib = LibStub("LibParse")
-for k, v in pairs(lib) do
-    print(k, v)
-end
 
 
 --local s = '[{"name":"Rough Blasting Powder","levels":[1,1,20,30,40],"reagents":{"2835":1},"product":4357}]'
@@ -27,4 +23,5 @@ end
 --print(u)
 --print(u[1]["levels"][3])
 
-local t = lib:JSONDecode(WSO.prof)
+print(WSO.data["WOTLK-Engineering"])
+--local t = lib:JSONDecode(WSO.prof)
