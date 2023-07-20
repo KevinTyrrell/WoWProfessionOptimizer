@@ -119,11 +119,13 @@ def save_lua_file(jso: dict | list, path: str, filename: str):
     """
     for e in jso:
         name: str = e["name"]
-        name = name.replace("'", "\\'")  # Escape asteriks
-        name = name.replace('"', '\\"')  # Escape quotation
+        # TODO: Escaping characters here seems to cause double escapes e.g.: \\\"
+        # TODO: I have tried using rStrings or varying backslashes but dumps() adds extras
+        # name = name.replace('"', '\\"')  # Escape quotation
         e["name"] = name
     with open(f"{path}/{filename}.lua", "w") as file:
-        s = json.dumps(jso, separators=(",", ":"))
+        s = json.dumps(jso, separators=(",", ":"), ensure_ascii=False)
+        s = s.replace("'", "\\'")  # Escape apostrophe
         file.write(f"select(2, ...)[\"data\"][\"{filename}\"] = '{s}'")
 
 
