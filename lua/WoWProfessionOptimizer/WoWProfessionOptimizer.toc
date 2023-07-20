@@ -16,7 +16,7 @@ init.lua
 data\embeds.xml
 
 # Model
-# Profession.lua
+profession.lua
 
 # Entry-Point
-WoWProfessionOptimizer.lua
+wow_profession_optimizer.lua
