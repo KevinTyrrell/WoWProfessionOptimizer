@@ -9,8 +9,11 @@
 # External Libraries
 embeds.xml
 
+# Data
+data\embeds.xml
+
 # Model
-Profession.lua
+# Profession.lua
 
 # Entry-Point
 WoWProfessionOptimizer.lua
