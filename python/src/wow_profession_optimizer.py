@@ -121,6 +121,7 @@ def save_lua_file(jso: dict | list, path: str, filename: str):
         name: str = e["name"]
         # TODO: Escaping characters here seems to cause double escapes e.g.: \\\"
         # TODO: I have tried using rStrings or varying backslashes but dumps() adds extras
+        # TODO: NOTE -- Names with quotes MUST be double escaped: \\"
         # name = name.replace('"', '\\"')  # Escape quotation
         e["name"] = name
     with open(f"{path}/{filename}.lua", "w") as file:

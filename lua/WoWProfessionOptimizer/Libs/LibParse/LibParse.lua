@@ -227,7 +227,6 @@ end
 function JsonReader:Read()
 	self:SkipWhiteSpace()
 	local peek = self:Peek()
-	print("peek", peek)
 	if peek == nil then
 		error(format("Nil string: '%s'", self:All()))
 	elseif peek == '{' then
