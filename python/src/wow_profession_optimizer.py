@@ -85,7 +85,9 @@ def get_and_save(url: str, filename: str) -> None:
     jso = parse_json(raw)
     cleaned = [clean_json(e) for e in jso if clean_json(e) is not None]
     with open(filename + ".json", 'w') as file:
-        json.dump(cleaned, file, indent=4)
+        s = json.dumps(cleaned, separators=(",", ":"))
+        s = "local jso='" + s.replace("'", "\\'") + "'"
+        file.write(s)
 
 
 def main():

@@ -1,4 +1,4 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	<Script file="Libs\Libs.FadestormLib.lua"/>
+	<Script file="Libs\LibStub.lua"/>
 	<Script file="LibParse.lua"/>
 </Ui>
