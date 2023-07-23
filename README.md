@@ -31,61 +31,82 @@
 </p>
 
 <p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#how-to-use">How To Use</a> •
+  <a href="#introduction">Introduction</a> •
+  <a href="#guide-generation">Guide Generation</a> •
+  <a href="#faq">FAQ</a> •
   <a href="#download">Download</a> •
-  <a href="#credits">Credits</a> •
-  <a href="#related">Related</a> •
   <a href="#license">License</a>
 </p>
 
-![screenshot](https://pngimg.com/uploads/under_construction/under_construction_PNG15.png)
+![screenshot](res/UnderConstruction.jpg)
 
-## Key Features
+## Introduction
 
-* LivePreview - Make changes, See changes
-    - Instantly see what your Markdown documents look like in HTML as you create them.
-* Sync Scrolling
-    - While you type, LivePreview will automatically scroll to the current location you're editing.
-* GitHub Flavored Markdown
-* Syntax highlighting
-* [KaTeX](https://khan.github.io/KaTeX/) Support
-* Dark/Light mode
-* Toolbar for basic Markdown formatting
-* Supports multiple cursors
-* Save the Markdown preview as PDF
-* Emoji support in preview :tada:
-* App will keep alive in tray for quick usage
-* Full screen mode
-    - Write distraction free.
-* Cross platform
-    - Windows, macOS and Linux ready.
+> WoWProfessionOpimizer is  a powerful add-on for World of Warcraft: Classic. Its primary goal is to revolutionize the traditional approach to leveling professions by replacing static profession leveling guides. The add-on generates guides dynamically using an optimized brute force algorithm. The guides are integrated into the game, allowing for a customizable experience.
 
-## How To Use
+## Guide Generation
 
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+> Users must/may provide the following information before generating a guide:
 
-```bash
-# Clone this repository
-$ git clone https://github.com/amitmerchant1990/electron-markdownify
+* **Profession** - e.g. <span style="color: gold;">[Engineering]</span>
+* **Skill Start / Target** - e.g. <span style="color: lightblue;">1</span> to <span style="color: lightblue;">450</span>
+* **Recipe Sources** - e.g. Trainer✅/Vendor✅/Drop❌/Auction House❌
+* **Crafts Ban / Limits** - Prevent or restrict craft-count of certain crafting recipes
+* **Crafts Mandate** - Enforce certain crafts to be made efficiently along the way
+* **Bi-Product Disposal** - per-item specification of what to do with un-needed items
+  - e.g. <span style="color: #1eff00;">[Deadly Blunderbus]</span>: Disenchant❌/Auction House:✅/Vendor:✅
+  - *Limitations on auction house* - **Limit Num Sold** or **Diminishing Returns**
 
-# Go into the repository
-$ cd electron-markdownify
+## FAQ
 
-# Install dependencies
-$ npm install
+---
 
-# Run the app
-$ npm start
+#### Q: Why are static guides undesirable?
+
+A: As most people use the same popular guides, this drives up demand on a small subset of items in the game. For example, a recipe using <span style="color: #1eff00;">[Aquamarine]</span> may have been originally economical, but as all profession levelers dog-pile on that one item, it causes prices to balloon, no longer being the cheapest route to level. More-over, the guides often remain static for years, and assume generalizations across servers. Most importantly, static guides do not factor in **profits made from crafts** while leveling.
+
+---
+
+#### Q: How does the add-on know prices of items?
+
+A: TSM ([TradeSkillMaster](https://www.tradeskillmaster.com/)) provides nearly real-time information on auction house, vendor, and disenchanting prices for every non-soulbound item in the game. Ensure TSM and TSM_AppHelper are installed and loaded before using this add-on.
+
+---
+
+#### Q: How does the add-on handle RNG craft skill-ups?
+
+A: WoWProfessionOptimizer handles random skill-ups by computing the average number of crafts needed to ascend one skill level. [WoWWiki's Profession Page](https://wowpedia.fandom.com/wiki/Profession#Increasing_professional_skill_level) dictates the chance for a skill as the following formula:
+
+```js
+chance = (greySkill - yourSkill) / (greySkill - yellowSkill)
 ```
 
-> **Note**
-> If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
+<span style="color: white;">[Unstable Trigger]</span> has a skill breakdown of { <span style="color: orange;">200</span> <span style="color: yellow;">200</span> <span style="color: lightgreen;">220</span> <span style="color: grey;">240</span> }. If you had a skill level of <span style="color: lightblue;">235</span> then the craft would be <span style="color: lightgreen;">green</span>. Plugging this into the formula would yield the following:
 
+```js
+chance = (240 - 235) / (240 - 220) // 0.25 or 25%
+```
+
+This means you would have only a <span style="color: white;">25%</span> chance of getting a skill-up from crafting an <span style="color: white;">[Unstable Trigger]</span> at <span style="color: lightblue;">235</span>. The add-on takes the inverse of this <span style="color: white;">1 / 0.25 => 4</span>, indicating four crafts of <span style="color: white;">[Unstable Trigger]</span> are needed to reach <span style="color: lightblue;">240</span>.
+
+---
+
+#### Q: How does the guide generation algorithm work?
+
+A: **Brute force** - **Backtracking** - **Pruning**. At each skill level, the guide will look over all crafts that generate a skill increase. It will pick one item, craft it until a skill-up is achieved, and tally the cost into a gold-spent sum. If the crafted item is a bi-product, it is sold according to the user's specifications, otherwise it is kept for later. If the current gold-tally exceeds a known-best route, the algorithm backtracks one step, recursively. Routes which show no promise are pruned prematurely to save on run-time complexity.
+
+---
 
 ## Download
 
-You can [download](https://github.com/amitmerchant1990/electron-markdownify/releases/tag/v1.2.0) the latest installable version of Markdownify for Windows, macOS and Linux.
+You can [download](https://github.com/KevinTyrrell/WoWProfessionOptimizer/releases) the latest release on the 'Releases' page.
+ 
+> **Note**
+> For manual installation, ensure your path to the add-on's TOC (Table of Contents) is similar to as follows:
+
+``` 
+C:/Program Files (x86)/World of Warcraft/_classic_/Interface/AddOns/WoWProfessionOptimizer/WoWProfessionOptimizer.toc
+```
 
 ## Support
 
