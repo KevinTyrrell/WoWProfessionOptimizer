@@ -26,9 +26,6 @@ setfenv(1, setmetatable({ _G = _G }, -- Avoid polluting global namespace
 
 -- Import libraries
 local LibLogger = LibStub("LibLogger")
-local FSL = LibStub("FadestormLib")
-
--- Init
+local FSL = LibStub("FadestormLib-5.1")
 local Logger = LibLogger:New()
-
 

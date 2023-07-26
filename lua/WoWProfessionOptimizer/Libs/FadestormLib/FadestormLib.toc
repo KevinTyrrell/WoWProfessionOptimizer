@@ -2,7 +2,9 @@
 ## Title: Lib: FadestormLib
 ## Author: Kevin Tyrrell
 ## Notes: Powerful high-level programming functions by Fadestorm-Faerlina
+## X-Website: https://github.com/KevinTyrrell/WoWProfessionOptimizer/tree/master/lua/WoWProfessionOptimizer/Libs/FadestormLib
 ## X-Category: Library
 ## X-License: GNU General Public License
+## Version: 5.1
 
 FadestormLib.lua

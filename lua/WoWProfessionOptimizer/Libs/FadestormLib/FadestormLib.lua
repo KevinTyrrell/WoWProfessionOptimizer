@@ -17,7 +17,7 @@
 
 -- LibStub library library initialization
 local ADDON_NAME = "FadestormLib"
-local MAJOR, MINOR = ADDON_NAME .. "-5", 0
+local MAJOR, MINOR = ADDON_NAME .. "-5.1", 0
 if not LibStub then return end
 local FSL = LibStub:NewLibrary(MAJOR, MINOR)
 if not FSL then return end -- Newer or same version is already loaded
@@ -140,6 +140,47 @@ local __Table = (function()
 		return t
 	end
 
+	--[[
+	-- Sorts a table, using a custom comparator
+	--
+	-- Implementation uses a 2-partition Quicksort
+	--
+	-- :param tbl: Table to be sorted
+	-- :param comparator: Function which compares two elements, returning domain [-1, 1]
+	]]--
+	self.sort = (function()
+		local function swap(tbl, i, j) -- Swaps two indexes of a table
+			local temp = tbl[i] tbl[i] = tbl[j] tbl[j] = temp end
+
+		local function part(tbl, comparator, a, b)
+			local pivot = tbl[b] -- Pivot is always the right-hand element
+			local wall = a - 1 -- Divides the table into partitions
+
+			for i = a, b - 1 do -- Don't iterate on the pivot
+				if Type.NUMBER(comparator(tbl[i], pivot)) <= 0 then
+					wall = wall + 1
+					swap(tbl, wall, i) -- Add element to left partition
+				end
+			end
+
+			wall = wall + 1
+			swap(tbl, wall, b) -- Place pivot in its solved index
+			return wall
+		end
+
+		local function quick(tbl, comparator, a, b)
+			if a < b then -- Table is not yet sorted
+				local pivot = part(tbl, comparator, a, b)
+				quick(tbl, comparator, a, pivot - 1)
+				quick(tbl, comparator, pivot + 1, b)
+			end
+		end
+
+		return function(tbl, comparator)
+			quick(Type.TABLE(tbl), Type.FUNCTION(comparator), 1, #tbl)
+		end
+	end)()
+
 	return self
 end)() Table = __Table.read_only(__Table)
 
@@ -167,7 +208,7 @@ end)() Table = __Table.read_only(__Table)
 -- @return [Table] List of Enum values (field 'length' used instead of '#')
 -- @return [Table] Map of enum values to their private field table (used to define new fields)
 ]]--
-Enum = function(values, metamethods)
+function Enum(values, metamethods)
 	local enum_map = {} -- Maps read-only enum instances to their private fields
 	local enum_class = {} -- Private fields of the enum class
 
@@ -278,7 +319,7 @@ end)() FSL.Error = Error -- Mandatory because 'Error' was pre-declared
 -- @return [?] x
 --
 ]]--
-req_non_nil = function(x)
+function req_non_nil(x)
 	if x == nil then
 		Error.NIL_POINTER(ADDON_NAME, "Required non-nil argument was nil") end
 	return x
@@ -354,7 +395,7 @@ end
 -- @param callback [function] Callback filter function
 -- @return [function] Iterator
 ]]--
-filter = function(iterable, callback)
+function filter(iterable, callback)
 	Type.FUNCTION(callback)
 	local iterator = stream(iterable)
 	local key -- Iterator key parameter cannot be trusted due to key re-mappings
@@ -374,7 +415,7 @@ end
 -- @param callback [function] Callback mapping function
 -- @return [function] Iterator
 ]]--
-map = function(iterable, callback)
+function map(iterable, callback)
 	Type.FUNCTION(callback)
 	local iterator = stream(iterable)
 	local key -- Iterator key parameter cannot be trusted due to key re-mappings
@@ -399,7 +440,7 @@ end
 -- @param callback [function] Callback mapping function: (k1,v1,k2,v2) --> (key,value)
 -- @return [function] Iterator
 ]]--
-merge = function(iter1, iter2, callback)
+function merge(iter1, iter2, callback)
 	Type.FUNCTION(callback)
 	local i1 = stream(iter1)
 	local i2 = stream(iter2)
@@ -445,7 +486,7 @@ end
 -- @param [table][function] Stream(s) in which to iterate (variable arguments)
 -- @return [function] Iterator
 ]]--
-flat_map = function(iterable, callback)
+function flat_map(iterable, callback)
 	Type.FUNCTION(callback)
 	local iterator = stream(iterable)
 	local key, value = iterator(iterable)
@@ -475,7 +516,7 @@ end
 -- @param callback [function] Callback peeking function
 -- @return [function] Iterator
 ]]--
-peek = function(iterable, callback)
+function peek(iterable, callback)
 	Type.FUNCTION(callback)
 	local iterator = stream(iterable)
 	local key -- Iterator key parameter cannot be trusted due to key re-mappings
@@ -503,12 +544,12 @@ end
 -- @param step [number] (optional) Amount to step by each iteration
 -- @return [function] Iterator
 ]]--
-num_stream = function(start, stop, step)
+function num_stream(start, stop, step)
 	if step ~= nil then
 		if Type.NUMBER(step) == 0 then
 			Error.ILLEGAL_ARGUMENT(aura_env.id, "Number stream step must be non-zero") end
 	else step = 1 end
-	-- Seemlingly decent way to check for valid range params
+	-- Seemingly decent way to check for valid range params
 	if (Type.NUMBER(start) - Type.NUMBER(stop)) / step > 0 then
 		Error.ILLEGAL_ARGUMENT(aura_env.id, "Number stream does not terminate: start=" ..
 				tostring(start) .. ", stop=" .. tostring(stop) .. ", step=" .. tostring(step))
@@ -535,7 +576,7 @@ end
 -- @param iterable [table][function] Stream in which to iterate
 -- @return [table] Elements of the stream
 ]]--
-collect = function(iterable)
+function collect(iterable)
 	local iterator = stream(iterable)
 	local tbl = { }
 	for key, value in iterator do
@@ -553,9 +594,24 @@ end
 -- @param iterable [table][function] Stream in which to iterate
 -- @param callback [function] Callback for-each function
 ]]--
-for_each = function(iterable, callback)
+function for_each(iterable, callback)
 	Type.FUNCTION(callback)
-	local iterator = Type.TABLE:match(iterable) and pairs or iterable
+	local iterator = stream(iterable)
 	for key, value in iterator do
 		callback(key, value) end
+end
+
+
+--[[
+-- Sorts the elements of the stream
+--
+-- Sort is a terminating stream operation.
+-- The stream is closed and no further stream operations are applicable.
+--
+]]--
+function sorted(iterable, comparator, callback)
+	Type.FUNCTION(callback)
+	local t = collect(iterable)
+	Table.sort(t, Type.FUNCTION(comparator))
+	return t
 end

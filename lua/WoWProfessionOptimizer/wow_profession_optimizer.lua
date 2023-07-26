@@ -16,7 +16,8 @@
 ]]--
 
 local ADDON_NAME, WSO = ...
-local lib = LibStub("LibParse")
+--local lib = LibStub("LibParse")
+local FSL = LibStub("FadestormLib-5.1")
 
 
 --local s = '[{"name":"Rough Blasting Powder","levels":[1,1,20,30,40],"reagents":{"2835":1},"product":4357}]'
@@ -25,5 +26,21 @@ local lib = LibStub("LibParse")
 --print(u[1]["levels"][3])
 
 --print(WSO.data["WOTLK-Engineering"])
-local t = lib:JSONDecode(WSO.data["WOTLK-Engineering"])
-print(t)
+--local t = lib:JSONDecode(WSO.data["WOTLK-Engineering"])
+--print(t)
+
+local t = { 14, 47, 86, 71, 5, 18, 10, 62, 19, 0, 34 }
+local function cmp(a, b)
+    print("waffle", a, b)
+    if a < b then return -1 end
+    return a > b and 1 or 0
+end
+
+FSL.Table.sort(t, cmp)
+local s = ""
+for i, e in ipairs(t) do
+    if i ~= 1 then s = s .. ", " end
+    s = s .. tostring(e)
+end
+print(s)
+
