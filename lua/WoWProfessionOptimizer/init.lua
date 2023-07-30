@@ -15,5 +15,15 @@
 --    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]--
 
-local ADDON_NAME, WPO = ...
-WPO["data"] = { }  -- Setup table for JSON data
+setfenv(1, select(2, ...)) -- Change environment
+
+-- Import libraries
+local Addon = LibStub("AceAddon-3.0"):NewAddon("WoWProfessionOptimizer", "AceConsole-3.0")
+
+
+
+data = { } -- Prepare table for loaded JSON data
+
+function Addon:OnInitialize()
+    print("OnInitialize")
+end

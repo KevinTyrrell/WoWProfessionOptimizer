@@ -5,11 +5,14 @@
 ## Version: 1.0.0
 ## DefaultState: enabled
 ## LoadOnDemand: 0
+## SavedVariables: WoWProfessionOptimizerDB
+
 
 # External Libraries
 embeds.xml
 
 # Initialization
+environment.lua
 init.lua
 
 # Data
