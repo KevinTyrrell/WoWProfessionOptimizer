@@ -15,9 +15,23 @@
 --    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]--
 
-local ADDON_NAME, WSO = ...
---local lib = LibStub("LibParse")
+local ADDON_NAME, WPO = ... -- Implicit addon table provided by World of Warcraft
 
+-- Import libraries
+local FSL = LibStub("FadestormLib-5.1")
 
-
-
+WPO._G = _G -- Maintain reference to the global table just in case
+setmetatable(WPO, {
+    __index = (function()
+        local _G = _G
+        return function(_, key)
+            local v = FSL[key] -- Check FSL table first
+            if v == nil then -- Check global table second
+                v = _G[key] end
+            return v
+        end
+    end)(),
+    __tostring = function(_) return ADDON_NAME end,
+    __metatable = false, -- Metatable protection
+})
+setfenv(1, WPO)

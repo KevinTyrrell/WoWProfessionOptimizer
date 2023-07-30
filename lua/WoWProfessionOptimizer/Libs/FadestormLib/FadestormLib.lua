@@ -145,8 +145,8 @@ local __Table = (function()
 	--
 	-- Implementation uses a 2-partition Quicksort
 	--
-	-- :param tbl: Table to be sorted
-	-- :param comparator: Function which compares two elements, returning domain [-1, 1]
+	-- @param tbl [table] Table to be sorted
+	-- @param comparator [function] Compares two elements, returning domain [-1, 1]
 	]]--
 	self.sort = (function()
 		local function swap(tbl, i, j) -- Swaps two indexes of a table
@@ -317,7 +317,6 @@ end)() FSL.Error = Error -- Mandatory because 'Error' was pre-declared
 --
 -- @param [?] x Parameter to check
 -- @return [?] x
---
 ]]--
 function req_non_nil(x)
 	if x == nil then

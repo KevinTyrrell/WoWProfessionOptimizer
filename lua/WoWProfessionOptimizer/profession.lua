@@ -15,17 +15,4 @@
 --    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]--
 
-local ADDON_NAME, WPO = ... -- Implicit addon table provided by World of Warcraft
-setfenv(1, setmetatable({ _G = _G }, -- Avoid polluting global namespace
-        {
-            __index = _G,
-            __newindex = WPO,
-            __metatable = false,
-        }
-))
-
--- Import libraries
-local LibLogger = LibStub("LibLogger")
-local FSL = LibStub("FadestormLib-5.1")
-local Logger = LibLogger:New()
-
+setfenv(1, select(2, ...)) -- Change environment
