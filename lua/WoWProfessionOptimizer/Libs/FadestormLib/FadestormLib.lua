@@ -81,6 +81,7 @@ local __Table = (function()
 	--
 	-- @param private [table] Map of fields
 	-- @param metamethods [table] (optional) Metamethods to be included into the table
+	-- @return [table] Read-only variant of the private table
 	]]--
 	function self.read_only(private, metamethods)
 		local mt = read_only_meta_table(Type.TABLE(private))
@@ -268,16 +269,38 @@ Type = (function()
 			{
 				__call = function(tbl, value)
 					if not match(tbl, value) then
-						Error.__Type_MISMATCH(ADDON_NAME,
+						Error.TYPE_MISMATCH(ADDON_NAME,
 								"Received " .. type(value) .. ", Expected: " .. tbl.type) end
 					return value
 				end
 			})
 	for i = 1, getmetatable(__Type)() do
-		local t = __Type[i]
+		local t = __Type[i] -- Type enum instance
 		private[t].type = lower(t.name)
-		private[t].match = function(type, value)
-			return match(__Type.TABLE(type), value) end
+
+		--[[
+		-- @param [?] value Value to be checked
+		-- @return [boolean] True if the variable is the same type as the enum value
+		]]--
+		private[t].match = function(value) return match(t, value) end
+
+		--[[
+		-- Enforces a default value, if the specified variable is nil
+		--
+		-- This differs from the following:
+		-- `value or default` - Fails if `value` is `false`
+		-- `value == nil or default` - Fails if default is not the expected type
+		--
+		-- This method ensures the type from the default value is what is expected
+		--
+		-- @param [?] value Value to be checked for nil and type
+		-- @parma [?] default Default value to return if first parameter is nil
+		-- @return [?] Value or default, depending on the state of value
+		-- @raise TYPE_MISMATCH if default is not the type of the enum instance
+		]]--
+		private[t].default = function(value, default)
+			return t(value == nil and default or value)
+		end
 	end
 
 	return __Type
@@ -383,7 +406,7 @@ end)()
 ]]--
 
 local function stream(iterable) -- Helper function
-	return Type.TABLE:match(iterable) and next or Type.FUNCTION(iterable)
+	return Type.TABLE.match(iterable) and next or Type.FUNCTION(iterable)
 end
 
 
