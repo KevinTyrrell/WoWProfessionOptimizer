@@ -619,8 +619,13 @@ end
 function for_each(iterable, callback)
 	Type.FUNCTION(callback)
 	local iterator = stream(iterable)
-	for key, value in iterator do
-		callback(key, value) end
+
+	local key, value
+	while true do
+		key, value = iterator(iterable, key)
+		if key == nil then break end
+		callback(key, value)
+	end
 end
 
 
