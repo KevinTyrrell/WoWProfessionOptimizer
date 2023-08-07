@@ -601,8 +601,12 @@ end
 function collect(iterable)
 	local iterator = stream(iterable)
 	local tbl = { }
-	for key, value in iterator do
-		tbl[key] = value end
+	local key, value
+	while true do
+		key, value = iterator(iterable, key)
+		if key == nil then break end
+		tbl[key] = value
+	end
 	return tbl
 end
 
@@ -619,7 +623,6 @@ end
 function for_each(iterable, callback)
 	Type.FUNCTION(callback)
 	local iterator = stream(iterable)
-
 	local key, value
 	while true do
 		key, value = iterator(iterable, key)

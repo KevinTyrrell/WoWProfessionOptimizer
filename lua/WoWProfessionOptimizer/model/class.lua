@@ -35,6 +35,7 @@ local object_mt = {
 --
 -- @param [table] Metatable to be validated
 -- @return [table] Metatable instance
+-- @raise ILLEGAL_ARGUMENT if the metatable violates the terms above
 ]]--
 local validate_mt = (function()
     local valid_mt_methods = Table.set("__add", "__sub", "__mul", "__div", "__mod",
@@ -48,12 +49,6 @@ local validate_mt = (function()
         return mt
     end
 end)()
-
-local test = {
-    __asdd = function()  end
-}
-
-print("Testing", validate_mt(test))
 
 --[[
 --
