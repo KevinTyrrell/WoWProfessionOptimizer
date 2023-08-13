@@ -51,97 +51,88 @@ local validate_mt = (function()
 end)()
 
 --[[
+-- Associates classes with their internal tables
 --
+-- Key: Class object reference
+-- Value: ClassInternals table (see below)
+--
+-- Note: Base class 'object' is the only class which has `nil` field for super
+--
+-- @table ClassInternals
+-- @field 1 [table] Virtual table of the classes' public members
+-- @field 2 [table] Virtual table of the classes' private members
+-- @field 3 [table] Virtual table of the classes' protected members
+-- @field 4 [table] Reference to the super class
 ]]--
-function class(public, private, protected, metatable)
-    local pub, priv, prot, meta = { }, { }, { }, { }
-    local self = { } -- Class instance
+local cls_internals = { }
 
-    function self.subclass(_public, _private, _protected, _metatable)
-    end
-
-    --[[
-    to-be checked when new members are added
-
-    * Base Class:
-        * Public:
-            check private & protected table
-        * Private:
-            N/A
-        * Protected:
-            N/A
-    * Derived Class:
-        * Public:
-            check private, protected, and superclass public & protected tables
-        * Private:
-            check superclass public & protected tables
-        * Protected:
-            check superclass public & protected tables
-    ]]--
-
-
-    --[[
-
-    class Creature
-        pub { }
-        prot { }
-        priv { }
-
-    class Person
-        pub {
-             index = Creature.pub        }
-        prot { }, {
-          }
-        priv { }, {
-            index =
-        }
-
-    class Student
-
-    * ALL members must be defined in object's constructor
-
-
-
-    ]]--
-
-
-
-
-
-
-
-
-    local priv = { mode = "k" } -- Weak table
-    local prot = { mode = "k" } -- Weak table
-    local subclasses = { }
-
-    --[[
-    -- @param instance [table] Instance of this class
-    -- @return [table] Private members of the specified instance
-    ]]--
-    local function private(instance)
-        local t = private[Type.TABLE(instance)]
-        if t == nil then
-            Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Table is not an instance of this class.") end
-        return t
-    end
-
-    --[[
-    -- Associates read-only objects with their internal member tables
-    --
-    -- Weak table, as to not memory leak objects instead of GC
-    ]]--
-    local instances = { mode = "k" } -- Weak table holding instances of this class
-
-    function cls.instance()
-
-    end
-
-    --[[
-    -- @param obj [table] Object to check
-    -- @return [boolean] True if the table is an object of this class
-    ]]--
-    function cls.is_instance(obj)
-        return instances[Type.TABLE(obj)] ~= nil
+local function duplicate_checker(key, tbl_a, tbl_b) -- Used for duplicate name violations
+    if rawget(tbl_a, key) ~= nil or rawget(tbl_b, key) ~= nil then
+         Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Class already has member defined: " .. tostring(key))
     end
 end
+
+--[[
+-- Extends an existing class, creating a subclass
+--
+-- @param [table] Class object to be extended
+-- @return [table] Subclass class object
+-- @return [table] Non-iterable table for classes' public members
+-- @return [table] Non-iterable table for classes' private members
+-- @return [table] Non-iterable table for classes' protected members
+-- @return [table] Reference to the superclass object TODO: Might need additional access privileges
+-- TODO: If class.find_member(key) is implemented, 'super' is essentially extends.find_member(key)
+-- TODO: Note that `super` CANNOT be chained together. Therefore `super.super.x` is impossible.
+]]--
+local function class(extends)
+    -- Virtual tables in which class members are actually stored
+    local vt_pub, vt_priv, vt_prot = { }, { }, { }
+
+    --[[
+
+    private table index:
+        only search private table
+    private table newindex
+        only mutate private table
+
+    protected table index:
+        search our protected table
+        differ search to above protected tables
+
+
+
+
+
+    ]]--
+
+end
+
+--[[
+TODO: How to handle the following scenario?
+TODO: Class A { protected int x; }  Class B extends A {
+TODO:     public static void test(A p1, B p2) {
+TODO:       // how to access p1.x ?
+TODO:   }
+TODO: }
+
+VTABLES
+    When extending a class, copy its vtable and use it as the basis for this class.
+    Any members which are defined in this class then overrides the existing vtable.
+    Calls to super() simply defer searching to the above vtable.
+
+    Private functions are NEVER put into vtables. When searching for an identifier,
+    always check the private table first. Then check the classes vtable.
+
+    Every class will have three provides tables. Public, private, and protected. All are empty.
+    Each table has a different __index and __newindex, such that its optimized for searching.
+
+    The return values for extending or creating a class are the following:
+    * class object reference
+    * public table reference
+    * private table reference
+    * protected table reference
+
+    Class must provide a way to retrieve the furthest class table given a specified object.
+
+
+]]--
