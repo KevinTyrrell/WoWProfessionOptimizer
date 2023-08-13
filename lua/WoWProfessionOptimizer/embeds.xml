@@ -2,6 +2,7 @@
 ..\FrameXML\UI.xsd">
   <Script file="Libs\LibStub\LibStub.lua"/>
   <Include file="Libs\Ace3\AceAddon-3.0\AceAddon-3.0.xml"/>
+  <Include file="Libs\Ace3\AceDB-3.0\AceDB-3.0.xml"/>
   <Script file="Libs\LibLogger\LibLogger.lua"/>
   <Script file="Libs\FadestormLib\FadestormLib.lua"/>
   <Script file="Libs\LibParse\LibParse.lua"/>

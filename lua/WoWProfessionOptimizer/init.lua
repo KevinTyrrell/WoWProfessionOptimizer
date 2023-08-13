@@ -15,15 +15,26 @@
 --    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]--
 
-setfenv(1, select(2, ...)) -- Change environment
+local ADDON_NAME, WPO = ...
+setfenv(1, WPO) -- Change environment
 
 -- Import libraries
-local Addon = LibStub("AceAddon-3.0"):NewAddon("WoWProfessionOptimizer", "AceConsole-3.0")
+local AceAddon = LibStub("AceAddon-3.0")
+local AceDB = LibStub("AceDB-3.0")
+local LibLogger = LibStub("LibLogger")
 
-
-
+-- Setup addon table
+addon = AceAddon:NewAddon(ADDON_NAME, "AceConsole-3.0")
+logger = LibLogger:New() -- Logger made now, attach to 'SavedVariables' later on
+logger:SetSeverity(LibLogger.SEVERITY.TRACE)
+logger:SetPrefix(ADDON_NAME)
 data = { } -- Prepare table for loaded JSON data
 
-function Addon:OnInitialize()
-    print("OnInitialize")
+-- Called when the addon is completely initialized
+function addon:OnInitialize()
+    AceDB = AceDB:New(ADDON_NAME .. "DB")
+    local logger_db = { }
+    AceDB.global.logger = logger_db
+    logger:SetDatabase(logger_db)
+    logger:Info("Addon Initialized.")
 end
