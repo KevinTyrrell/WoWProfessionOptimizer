@@ -34,7 +34,7 @@ data = { } -- Prepare table for loaded JSON data
 function addon:OnInitialize()
     AceDB = AceDB:New(ADDON_NAME .. "DB")
     local logger_db = { }
-    AceDB.global.logger = logger_db
+    AceDB.global.logger = logger_db -- Delete
     logger:SetDatabase(logger_db)
     logger:Info("Addon Initialized.")
 end

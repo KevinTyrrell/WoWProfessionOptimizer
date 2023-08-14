@@ -35,3 +35,24 @@ setmetatable(WPO, {
     __metatable = false, -- Metatable protection
 })
 setfenv(1, WPO)
+
+Env = (function()
+    local cls = { }
+
+    --[[
+    -- Swaps the environment momentarily inside of a specified callback function
+    --
+    -- @param env [table] Environment to use as the new global environment for the function
+    -- @param callback [function] Callback function
+    -- @return Callback function return value(s)
+    ]]--
+    function cls.swap(env, callback)
+        local old_env = getfenv(callback)
+        setfenv(Type.FUNCTION(callback), Type.TABLE(env))
+        local rval = { callback() }
+        setfenv(callback, old_env)
+        return unpack(rval)
+    end
+
+    return Table.read_only(cls)
+end)()

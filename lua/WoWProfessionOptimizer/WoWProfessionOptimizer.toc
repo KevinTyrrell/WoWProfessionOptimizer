@@ -14,7 +14,6 @@ embeds.xml
 # Initialization
 environment.lua
 init.lua
-model\class.lua
 
 # Data
 data\embeds.xml

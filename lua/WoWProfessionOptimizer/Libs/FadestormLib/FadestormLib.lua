@@ -55,7 +55,7 @@ local function read_only_meta_table(private)
 	return {
 		-- Reject any mutations to the read-only table
 		__newindex = function()
-			Error.UNSUPPORTED_OPERATION(ADDON_NAME, "Ready-only table cannot be modified")
+			Error.UNSUPPORTED_OPERATION(ADDON_NAME, "Ready-only table cannot be modified.")
 		end,
 		-- Redirect lookups to the private table without exposing the table itself
 		__index = function(_, index) return private[index] end,
@@ -206,8 +206,9 @@ end)() Table = __Table.read_only(__Table)
 -- defined using the private field table return value.
 --
 -- @param values List of strings (will be converted to uppercase)
--- @return [Table] List of Enum values (field 'length' used instead of '#')
--- @return [Table] Map of enum values to their private field table (used to define new fields)
+-- @param metamethods [table] (optional) Meta-methods to add to each instance
+-- @return [table] List of Enum values (field 'length' used instead of '#')
+-- @return [table] Map of enum values to their private field table (used to define new fields)
 ]]--
 function Enum(values, metamethods)
 	local enum_map = {} -- Maps read-only enum instances to their private fields
