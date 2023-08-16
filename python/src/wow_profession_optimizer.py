@@ -127,7 +127,7 @@ def save_lua_file(jso: dict | list, path: str, filename: str):
     with open(f"{path}/{filename}.lua", "w") as file:
         s = json.dumps(jso, separators=(",", ":"), ensure_ascii=False)
         s = s.replace("'", "\\'")  # Escape apostrophe
-        file.write(f"select(2, ...)[\"data\"][\"{filename}\"] = '{s}'")
+        file.write(f"select(2, ...)[\"Profession\"][\"{filename}\"] = '{s}'")
 
 
 def get_and_save(url: str, filename: str) -> None:

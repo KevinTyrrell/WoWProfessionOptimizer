@@ -28,7 +28,7 @@ addon = AceAddon:NewAddon(ADDON_NAME, "AceConsole-3.0")
 logger = LibLogger:New() -- Logger made now, attach to 'SavedVariables' later on
 logger:SetSeverity(LibLogger.SEVERITY.TRACE)
 logger:SetPrefix(ADDON_NAME)
-data = { } -- Prepare table for loaded JSON data
+Profession = { } -- Prepare table for loaded JSON data
 
 -- Called when the addon is completely initialized
 function addon:OnInitialize()
