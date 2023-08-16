@@ -21,6 +21,8 @@ setfenv(1, WPO) -- Change environment
 -- Import libraries
 local LibParse = LibStub("LibParse")
 
+local RAW_DATA = Profession -- JSON profession data in which the addon
+
 Profession = (function()
     local cls = { } -- Class instance
 
@@ -70,5 +72,33 @@ Profession = (function()
         return instances
     end)()
 
+    cls.Loader = (function()
+        local function __call(_, expac)
+            -- Ordinal of the specified expansion
+            local ord = Type.NUMBER(Type.TABLE(expac).ordinal)
+            local iter = function(state, key)
+                for i = Type.NUMBER(key), getmetatable(cls.Prof)() do
+                    local instance = state[i + 1]
+                    if instance.expac.ordinal >= ord then
+                        -- iterator, table to iterate over, key
+                        return i + 1, instance
+                    end
+                end
+            end
+
+            return iter, cls.Prof, 0
+        end
+
+        return setmetatable({ }, {
+            __metatable = false,
+            __newindex = function() Error.UNSUPPORTED_OPERATION(ADDON_NAME, "") end,
+            __call = __call
+        })
+    end)()
+
     return Table.read_only(cls)
 end)()
+
+for k, v in Profession.Loader(Profession.Expac.VANILLA) do
+    print(k, v)
+end
