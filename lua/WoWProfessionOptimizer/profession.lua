@@ -21,84 +21,85 @@ setfenv(1, WPO) -- Change environment
 -- Import libraries
 local LibParse = LibStub("LibParse")
 
-local RAW_DATA = Profession -- JSON profession data in which the addon
+local RAW_JSON_DATA = Profession -- JSON profession data
 
-Profession = (function()
-    local cls = { } -- Class instance
 
-    --[[
-    -- Expansion Enum
-    --
-    -- @field max_skill [number] Max amount of skill points available in the expansion
-    -- @field formal [string] Formal name of the expansion
-    ]]--
-    cls.Expac = (function()
-        local value = { "WOTLK", "TBC", "VANILLA" }
-        local max_skill = { 450, 375, 300 }
-        local formal =  { "Wrath of the Lich King", "The Burning Crusade", "World of Warcraft" }
+--[[
+-- Expansion Enum
+--
+-- @field max_skill [number] Max amount of skill points available in the expansion
+-- @field formal [string] Formal name of the expansion
+]]--
+Expansion = (function()
+    local value = { "WOTLK", "TBC", "VANILLA" }
+    local max_skills = { 450, 375, 300 }
+    local formals =  { "Wrath of the Lich King", "The Burning Crusade", "World of Warcraft" }
+    local colors = { "74A7D6", "AAD46C", "FCDA2A" }
 
-        local instances, internals = Enum(value, {
-            __tostring = function(tbl) return tbl.formal end
-        })
-        for i = 1, getmetatable(instances)() do
-            local e = internals[instances[i]]
-            e.max_skill = max_skill[i]
-            e.formal = formal[i]
-        end
-        return instances
-    end)()
-
-    --[[
-    -- Profession Enum
-    --
-    -- @field expac [table] Expac enum instance for which expansion the profession was added in
-    -- @field formal [string] Formal name of profession
-    ]]--
-    cls.Prof = (function()
-        local value = { "ALCHEMY", "BLACKSMITHING", "COOKING", "ENCHANTING", "ENGINEERING",
-                        "FIRST_AID", "INSCRIPTION", "JEWELCRAFTING", "LEATHERWORKING", "TAILORING" }
-        local formal = { "Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering",
-                         "First Aid", "Inscription", "Jewelcrafting", "Leatherworking", "Tailoring" }
-        local expac = Env.swap(cls.Expac, function()
-            return { VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, WOTLK, TBC, VANILLA, VANILLA } end)
-        local instances, internals = Enum(value, {
-            __tostring = function(tbl) return tbl.formal  end
-        })
-        for i = 1, getmetatable(instances)() do
-            local e = internals[instances[i]]
-            e.formal = formal[i]
-            e.expac = expac[i]
-        end
-        return instances
-    end)()
-
-    cls.Loader = (function()
-        local function __call(_, expac)
-            -- Ordinal of the specified expansion
-            local ord = Type.NUMBER(Type.TABLE(expac).ordinal)
-            local iter = function(state, key)
-                for i = Type.NUMBER(key), getmetatable(cls.Prof)() do
-                    local instance = state[i + 1]
-                    if instance.expac.ordinal >= ord then
-                        -- iterator, table to iterate over, key
-                        return i + 1, instance
-                    end
-                end
-            end
-
-            return iter, cls.Prof, 0
-        end
-
-        return setmetatable({ }, {
-            __metatable = false,
-            __newindex = function() Error.UNSUPPORTED_OPERATION(ADDON_NAME, "") end,
-            __call = __call
-        })
-    end)()
-
-    return Table.read_only(cls)
+    local instances, internals = Enum(value, {
+        __tostring = function(tbl) return tbl.formal end
+    })
+    for i = 1, getmetatable(instances)() do
+        local e = internals[instances[i]]
+        e.max_skill = max_skills[i]
+        e.formal = formals[i]
+        e.color = colors[i]
+    end
+    return instances
 end)()
 
-for k, v in Profession.Loader(Profession.Expac.VANILLA) do
-    print(k, v)
+
+--[[
+-- Profession Enum
+--
+-- @field expansion [table] Expansion enum instance for which expansion the profession was added in
+-- @field formal [string] Formal name of profession
+--
+-- @field load [function] Loads the profession from its profession JSON data
+-- @param expac [table] Expansion enum instance, to determine which version to load
+-- @return [table] Profession data object
+]]--
+Profession = (function()
+    local values = { "ALCHEMY", "BLACKSMITHING", "COOKING", "ENCHANTING", "ENGINEERING",
+                    "FIRST_AID", "INSCRIPTION", "JEWELCRAFTING", "LEATHERWORKING", "TAILORING" }
+    local formals = { "Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering",
+                     "First Aid", "Inscription", "Jewelcrafting", "Leatherworking", "Tailoring" }
+    local expansions = Env.swap(Expansion, function()
+        return { VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, WOTLK, TBC, VANILLA, VANILLA } end)
+
+    -- Returns Profession-EXPAC if profession data is available, otherwise nil
+    local function loadable(prof, expac)
+        prof = Type.TABLE(prof).formal
+        expac = Type.TABLE(expac).name
+        local key = prof .. "-" .. expac
+        return RAW_JSON_DATA[key] and key or nil
+    end
+
+    -- Loads a profession from the storage medium, parsing it accordingly
+    local function load_profession(prof, expac)
+
+    end
+
+    local instances, internals = Enum(values, {
+        __tostring = function(tbl) return tbl.formal  end
+    })
+    for i = 1, getmetatable(instances)() do
+        local instance = instances[i]
+        local e = internals[instance]
+        e.formal = formals[i]
+        e.expansion = expansions[i]
+        e.load = function(expac)
+            return load_profession(instance, Type.TABLE(expac))
+        end
+        e.loadable = function(expac)
+
+        end
+    end
+    return instances
+end)()
+
+
+for i = 1, getmetatable(Expansion)() do
+    local e = Expansion[i]
+    print("|cFF" .. e.color .. e.formal .. "|r")
 end
