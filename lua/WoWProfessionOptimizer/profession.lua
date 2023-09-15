@@ -92,14 +92,20 @@ Profession = (function()
             return load_profession(instance, Type.TABLE(expac))
         end
         e.loadable = function(expac)
-
+            local key = Type.TABLE(expac).name .. "-" .. e.formal
+            return RAW_JSON_DATA[key] and key or false
         end
     end
     return instances
 end)()
 
 
-for i = 1, getmetatable(Expansion)() do
-    local e = Expansion[i]
-    print("|cFF" .. e.color .. e.formal .. "|r")
+for k, v in flat_map(
+        map(num_stream(1, getmetatable(Expansion)()), function(i) return i, Expansion[i] end),
+        function(_, cv)
+            return map(num_stream(1, getmetatable(Profession)()),
+                    function(i) return cv, Profession[i] end)
+        end) do
+    print(k, v)
 end
+
