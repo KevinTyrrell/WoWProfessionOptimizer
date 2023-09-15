@@ -67,17 +67,17 @@ Profession = (function()
     local expansions = Env.swap(Expansion, function()
         return { VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, WOTLK, TBC, VANILLA, VANILLA } end)
 
-    -- Returns Profession-EXPAC if profession data is available, otherwise nil
     local function loadable(prof, expac)
-        prof = Type.TABLE(prof).formal
-        expac = Type.TABLE(expac).name
-        local key = prof .. "-" .. expac
+        local key = Type.TABLE(expac).name .. "-" .. Type.TABLE(prof).formal
         return RAW_JSON_DATA[key] and key or nil
     end
 
     -- Loads a profession from the storage medium, parsing it accordingly
     local function load_profession(prof, expac)
-
+        local key = loadable(prof, expac)
+        if key == nil then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
+                "No profession data is present for: " .. expac.name .. "-" .. prof.formal) end
+        return RAW_JSON_DATA[key]
     end
 
     local instances, internals = Enum(values, {
@@ -92,38 +92,22 @@ Profession = (function()
             return load_profession(instance, Type.TABLE(expac))
         end
         e.loadable = function(expac)
-            local key = Type.TABLE(expac).name .. "-" .. e.formal
-            return RAW_JSON_DATA[key] and key or false
+            return loadable(e, expac) ~= nil
         end
     end
     return instances
 end)()
 
---[[
-for k, v in flat_map(
-        map(num_stream(1, getmetatable(Expansion)()), function(i) return i, Expansion[i] end),
-        function(_, cv)
+
+for k, v in filter(flat_map(map(num_stream(1, getmetatable(Expansion)()),
+        function(i) return i, Expansion[i] end),
+        function(_, expac)
             return map(num_stream(1, getmetatable(Profession)()),
-                    function(i) return cv, Profession[i] end)
-        end) do
+                    function(i) return expac.name .. "-" .. Profession[i].formal, Profession[i].loadable(expac) end) end),
+            function(_, available) return available ~= false end) do
     print(k, v)
 end
-]]--
 
-local t = {
-    { "Here", "is", "an" },
-    { },
-    { "example" },
-    { },
-    { },
-    { "long", "sentence" },
-    { }
-}
+Profession.JEWELCRAFTING.load(Expansion.TBC)
 
-for k, v in flat_map(
-        t,
-        function(i, e)
-            return e
-        end) do
-    print(k, v)
-end
+
