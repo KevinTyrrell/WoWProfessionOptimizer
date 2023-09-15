@@ -495,6 +495,7 @@ function merge(iter1, iter2, callback)
 end
 
 
+-- Helper function for iterating through streams
 local function explore(iterable)
 	local iterator = stream(iterable)
 	local key, value
@@ -509,8 +510,7 @@ end
 -- Creates an additional dimension of the stream, then flattens it into one stream
 --
 -- @param [table][function] Stream in which to iterate
--- @param [function] Callback function which defines a new stream dimension,
-						along with how to flatten the two into a single stream.
+-- @param [function] Callback function which defines a new stream dimension per element.
 				The callback should invoke a new stream, per element of the original stream.
 				The returned value should be a new stream. See @usage below for an example.
 				@param key [?] Key of the key/value pair currently being streamed
@@ -537,9 +537,7 @@ function flat_map(iterable, callback)
 				k, v = outer() -- Stream exhausted, move to the next inner stream
 				if k == nil then return end -- All inner streams exhausted
 				inner = explore(callback(k, v))
-			else
-				return k, v
-			end
+			else return k, v end
 		end
 	end
 end
