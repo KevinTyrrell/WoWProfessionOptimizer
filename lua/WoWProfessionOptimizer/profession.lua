@@ -77,7 +77,8 @@ Profession = (function()
         local key = loadable(prof, expac)
         if key == nil then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
                 "No profession data is present for: " .. expac.name .. "-" .. prof.formal) end
-        return RAW_JSON_DATA[key]
+        local json = RAW_JSON_DATA[key]
+        return LibParse:JSONDecode(json)
     end
 
     local instances, internals = Enum(values, {
@@ -98,16 +99,4 @@ Profession = (function()
     return instances
 end)()
 
-
-for k, v in filter(flat_map(map(num_stream(1, getmetatable(Expansion)()),
-        function(i) return i, Expansion[i] end),
-        function(_, expac)
-            return map(num_stream(1, getmetatable(Profession)()),
-                    function(i) return expac.name .. "-" .. Profession[i].formal, Profession[i].loadable(expac) end) end),
-            function(_, available) return available ~= false end) do
-    print(k, v)
-end
-
-Profession.JEWELCRAFTING.load(Expansion.TBC)
-
-
+local jso = Profession.ENGINEERING.load(Expansion.WOTLK)
