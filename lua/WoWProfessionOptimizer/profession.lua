@@ -99,7 +99,7 @@ Profession = (function()
     return instances
 end)()
 
-
+--[[
 for k, v in flat_map(
         map(num_stream(1, getmetatable(Expansion)()), function(i) return i, Expansion[i] end),
         function(_, cv)
@@ -108,4 +108,22 @@ for k, v in flat_map(
         end) do
     print(k, v)
 end
+]]--
 
+local t = {
+    { "Here", "is", "an" },
+    { },
+    { "example" },
+    { },
+    { },
+    { "long", "sentence" },
+    { }
+}
+
+for k, v in flat_map(
+        t,
+        function(i, e)
+            return e
+        end) do
+    print(k, v)
+end
