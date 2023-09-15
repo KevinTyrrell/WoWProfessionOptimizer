@@ -495,38 +495,51 @@ function merge(iter1, iter2, callback)
 end
 
 
+local function explore(iterable)
+	local iterator = stream(iterable)
+	local key, value
+	return function()
+		key, value = iterator(iterable, key)
+		if key ~= nil then return key, value end
+	end
+end
+
+
 --[[
--- Flattens out a collection of streams into one iterable stream
+-- Creates an additional dimension of the stream, then flattens it into one stream
 --
--- The resultant stream contains all elements from all inner streams.
--- For example { 5, 4 }, {}, { 3 } --> { 5, 4, 3 }
--- Each element is mapped to the return value of the callback, as follows:
--- [k, v] function callback(key, k, v)
+-- @param [table][function] Stream in which to iterate
+-- @param [function] Callback function which defines a new stream dimension,
+						along with how to flatten the two into a single stream.
+				The callback should invoke a new stream, per element of the original stream.
+				The returned value should be a new stream. See @usage below for an example.
+				@param key [?] Key of the key/value pair currently being streamed
+				@param value [?] Value of the key/value pair currently being streamed
+				@return [table][function] Stream
+-- @return [function] Stream
 --
--- where `key` is the key corresponding to the current inner iterated stream.
--- Parameters `k`/`v` and return values operate identical to `map(...)`.
---
--- @param [table][function] Stream(s) in which to iterate (variable arguments)
--- @return [function] Iterator
+-- @usage
+-- local function callback(key, value) -- e.g. `value` is a table
+		-- Create a new stream for every single element of the original stream
+		return map(value, function(k, v) return k .. v, true end)
+-- end
 ]]--
 function flat_map(iterable, callback)
-	Type.FUNCTION(callback)
-	local iterator = stream(iterable)
-	local key, value = iterator(iterable)
-	-- Table is empty, return a blank iterator
-	if key == nil then return function() return end end
-	local iter, k, v = stream(value)
+	local outer = explore(iterable)
+	local k, v = outer()
+	if k == nil then return function()end end -- Stream was empty
+	local inner = explore(Type.FUNCTION(callback)(k, v))
 
 	return function()
 		while true do
-			-- Check for an element inside the nested table(s)
-			k, v = iter(value, k)
-			if k ~= nil then
-				return callback(key, k, v) end
-			-- Check for an additional table to iterate
-			key, value = iterator(iterable, key)
-			if key == nil then return end
-			iter = stream(value)
+			k, v = inner()
+			if k == nil then
+				k, v = outer() -- Stream exhausted, move to the next inner stream
+				if k == nil then return end -- All inner streams exhausted
+				inner = explore(callback(k, v))
+			else
+				return k, v
+			end
 		end
 	end
 end
