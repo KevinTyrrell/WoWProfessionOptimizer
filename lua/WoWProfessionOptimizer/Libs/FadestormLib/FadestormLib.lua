@@ -573,6 +573,8 @@ end
 -- For negative steps, start >= stop must be true.
 -- Steps of zero will result in an exception being thrown.
 --
+-- TODO: Appears to fail on decrementing number streams
+--
 -- @param start [number] Starting number (inclusive) to iterate
 -- @param stop [number] Stopping number (inclusive) to iterate to
 -- @param step [number] (optional) Amount to step by each iteration
