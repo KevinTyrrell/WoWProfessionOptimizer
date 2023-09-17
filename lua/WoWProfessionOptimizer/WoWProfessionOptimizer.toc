@@ -20,6 +20,7 @@ data\embeds.xml
 
 # Model
 profession.lua
+recipe.lua
 
 # Entry-Point
 wow_profession_optimizer.lua

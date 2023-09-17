@@ -98,5 +98,3 @@ Profession = (function()
     end
     return instances
 end)()
-
-local jso = Profession.ENGINEERING.load(Expansion.WOTLK)

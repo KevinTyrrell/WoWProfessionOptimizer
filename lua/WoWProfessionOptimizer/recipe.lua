@@ -15,8 +15,55 @@
 --    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]--
 
---[[
--- TODO: When recipes recipes iterate over their materials list,
--- TODO: they should be sorted either each material's minimum learned level,
--- TODO: or by the material's grey level. The non-crafted materials can be placed anywhere.
-]]--
+local ADDON_NAME, WPO = ...
+setfenv(1, WPO) -- Change environment
+
+
+Recipe = (function()
+    local cls = { }
+
+    --[[
+    -- @param [table] jso JSON object detailing all fields of the recipe
+    -- @return [table] Formalized table describing the recipe
+    ]]--
+    function cls.new(jso)
+        local obj = {
+            name = Type.STRING(Type.TABLE(jso).name),
+            product = tonumber(Type.STRING(jso.product)),
+            reagents = collect(map(Type.TABLE(jso.reagents),
+                    function(k, v) -- Map "id": quantity -> { id, quantity }
+                        return { tonumber(Type.STRING(k)), Type.NUMBER(v) }
+                    end)),
+        }
+        -- Recipe sources
+        local sources = Type.TABLE(jso.source)
+        if #sources <= 0 then
+            Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Recipe has invalid source data: " .. obj.name) end
+        obj.sources = sources
+        -- Recipe yield
+        local yield = jso.produces
+        if yield == nil then obj.produces = 1 -- Most recipes produce a singular item
+        else obj.yield = Type.NUMBER(yield) end
+        -- Recipe specialization
+        local spec = jso.spec
+        if spec ~= nil then -- Not all recipes have specializations
+            obj.spec = Type.NUMBER(spec) end
+        -- Recipe levels
+        local levels = Type.TABLE(jso.levels)
+        if #levels ~= 5 then
+            Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Recipe has invalid level data: " .. obj.name) end
+        obj.learned = levels[1]
+        obj.levels = collect(map(num_stream(2, 5),
+                function(i) return Type.NUMBER(levels[i]) end))
+        return obj
+    end
+
+    return Table.read_only(cls)
+end)()
+
+local jso = Profession.ENGINEERING.load(Expansion.WOTLK)
+for_each(jso, function(k, v)
+    local r = Recipe.new(v)
+    logger:Trace(k .. ", " .. r.name .. ", " .. r.learned .. ", " .. tostring(spec))
+end)
+
