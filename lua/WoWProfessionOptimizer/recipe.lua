@@ -19,8 +19,53 @@ local ADDON_NAME, WPO = ...
 setfenv(1, WPO) -- Change environment
 
 
+Source = (function()
+    local values = { "DROP", "QUEST", "VENDOR", "TRAINER" }
+    local formals = { "Drop", "Quest", "Vendor", "Trainer" }
+    local ids = { 2, 4, 5, 6 }
+
+    local instances, internals = Enum(values, {
+        __tostring = function(tbl) return tbl.formal  end
+    })
+    for i = 1, getmetatable(instances)() do
+        local instance = instances[i]
+        local e = internals[instance]
+        e.formal = formals[i]
+        e.id = ids[i]
+    end
+    return instances
+end)()
+
+
+-- Maps source ID's to their corresponding Source enum values
+local source_by_id = collect(map(num_stream(1, getmetatable(Source)()),
+        function(i) return Source[i].id, Source[i] end))
+
+
 Recipe = (function()
     local cls = { }
+
+    -- Helper function for filtering recipe sources
+    local filter_sources = (function()
+        --[[
+        -- Some known sources are nonsense, ignore known sources
+        -- 16 & 21: Likely Fishing & Pickpocketing
+        ]]--
+        local ignored = Table.set(16, 21)
+        return function(recipe)
+            local sources = Type.TABLE(recipe.source)
+            if #sources <= 0 then
+                Error.ILLEGAL_STATE(ADDON_NAME, "Recipe has empty source data: " .. recipe.name) end
+            return collect(map(filter(sources,
+                    function(_, e) return ignored[Type.NUMBER(e)] ~= true end), -- Filter
+                    function(i, e) -- Map
+                local src = source_by_id[e]
+                if src == nil then
+                    Error.ILLEGAL_STATE(ADDON_NAME, "Recipe has unrecognized source(s): " .. recipe.name) end
+                return i, src
+            end))
+        end
+    end)()
 
     --[[
     -- @param [table] jso JSON object detailing all fields of the recipe
@@ -34,12 +79,8 @@ Recipe = (function()
                     function(k, v) -- Map "id": quantity -> { id, quantity }
                         return { tonumber(Type.STRING(k)), Type.NUMBER(v) }
                     end)),
+            sources = filter_sources(jso),
         }
-        -- Recipe sources
-        local sources = Type.TABLE(jso.source)
-        if #sources <= 0 then
-            Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Recipe has invalid source data: " .. obj.name) end
-        obj.sources = sources
         -- Recipe yield
         local yield = jso.produces
         if yield == nil then obj.produces = 1 -- Most recipes produce a singular item
@@ -61,9 +102,9 @@ Recipe = (function()
     return Table.read_only(cls)
 end)()
 
+
 local jso = Profession.ENGINEERING.load(Expansion.WOTLK)
 for_each(jso, function(k, v)
     local r = Recipe.new(v)
     logger:Trace(k .. ", " .. r.name .. ", " .. r.learned .. ", " .. tostring(spec))
 end)
-

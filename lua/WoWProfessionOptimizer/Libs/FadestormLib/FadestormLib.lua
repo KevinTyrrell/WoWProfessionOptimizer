@@ -38,7 +38,7 @@ local env = setmetatable({ _G = _G },
 setfenv(1, env) -- Switch environment to FSL
 
 -- Imported standard library functions
-local upper, lower = string.upper, string.lower
+local upper, lower, format = string.upper, string.lower, string.format
 
 -- Forward declarations for circular function dependencies
 local Type = {
@@ -313,24 +313,44 @@ end)() FSL.Type = Type -- Mandatory because 'Type' was pre-declared
 --
 -- Defines an error throwing interface
 --
--- Enum constants are as follows:
--- UNSUPPORTED_OPERATION, TYPE_MISMATCH, NIL_POINTER, ILLEGAL_ARGUMENT
+-- Supported error constants are as follows:
+--
+-- [*] UNSUPPORTED_OPERATION : Function is not supported or implemented
+-- [*] TYPE_MISMATCH : Function was provided with unexpected types
+-- [*] NIL_POINTER : Expected non-nil reference was nil
+-- [*] ILLEGAL_ARGUMENT : Function argument was not within expected bounds
+-- [*] ILLEGAL_STATE : Function cannot continue left in its current state
 --
 -- __call meta-method
 -- Throws an error to the chat window and error frame
 -- @param source [string] Source name of the error (addon, weak aura, macro, etc)
--- @param msg [string] Msg providing details of the error
+-- @param msg [string] Message providing details of the error
 ]]--
 Error = (function()
-	local crt, src_color, msg_color = "\124r", "\124cFFECBC2A", "\124cFFFF0000"
-	return Enum({ "UNSUPPORTED_OPERATION", "TYPE_MISMATCH", "NIL_POINTER", "ILLEGAL_ARGUMENT" }, {
+	local src_color, msg_color = "ECBC2A", "FF0000" -- Gold, Red
+
+	local c_ret, c_prefix = "\124r", "\124cFF" -- \124 => '|', cFF => 100% Opacity
+	src_color, msg_color = c_prefix .. src_color, c_prefix .. msg_color
+
+	local values = { "UNSUPPORTED_OPERATION", "TYPE_MISMATCH", "NIL_POINTER", "ILLEGAL_ARGUMENT", "ILLEGAL_STATE" }
+	local formals =  { "Unsupported Operation", "Type Mismatch", "Nil Pointer", "Illegal Argument", "Illegal State" }
+	-- e.g. "[FadestormLib] Type Mismatch: Expected String, Received Number"
+	local ERROR_FMT = c_ret .. "[" .. src_color .. "%s" .. c_ret .. "] %s: " .. msg_color .. "%s" .. c_ret
+
+	local instances, internals = Enum(values, {
+		__tostring = function(tbl) return tbl.formal end,
 		__call = function(tbl, source, msg)
-			msg = crt .. "[" .. src_color .. Type.STRING(source) .. crt .. "] " ..
-					tostring(tbl) .. ": " .. msg_color .. Type.STRING(msg) .. crt
-			print(msg)
-			error(msg)
+			msg = format(ERROR_FMT, Type.STRING(source), tostring(tbl), Type.STRING(msg))
+			print(msg) error(msg)
 		end
 	})
+
+	for i = 1, getmetatable(instances)() do
+		local instance = instances[i]
+		local e = internals[instance]
+		e.formal = formals[i]
+	end
+	return instances
 end)() FSL.Error = Error -- Mandatory because 'Error' was pre-declared
 
 
@@ -393,7 +413,7 @@ Color = (function()
 		private[c].code = h
 		private[c].complement = function()
 			-- '%X' Converts to hex. '16777215'b10 = FFFFFFb16. FFFFFF-Color=Complement Color.
-			return string.format('%X', 16777215 - tonumber(h, 16)) end
+			return format('%X', 16777215 - tonumber(h, 16)) end
 	end
 
 	return Color
