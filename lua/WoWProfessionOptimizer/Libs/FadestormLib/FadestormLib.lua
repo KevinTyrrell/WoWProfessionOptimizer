@@ -17,7 +17,7 @@
 
 -- LibStub library library initialization
 local ADDON_NAME = "FadestormLib"
-local MAJOR, MINOR = ADDON_NAME .. "-5.1", 0
+local MAJOR, MINOR = ADDON_NAME .. "-5.1", 1
 if not LibStub then return end
 local FSL = LibStub:NewLibrary(MAJOR, MINOR)
 if not FSL then return end -- Newer or same version is already loaded
@@ -50,19 +50,19 @@ local Error = {
 	UNSUPPORTED_OPERATION = setmetatable({}, { __call = function() end }),
 }
 
--- Helper function -- Basis for read-only tables
-local function read_only_meta_table(private)
-	return {
-		-- Reject any mutations to the read-only table
-		__newindex = function()
-			Error.UNSUPPORTED_OPERATION(ADDON_NAME, "Ready-only table cannot be modified.")
-		end,
-		-- Redirect lookups to the private table without exposing the table itself
-		__index = function(_, index) return private[index] end,
-		-- Prevent access to the metatable but work-around for Lua 5.1 no '__len' metamethod
-		__metatable = function() return #private end,
-	}
-end
+local read_only_meta_table = (function()
+	local function __newindex()
+		Error.UNSUPPORTED_OPERATION(ADDON_NAME, "Ready-only table cannot be modified.") end
+	return function(private)
+		return {
+			__newindex = __newindex, -- Reject any mutations to the read-only table
+			-- Redirect lookups to the private table without exposing the table itself
+			__index = function(_, index) return private[index] end,
+			-- Prevent access to the metatable but work-around for Lua 5.1 no '__len' metamethod
+			__metatable = function() return #private end
+		}
+	end
+end)()
 
 
 local __Table = (function()
