@@ -15,9 +15,13 @@
 --    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]--
 
-local ADDON_NAME, WSO = ...
---local lib = LibStub("LibParse")
+local ADDON_NAME, WPO = ...
+setfenv(1, WPO) -- Change environment
 
+local function s() return "Test"  end
 
-
-
+local Undoable = Interface({ "undo" }, { __tostring = s })
+print(Undoable)
+Undoable = Table.read_only(Undoable, { __tostring = s })
+print(Undoable)
+Undoable.undo()

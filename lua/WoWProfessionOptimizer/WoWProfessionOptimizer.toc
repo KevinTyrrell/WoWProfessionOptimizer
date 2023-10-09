@@ -12,16 +12,19 @@
 embeds.xml
 
 # Initialization
-environment.lua
+util\environment.lua
 init.lua
 
 # Data
 data\embeds.xml
 
+# Utils
+util\interface.lua
+
 # Model
-model\profession.lua
-model\recipe.lua
-model\catalog.lua
+model\profession\profession.lua
+model\profession\recipe.lua
+model\profession\catalog.lua
 
 # Entry-Point
 wow_profession_optimizer.lua

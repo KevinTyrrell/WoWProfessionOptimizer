@@ -87,7 +87,7 @@ local __Table = (function()
 		local mt = read_only_meta_table(Type.TABLE(private))
 		if metamethods ~= nil then -- User wants additional meta-methods included
 			for k, v in pairs(Type.TABLE(metamethods)) do
-				if mt[k] ~= nil then -- Existing meta-methods cannot be overwritten
+				if mt[k] == nil then -- Existing meta-methods cannot be overwritten
 					mt[k] = v end end
 		end
 		return setmetatable({}, mt)
