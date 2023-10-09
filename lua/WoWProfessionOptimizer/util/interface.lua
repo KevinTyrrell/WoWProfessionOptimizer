@@ -22,7 +22,10 @@ setfenv(1, WPO) -- Change environment
 --[[
 -- Defines a new interface, declaring a contract
 --
--- TODO:
+-- @param contract [table] List of function names in which are contracted in the interface
+-- @param [mt] [table] (Optional) Meta-methods to be added to the resulting interface
+-- @return [table] Interface instance
+--
 ]]--
 Interface = function(contract, mt)
     contract = collect(map(Type.TABLE(contract), function(_, e)
