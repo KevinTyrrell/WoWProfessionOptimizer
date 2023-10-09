@@ -101,10 +101,3 @@ Recipe = (function()
 
     return Table.read_only(cls)
 end)()
-
-
-local jso = Profession.ENGINEERING.load(Expansion.WOTLK)
-for_each(jso, function(k, v)
-    local r = Recipe.new(v)
-    logger:Trace(k .. ", " .. r.name .. ", " .. r.learned .. ", " .. tostring(spec))
-end)
