@@ -288,63 +288,49 @@ function Enum(values, callback, meta_methods)
 	return cls_read_only, cls_members
 end
 
+
 --[[
 -- Type Enum
 --
--- Types of the Lua programming language
+-- Type Constants
+-- =======================
+-- - Type.NIL: Represents a nil value.
+-- - Type.STRING: Represents a string.
+-- - Type.BOOLEAN: Represents a boolean.
+-- - Type.NUMBER: Represents a number.
+-- - Type.FUNCTION: Represents a function.
+-- - Type.USERDATA: Represents userdata.
+-- - Type.THREAD: Represents a thread.
+-- - Type.TABLE: Represents a table.
 --
--- Enum constants are as follows:
--- NIL, STRING, BOOLEAN, NUMBER, FUNCTION, USERDATA, THREAD, TABLE
+-- Type Constants Members
+-- =======================
+-- - type [string]: Type of the enum, same value as returned by Lua's type() function
 --
--- __call meta-method
--- Type-checks a value, ensuring it to be of the same type as the Type enum value
--- @param value [?] Value to be type-checked
--- @return [?] value
+-- - function match(value): Returns `true` if the type of the parameter matches the instance's type
+--
+-- - function __call(value): Type instances override `__call`
+--   - @param value [?] Value to be type-checked
+--   - @return [?] Value which was passed-in
+--   - @error TYPE_MISMATCH If the parameter's type does not match the instance
+--
 ]]--
-Type = (function()
-	local cls_ro, cls_members = Enum({ "NIL", "STRING", "BOOLEAN","NUMBER",
-									   "FUNCTION", "USERDATA", "THREAD", "TABLE" },
-			function(members, ordinal, name)
-				members.type = lower(name)
+Type = Enum({ "NIL", "STRING", "BOOLEAN","NUMBER", "FUNCTION", "USERDATA", "THREAD", "TABLE" },
+		function(instance, members)
+			members.type = lower(instance.name)
 
-				--[[
-				-- @param [?] value Value to be type-checked
-				-- @return [boolean] True if the value's type matches that of the Enum instance
-				]]--
-				function members.match(value) return members.type == type(value) end
-			end, {
-				__call = function(tbl, value)
-					if tbl.type ~= type(value) then Error.TYPE_MISMATCH(ADDON_NAME,
-							"Received " .. type(value) .. ", Expected: " .. tbl.type) end
-				end
-			})
-
-
-
-
-	local function match(tbl, value) return tbl.type == type(value) end
-
-	local __Type, private = Enum({ "NIL", "STRING", "BOOLEAN","NUMBER",
-								 "FUNCTION", "USERDATA", "THREAD", "TABLE" },
-			{
-				__call = function(tbl, value)
-					if not match(tbl, value) then
-						Error.TYPE_MISMATCH(ADDON_NAME,
-								"Received " .. type(value) .. ", Expected: " .. tbl.type) end
-					return value
-				end
-			})
-	for i = 1, getmetatable(__Type)() do
-		local t = __Type[i] -- Type enum instance
-		private[t].type = lower(t.name)
-
-
-
-
-	end
-
-	return __Type
-end)() FSL.Type = Type -- Mandatory because 'Type' was pre-declared
+			--[[
+			-- @param [?] value Value to be type-checked
+			-- @return [boolean] True if the value's type matches that of the Enum instance
+			]]--
+			function members.match(value) return members.type == type(value) end
+		end, {
+			__call = function(tbl, value)
+				if tbl.type ~= type(value) then Error.TYPE_MISMATCH(ADDON_NAME,
+						"Received " .. type(value) .. ", Expected: " .. tbl.type) end
+			end
+		})
+FSL.Type = Type -- Mandatory because 'Type' was pre-declared
 
 
 --[[
