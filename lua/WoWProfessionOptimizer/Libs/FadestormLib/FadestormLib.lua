@@ -248,18 +248,14 @@ function Enum(values, callback, meta_methods)
 	}))
 
 	local ro_to_reserved = { } -- Map[Read Only Table] --> Reserved Table
-
-	Type.FUNCTION(callback)
 	for ordinal, name in ipairs(Type.TABLE(values)) do
 		name = upper(Type.STRING(name))
-		local members = { } -- Entry point to declare and mutate instance members
-		callback(members, ordinal, name) -- Pseudo constructor for the user to define members
-
-		local reserved = setmetatable({ -- Instance members which cannot be overridden
+		local reserved = { -- Instance members which cannot be overridden
 			ordinal = ordinal,
 			name = name
-		}, { __index = members })
+		}
 		local ro_instance = { } -- Create a read-only entry point into the instance
+
 		ro_to_reserved[ro_instance] = reserved -- Needed for __index in instance meta-table
 		cls_reserved[name] = ro_instance -- Allow name -> Enum Instance queries
 		cls_reserved[ordinal] = ro_instance -- Allow ordinal -> Enum Instance queries
@@ -269,40 +265,28 @@ function Enum(values, callback, meta_methods)
 		__lt = function(t1, t2) return t1.ordinal < t2.ordinal end,
 		__lte = function(t1, t2) return t1.ordinal <= t2.ordinal end,
 		__call = function(tbl) return tbl.ordinal end,
-		__tostring = function(tbl) return tbl.name end,
-		__index = function(instance, key) -- All instances share meta-table, so perform a lookup on-the-fly
-			return ro_to_reserved[instance][key] end -- Defer searching to the reserved table
+		__tostring = function(tbl) return tbl.name end
 	})
 
-	if meta_methods ~= nil then -- Optional param, allow additional meta-methods
-		for k, v in pairs(Type.TABLE(meta_methods)) do
-			if instance_mt[k] == nil then instance_mt[k] = Type.FUNCTION(v) end end end
-	-- Ensure all instances of the enum share the same meta-table
-	for e in pairs(ro_to_reserved) do
-		setmetatable(e, instance_mt) end
+	if meta_methods ~= nil then -- Optional param, allow user to declare their own meta-methods
+		for meta_method, func in pairs(Type.TABLE(meta_methods)) do
+			instance_mt[meta_method] = Type.FUNCTION(func) end end
+	instance_mt.__index = function(instance, key) -- All instances share meta-table, so perform a lookup on-the-fly
+		return ro_to_reserved[instance][key] end -- Defer searching to the reserved table
+
+	Type.FUNCTION(callback)
+	for ordinal in ipairs(values) do
+		-- Ensure all instances of the enum share the same meta-table
+		local read_only = setmetatable(cls_reserved[ordinal], instance_mt)
+		local members = { } -- Allows defining of members for the enum instance
+		local reserved = setmetatable(ro_to_reserved[read_only], {
+			__index = members -- Defer searching to the members table if key not found
+		})
+		callback(read_only, members) -- Pseudo constructor for the user to define members
+	end
 
 	return cls_read_only, cls_members
 end
-
-
-local Weather = (function()
-	local formals = { "Sunny", "Rainy", "Windy", "Stormy" }
-	local severities = { 1.0, 2.0, 1.5, 3.0 }
-	local cls_ro, cls_members = Enum({ "SUNNY", "RAINY", "WINDY", "STORMY" },
-			function(members, ordinal, name)
-				members.formal = formals[ordinal]
-				members.severity = severities[ordinal]
-			end)
-	function cls_members.currentWeather()
-		return cls_ro[1 + math.ceil(GetTime()) % 4] end
-
-	return cls_ro
-end)()
-
-print(Weather.SUNNY)
-print(Weather.WINDY.ordinal)
-print(Weather.RAINY.formal)
-print(Weather.currentWeather())
 
 --[[
 -- Type Enum
@@ -318,6 +302,26 @@ print(Weather.currentWeather())
 -- @return [?] value
 ]]--
 Type = (function()
+	local cls_ro, cls_members = Enum({ "NIL", "STRING", "BOOLEAN","NUMBER",
+									   "FUNCTION", "USERDATA", "THREAD", "TABLE" },
+			function(members, ordinal, name)
+				members.type = lower(name)
+
+				--[[
+				-- @param [?] value Value to be type-checked
+				-- @return [boolean] True if the value's type matches that of the Enum instance
+				]]--
+				function members.match(value) return members.type == type(value) end
+			end, {
+				__call = function(tbl, value)
+					if tbl.type ~= type(value) then Error.TYPE_MISMATCH(ADDON_NAME,
+							"Received " .. type(value) .. ", Expected: " .. tbl.type) end
+				end
+			})
+
+
+
+
 	local function match(tbl, value) return tbl.type == type(value) end
 
 	local __Type, private = Enum({ "NIL", "STRING", "BOOLEAN","NUMBER",
@@ -334,29 +338,9 @@ Type = (function()
 		local t = __Type[i] -- Type enum instance
 		private[t].type = lower(t.name)
 
-		--[[
-		-- @param [?] value Value to be checked
-		-- @return [boolean] True if the variable is the same type as the enum value
-		]]--
-		private[t].match = function(value) return match(t, value) end
 
-		--[[
-		-- Enforces a default value, if the specified variable is nil
-		--
-		-- This differs from the following:
-		-- `value or default` - Fails if `value` is `false`
-		-- `value == nil or default` - Fails if default is not the expected type
-		--
-		-- This method ensures the type from the default value is what is expected
-		--
-		-- @param [?] value Value to be checked for nil and type
-		-- @parma [?] default Default value to return if first parameter is nil
-		-- @return [?] Value or default, depending on the state of value
-		-- @raise TYPE_MISMATCH if default is not the type of the enum instance
-		]]--
-		private[t].default = function(value, default)
-			return t(value == nil and default or value)
-		end
+
+
 	end
 
 	return __Type
