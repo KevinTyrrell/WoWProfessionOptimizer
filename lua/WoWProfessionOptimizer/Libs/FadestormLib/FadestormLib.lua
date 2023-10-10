@@ -17,7 +17,7 @@
 
 -- LibStub library library initialization
 local ADDON_NAME = "FadestormLib"
-local MAJOR, MINOR = ADDON_NAME .. "-5.1", 1
+local MAJOR, MINOR = ADDON_NAME .. "-6.0", 1
 if not LibStub then return end
 local FSL = LibStub:NewLibrary(MAJOR, MINOR)
 if not FSL then return end -- Newer or same version is already loaded
@@ -43,12 +43,37 @@ local upper, lower, format = string.upper, string.lower, string.format
 -- Forward declarations for circular function dependencies
 local Type = {
 	TABLE = setmetatable({}, { __call = function(_, x) return x end }),
-	STRING = setmetatable({}, { __call = function(_, x) return x end })
+	STRING = setmetatable({}, { __call = function(_, x) return x end }),
+	FUNCTION = setmetatable({}, { __call = function(_, x) return x end })
 }
 local Error = {
 	TYPE_MISMATCH = setmetatable({}, { __call = function() end }),
 	UNSUPPORTED_OPERATION = setmetatable({}, { __call = function() end }),
 }
+
+--[[
+-- Constructs a new meta-table, creating a read-only table when set as a metatable
+--
+-- TODO: Replace other read-only MT functions using this helper function
+--
+-- @param [meta_methods] [table] (Optional) Meta-methods to be copied into the resulting meta table
+-- @return [table] Read-only meta-table
+]]--
+local init_read_only_mt = (function()
+	local function read_only_error()
+		Error.UNSUPPORTED_OPERATION(ADDON_NAME, "Ready-only table cannot be modified.") end
+	return function(meta_methods)
+		local mt = {
+			__newindex = read_only_error,
+			__metatable = false, -- Protect metatable
+		}
+		if meta_methods ~= nil then
+			for k, v in pairs(meta_methods) do -- Add any meta method that isn't already reserved
+				if mt[k] == nil then mt[k] = v end end
+		end
+		return mt
+	end
+end)()
 
 local read_only_meta_table = (function()
 	local function __newindex()
@@ -209,45 +234,75 @@ end)() Table = __Table.read_only(__Table)
 -- @param metamethods [table] (optional) Meta-methods to add to each instance
 -- @return [table] List of Enum values (field 'length' used instead of '#')
 -- @return [table] Map of enum values to their private field table (used to define new fields)
+--
+-- TODO: Re-write documentation
 ]]--
-function Enum(values, metamethods)
-	local enum_map = {} -- Maps read-only enum instances to their private fields
-	local enum_class = {} -- Private fields of the enum class
+function Enum(values, callback, meta_methods)
+	local cls_members = { } -- Entry point to declare and mutate class members
+	-- Class members which cannot be overridden
+	local cls_reserved = setmetatable({
+		size = #Type.TABLE(values) -- Number of enumeration instances
+	}, { __index = cls_members })
+	local cls_read_only = setmetatable({ }, init_read_only_mt({
+		__index = cls_reserved -- Defer all searching to the reserved members table
+	}))
 
-	--[[
-	-- All enum elements must share the same metatable so that they are comparable.
-	-- The metatable's __call must lookup the corresponding private table.
-	--]]
-	local mt = read_only_meta_table()
-	mt.__index = function(tbl, index) return enum_map[tbl][index] end -- Redirect lookups
+	local ro_to_reserved = { } -- Map[Read Only Table] --> Reserved Table
 
-	local DEFAULT_META_TABLE = { -- Default metamethods for enums
+	Type.FUNCTION(callback)
+	for ordinal, name in ipairs(Type.TABLE(values)) do
+		name = upper(Type.STRING(name))
+		local members = { } -- Entry point to declare and mutate instance members
+		callback(members, ordinal, name) -- Pseudo constructor for the user to define members
+
+		local reserved = setmetatable({ -- Instance members which cannot be overridden
+			ordinal = ordinal,
+			name = name
+		}, { __index = members })
+		local ro_instance = { } -- Create a read-only entry point into the instance
+		ro_to_reserved[ro_instance] = reserved -- Needed for __index in instance meta-table
+		cls_reserved[name] = ro_instance -- Allow name -> Enum Instance queries
+		cls_reserved[ordinal] = ro_instance -- Allow ordinal -> Enum Instance queries
+	end
+
+	local instance_mt = init_read_only_mt({ -- -- Shared among all instances of the Enum
 		__lt = function(t1, t2) return t1.ordinal < t2.ordinal end,
 		__lte = function(t1, t2) return t1.ordinal <= t2.ordinal end,
 		__call = function(tbl) return tbl.ordinal end,
 		__tostring = function(tbl) return tbl.name end,
-	}
+		__index = function(instance, key) -- All instances share meta-table, so perform a lookup on-the-fly
+			return ro_to_reserved[instance][key] end -- Defer searching to the reserved table
+	})
 
-	if metamethods ~= nil then -- Overwrite default metamethods, if any provided by the user
-		for k, v in pairs(Type.TABLE(metamethods)) do
-			DEFAULT_META_TABLE[k] = v end end
-	for k, v in pairs(DEFAULT_META_TABLE) do
-		if mt[k] == nil then mt[k] = v end end -- Reject metamethods that are not overridable
+	if meta_methods ~= nil then -- Optional param, allow additional meta-methods
+		for k, v in pairs(Type.TABLE(meta_methods)) do
+			if instance_mt[k] == nil then instance_mt[k] = Type.FUNCTION(v) end end end
+	-- Ensure all instances of the enum share the same meta-table
+	for e in pairs(ro_to_reserved) do
+		setmetatable(e, instance_mt) end
 
-	for ordinal, name in ipairs(Type.TABLE(values)) do
-		name = upper(Type.STRING(name))
-		local instance = setmetatable({}, mt)
-		enum_map[instance] = { -- Associate the instance with the enum's private fields
-			name = name,
-			ordinal = ordinal
-		}
-		enum_class[name] = instance
-		enum_class[instance.ordinal] = instance -- Workaround for lack of 'pairs' support
-	end
-
-	return Table.read_only(enum_class), Table.read_only(enum_map)
+	return cls_read_only, cls_members
 end
 
+
+local Weather = (function()
+	local formals = { "Sunny", "Rainy", "Windy", "Stormy" }
+	local severities = { 1.0, 2.0, 1.5, 3.0 }
+	local cls_ro, cls_members = Enum({ "SUNNY", "RAINY", "WINDY", "STORMY" },
+			function(members, ordinal, name)
+				members.formal = formals[ordinal]
+				members.severity = severities[ordinal]
+			end)
+	function cls_members.currentWeather()
+		return cls_ro[1 + math.ceil(GetTime()) % 4] end
+
+	return cls_ro
+end)()
+
+print(Weather.SUNNY)
+print(Weather.WINDY.ordinal)
+print(Weather.RAINY.formal)
+print(Weather.currentWeather())
 
 --[[
 -- Type Enum

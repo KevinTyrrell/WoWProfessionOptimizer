@@ -98,3 +98,8 @@ Profession = (function()
     end
     return instances
 end)()
+
+
+Race = (function()
+    
+end)()

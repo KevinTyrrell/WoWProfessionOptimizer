@@ -18,7 +18,7 @@
 local ADDON_NAME, WPO = ... -- Implicit addon table provided by World of Warcraft
 
 -- Import libraries
-local FSL = LibStub("FadestormLib-5.1")
+local FSL = LibStub("FadestormLib-6.0")
 
 WPO._G = _G -- Maintain reference to the global table just in case
 setmetatable(WPO, {
