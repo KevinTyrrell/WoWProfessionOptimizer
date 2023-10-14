@@ -212,30 +212,27 @@ end)() Table = __Table.read_only(__Table)
 
 
 --[[
--- Constructs a new enum from a set of values
+-- Defines an enumeration
 --
--- Enum values have the following fields:
--- * name: name of the enum value (uppercase)
--- * ordinal: numerical index of the value, starting from 1
+-- Enum Class Members
+-- =======================
+-- * size [number]: Number of declared enumeration constants
+-- * Enum constants access [i] , where `i` is the ordinal of the constant
+-- * Enum constants access s, where `s` is the identifier of the constant
 --
--- Enum values implement the following metamethods:
--- * __tostring (equivalent to 'name')
--- * __lt & __lte (comparable)
--- * __call (equivalent to 'ordinal')
+-- Enum Constants Members
+-- =======================
+-- * ordinal [number]: Position of the instance within the enum's natural order
+-- * name [string]: Name of the enum constant, automatically capitalized
+-- * function __lt(value): Returns `true` if the instance's ordinal is lesser
+-- * function __lte(value): Returns `true` if the instance's ordinal not greater
+-- * function __tostring(): Returns the string representation of the instance
 --
--- Enum values can be referenced by 'Class.MY_ENUM_VALUE' format,
--- or by ordinal, e.g. 'Class[1]' for the enum value with ordinal '1'.
--- Length of the enum class can be requested with 'getmetatable(Class)'.
---
--- Enum values are read-only, but additional fields can be
--- defined using the private field table return value.
---
--- @param values List of strings (will be converted to uppercase)
--- @param metamethods [table] (optional) Meta-methods to add to each instance
--- @return [table] List of Enum values (field 'length' used instead of '#')
--- @return [table] Map of enum values to their private field table (used to define new fields)
---
--- TODO: Re-write documentation
+-- @param values [table] Constants (strings) of the enum
+-- @param callback [function] Constructor for each enum instance
+-- @param [meta_methods] [table] (Optional) Meta-methods to attach to instances
+-- @return [table] Enum read-only class members
+-- @return [table] Enum mutable class members
 ]]--
 function Enum(values, callback, meta_methods)
 	local cls_members = { } -- Entry point to declare and mutate class members
@@ -264,7 +261,6 @@ function Enum(values, callback, meta_methods)
 	local instance_mt = init_read_only_mt({ -- -- Shared among all instances of the Enum
 		__lt = function(t1, t2) return t1.ordinal < t2.ordinal end,
 		__lte = function(t1, t2) return t1.ordinal <= t2.ordinal end,
-		__call = function(tbl) return tbl.ordinal end,
 		__tostring = function(tbl) return tbl.name end
 	})
 
@@ -279,7 +275,7 @@ function Enum(values, callback, meta_methods)
 		-- Ensure all instances of the enum share the same meta-table
 		local read_only = setmetatable(cls_reserved[ordinal], instance_mt)
 		local members = { } -- Allows defining of members for the enum instance
-		local reserved = setmetatable(ro_to_reserved[read_only], {
+		setmetatable(ro_to_reserved[read_only], {
 			__index = members -- Defer searching to the members table if key not found
 		})
 		callback(read_only, members) -- Pseudo constructor for the user to define members
@@ -294,35 +290,29 @@ end
 --
 -- Type Constants
 -- =======================
--- - Type.NIL: Represents a nil value.
--- - Type.STRING: Represents a string.
--- - Type.BOOLEAN: Represents a boolean.
--- - Type.NUMBER: Represents a number.
--- - Type.FUNCTION: Represents a function.
--- - Type.USERDATA: Represents userdata.
--- - Type.THREAD: Represents a thread.
--- - Type.TABLE: Represents a table.
+-- * Type.NIL: Represents a nil value.
+-- * Type.STRING: Represents a string.
+-- * Type.BOOLEAN: Represents a boolean.
+-- * Type.NUMBER: Represents a number.
+-- * Type.FUNCTION: Represents a function.
+-- * Type.USERDATA: Represents userdata.
+-- * Type.THREAD: Represents a thread.
+-- * Type.TABLE: Represents a table.
 --
 -- Type Constants Members
 -- =======================
--- - type [string]: Type of the enum, same value as returned by Lua's type() function
---
--- - function match(value): Returns `true` if the type of the parameter matches the instance's type
---
--- - function __call(value): Type instances override `__call`
---   - @param value [?] Value to be type-checked
---   - @return [?] Value which was passed-in
---   - @error TYPE_MISMATCH If the parameter's type does not match the instance
+-- * type [string]: Type of the enum, same value as returned by Lua's type() function
+-- * function match(value): Returns `true` if the type of the parameter matches the instance's type
+-- * function __call(value): Type instances override `__call`
+--   * @param value [?] Value to be type-checked
+--   * @return [?] Value which was passed-in
+--   * @error TYPE_MISMATCH If the parameter's type does not match the instance
 --
 ]]--
 Type = Enum({ "NIL", "STRING", "BOOLEAN","NUMBER", "FUNCTION", "USERDATA", "THREAD", "TABLE" },
 		function(instance, members)
 			members.type = lower(instance.name)
 
-			--[[
-			-- @param [?] value Value to be type-checked
-			-- @return [boolean] True if the value's type matches that of the Enum instance
-			]]--
 			function members.match(value) return members.type == type(value) end
 		end, {
 			__call = function(tbl, value)
@@ -383,6 +373,8 @@ end)() FSL.Error = Error -- Mandatory because 'Error' was pre-declared
 -- Ensures a specified parameter is non-nil
 --
 -- An argument whose value is nil will result in an NIL_POINTER error
+--
+-- TODO: Determine if this should go into Type
 --
 -- @param [?] x Parameter to check
 -- @return [?] x
