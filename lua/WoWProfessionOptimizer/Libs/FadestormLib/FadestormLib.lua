@@ -318,6 +318,7 @@ Type = Enum({ "NIL", "STRING", "BOOLEAN","NUMBER", "FUNCTION", "USERDATA", "THRE
 			__call = function(tbl, value)
 				if tbl.type ~= type(value) then Error.TYPE_MISMATCH(ADDON_NAME,
 						"Received " .. type(value) .. ", Expected: " .. tbl.type) end
+				return value
 			end
 		})
 FSL.Type = Type -- Mandatory because 'Type' was pre-declared
