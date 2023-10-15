@@ -228,6 +228,13 @@ end)() Table = __Table.read_only(__Table)
 -- * function __lte(value): Returns `true` if the instance's ordinal not greater
 -- * function __tostring(): Returns the string representation of the instance
 --
+-- Enum Callback (Constructor)
+-- =======================
+-- Callback constructor should instantiate any additional enum instance members
+-- 	callback(instance, members)
+--  	@param instance [table] Read-only enum instance
+--		@param members [table] Mutable enum instance members
+--
 -- @param values [table] Constants (strings) of the enum
 -- @param callback [function] Constructor for each enum instance
 -- @param [meta_methods] [table] (Optional) Meta-methods to attach to instances
@@ -290,14 +297,14 @@ end
 --
 -- Type Constants
 -- =======================
--- * Type.NIL: Represents a nil value.
--- * Type.STRING: Represents a string.
--- * Type.BOOLEAN: Represents a boolean.
--- * Type.NUMBER: Represents a number.
--- * Type.FUNCTION: Represents a function.
--- * Type.USERDATA: Represents userdata.
--- * Type.THREAD: Represents a thread.
--- * Type.TABLE: Represents a table.
+-- * Type.NIL: Represents a nil value
+-- * Type.STRING: Represents a string
+-- * Type.BOOLEAN: Represents a boolean
+-- * Type.NUMBER: Represents a number
+-- * Type.FUNCTION: Represents a function
+-- * Type.USERDATA: Represents userdata
+-- * Type.THREAD: Represents a thread
+-- * Type.TABLE: Represents a table
 --
 -- Type Constants Members
 -- =======================
@@ -307,7 +314,6 @@ end
 --   * @param value [?] Value to be type-checked
 --   * @return [?] Value which was passed-in
 --   * @error TYPE_MISMATCH If the parameter's type does not match the instance
---
 ]]--
 Type = Enum({ "NIL", "STRING", "BOOLEAN","NUMBER", "FUNCTION", "USERDATA", "THREAD", "TABLE" },
 		function(instance, members)
@@ -327,24 +333,24 @@ FSL.Type = Type -- Mandatory because 'Type' was pre-declared
 --[[
 -- Error Enum
 --
--- Defines an error throwing interface
+-- Error Constants
+-- =======================
+-- * Error.UNSUPPORTED_OPERATION: Signifies the function is not supported or not yet declared
+-- * Error.TYPE_MISMATCH: Signifies that the type of a value was not of the expected type
+-- * Error.NIL_POINTER: Signifies expected non-nil value was nil
+-- * Error.ILLEGAL_ARGUMENT: Signifies the provided parameter was not within accepted bounds
+-- * Error.ILLEGAL_STATE: Signifies the function or object has entered an unrecoverable state
 --
--- Supported error constants are as follows:
---
--- [*] UNSUPPORTED_OPERATION : Function is not supported or implemented
--- [*] TYPE_MISMATCH : Function was provided with unexpected types
--- [*] NIL_POINTER : Expected non-nil reference was nil
--- [*] ILLEGAL_ARGUMENT : Function argument was not within expected bounds
--- [*] ILLEGAL_STATE : Function cannot continue left in its current state
---
--- __call meta-method
--- Throws an error to the chat window and error frame
--- @param source [string] Source name of the error (addon, weak aura, macro, etc)
--- @param msg [string] Message providing details of the error
+-- Type Constants Members
+-- =======================
+-- * formal [string]: Formal name of the error
+-- * function __call(value): Error instances override `__call`
+--   * @param source [string] Addon/library responsible for throwing the error
+--	 * @param msg [string] Error message to be raised
+--   * @error TYPE_MISMATCH If the parameter's type does not match the instance
 ]]--
 Error = (function()
 	local src_color, msg_color = "ECBC2A", "FF0000" -- Gold, Red
-
 	local c_ret, c_prefix = "\124r", "\124cFF" -- \124 => '|', cFF => 100% Opacity
 	src_color, msg_color = c_prefix .. src_color, c_prefix .. msg_color
 
@@ -353,20 +359,15 @@ Error = (function()
 	-- e.g. "[FadestormLib] Type Mismatch: Expected String, Received Number"
 	local ERROR_FMT = c_ret .. "[" .. src_color .. "%s" .. c_ret .. "] %s: " .. msg_color .. "%s" .. c_ret
 
-	local instances, internals = Enum(values, {
+	return Enum(values, function(instance, members)
+		members.formal = formals[instance.ordinal]
+	end, {
 		__tostring = function(tbl) return tbl.formal end,
 		__call = function(tbl, source, msg)
-			msg = format(ERROR_FMT, Type.STRING(source), tostring(tbl), Type.STRING(msg))
+			msg = format(ERROR_FMT, Type.STRING(source), tbl.formal, Type.STRING(msg))
 			print(msg) error(msg)
 		end
 	})
-
-	for i = 1, getmetatable(instances)() do
-		local instance = instances[i]
-		local e = internals[instance]
-		e.formal = formals[i]
-	end
-	return instances
 end)() FSL.Error = Error -- Mandatory because 'Error' was pre-declared
 
 
