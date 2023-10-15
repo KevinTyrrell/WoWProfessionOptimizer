@@ -416,26 +416,19 @@ Color = (function()
 		"889D9D", "FFFFFF", "1EFF0C", "0070FF", "A335EE", "FF8000", "E6CC80", -- Item Quality
 		"FFFFFF", "000000", "FF0000", "0000FF", "FFFF00", "00FF00", "FFA500", "A020F0", "FFBF00", "E34234", "FF00FF", "8F00FF", "008080", "7FFF00", -- Wheel
 	}
+	local STR_FMT = "|cFF%s%s|r"
 
-	local Color, private = Enum(C_NAMES,
-			{
-				__call = function(tbl, value)
-					return "|cFF" .. tbl.code .. Type.STRING(value) .. "|r"
-				end,
-				__tostring = function(tbl)
-					return "|cFF" .. tbl.code .. tbl.name .. "|r"
-				end
-			})
-
-	for i = 1, getmetatable(Color)() do
-		local c, h = Color[i], C_CODES[i]
-		private[c].code = h
-		private[c].complement = function()
+	return Enum(C_NAMES, function(instance, members)
+		members.code = C_CODES[instance.ordinal]
+		members.complement = function()
 			-- '%X' Converts to hex. '16777215'b10 = FFFFFFb16. FFFFFF-Color=Complement Color.
 			return format('%X', 16777215 - tonumber(h, 16)) end
-	end
-
-	return Color
+	end, {
+		__call = function(tbl, value)
+			return format(STR_FMT, tbl.code, Type.STRING(value)) end,
+		__tostring = function(tbl)
+			return format(STR_FMT, tbl.code, tbl.name) end
+	})
 end)()
 
 
