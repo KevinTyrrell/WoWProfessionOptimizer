@@ -31,21 +31,17 @@ local RAW_JSON_DATA = Profession -- JSON profession data
 -- @field formal [string] Formal name of the expansion
 ]]--
 Expansion = (function()
-    local value = { "WOTLK", "TBC", "VANILLA" }
+    local values = { "WOTLK", "TBC", "VANILLA" }
     local max_skills = { 450, 375, 300 }
     local formals =  { "Wrath of the Lich King", "The Burning Crusade", "World of Warcraft" }
     local colors = { "74A7D6", "AAD46C", "FCDA2A" }
 
-    local instances, internals = Enum(value, {
-        __tostring = function(tbl) return tbl.formal end
-    })
-    for i = 1, getmetatable(instances)() do
-        local e = internals[instances[i]]
-        e.max_skill = max_skills[i]
-        e.formal = formals[i]
-        e.color = colors[i]
-    end
-    return instances
+    return Enum(values, function(instance, members)
+        local ordinal = instance.ordinal
+        members.max_skill = max_skills[ordinal]
+        members.color = colors[ordinal]
+        members.formal = formals[ordinal]
+    end, { __tostring = function(tbl) return tbl.formal end })
 end)()
 
 
@@ -61,42 +57,30 @@ end)()
 ]]--
 Profession = (function()
     local values = { "ALCHEMY", "BLACKSMITHING", "COOKING", "ENCHANTING", "ENGINEERING",
-                    "FIRST_AID", "INSCRIPTION", "JEWELCRAFTING", "LEATHERWORKING", "TAILORING" }
+                     "FIRST_AID", "INSCRIPTION", "JEWELCRAFTING", "LEATHERWORKING", "TAILORING" }
     local formals = { "Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering",
-                     "First Aid", "Inscription", "Jewelcrafting", "Leatherworking", "Tailoring" }
+                      "First Aid", "Inscription", "Jewelcrafting", "Leatherworking", "Tailoring" }
     local expansions = Env.swap(Expansion, function()
         return { VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, WOTLK, TBC, VANILLA, VANILLA } end)
 
-    local function loadable(prof, expac)
-        local key = Type.TABLE(expac).name .. "-" .. Type.TABLE(prof).formal
-        return RAW_JSON_DATA[key] and key or nil
-    end
+    return Enum(values, function(instance, members)
+        local ordinal = instance.ordinal
 
-    -- Loads a profession from the storage medium, parsing it accordingly
-    local function load_profession(prof, expac)
-        local key = loadable(prof, expac)
-        if key == nil then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
-                "No profession data is present for: " .. expac.name .. "-" .. prof.formal) end
-        local json = RAW_JSON_DATA[key]
-        return LibParse:JSONDecode(json)
-    end
+        function members.loadable(expac)
+            local key = Type.TABLE(expac).name .. "-" .. instance.formal
+            return RAW_JSON_DATA[key] ~= nil
+        end
 
-    local instances, internals = Enum(values, {
-        __tostring = function(tbl) return tbl.formal  end
-    })
-    for i = 1, getmetatable(instances)() do
-        local instance = instances[i]
-        local e = internals[instance]
-        e.formal = formals[i]
-        e.expansion = expansions[i]
-        e.load = function(expac)
-            return load_profession(instance, Type.TABLE(expac))
+        function members.load(expac)
+            local key = Type.TABLE(expac).name .. "-" .. instance.formal
+            local data = RAW_JSON_DATA[key]
+            if data == nil then Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Profession data does not exist: " .. key) end
+            return LibParse:JSONDecode(data)
         end
-        e.loadable = function(expac)
-            return loadable(e, expac) ~= nil
-        end
-    end
-    return instances
+
+        members.formal = formals[ordinal]
+        members.expansion = expansions[ordinal]
+    end, { __tostring = function(tbl) return tbl.formal end })
 end)()
 
 
