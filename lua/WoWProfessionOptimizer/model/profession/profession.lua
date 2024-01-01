@@ -84,6 +84,31 @@ Profession = (function()
 end)()
 
 
+--[[
+-- Race Enum
+--
+-- @field formal [string] Formal name of profession
+--
+-- @field bonus [function] Determines the race's bonus for a specified profession
+-- @param [table] Profession enum instance
+-- @return [number] Skill increase bonus given this race/profession combo
+]]--
 Race = (function()
-    
+    local values = { "BLOOD_ELF", "DRAENEI", "DWARF", "GNOME", "HUMAN",
+                     "NIGHT_ELF", "ORC", "TAUREN", "TROLL", "UNDEAD" }
+    local formals = { "Blood Elf", "Draenei", "Dwarf", "Gnome", "Human",
+                      "Night Elf", "Orc", "Tauren", "Troll", "Undead" }
+
+    local function sentinel() return 0 end
+    local func_tbl = collect(map(num_stream(1, 10),
+            function(n) return n, sentinel end))
+    func_tbl[1] = function(prof) return prof.ordinal == 4 and 10 or 0 end
+    func_tbl[2] = function(prof) return prof.ordinal == 8 and 5 or 0 end
+    func_tbl[4] = function(prof) return prof.ordinal == 5 and 15 or 0 end
+
+    return Enum(values, function(instance, members)
+        local ordinal = instance.ordinal
+        members.bonus = func_tbl[ordinal]
+        members.formal = formals[ordinal]
+    end)
 end)()
