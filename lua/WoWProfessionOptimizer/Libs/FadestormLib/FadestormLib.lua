@@ -1,5 +1,5 @@
 --[[
---    Copyright (C) 2023 Fadestorm-Faerlina (Discord: hatefiend)
+--    Copyright (C) 2024 Fadestorm-Faerlina (Discord: hatefiend)
 --
 --    This program is free software: you can redistribute it and/or modify
 --    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 -- LibStub library library initialization
 local ADDON_NAME = "FadestormLib"
-local MAJOR, MINOR = ADDON_NAME .. "-6.0", 1
+local MAJOR, MINOR = ADDON_NAME .. "-7.0", 1
 if not LibStub then return end
 local FSL = LibStub:NewLibrary(MAJOR, MINOR)
 if not FSL then return end -- Newer or same version is already loaded
@@ -40,16 +40,13 @@ setfenv(1, env) -- Switch environment to FSL
 -- Imported standard library functions
 local upper, lower, format = string.upper, string.lower, string.format
 
+-- Utility functions
+local function SENTINEL() end -- Unique pointer
+local function IDENTITY(x) return x end -- Returns argument
+
 -- Forward declarations for circular function dependencies
-local Type = {
-	TABLE = setmetatable({}, { __call = function(_, x) return x end }),
-	STRING = setmetatable({}, { __call = function(_, x) return x end }),
-	FUNCTION = setmetatable({}, { __call = function(_, x) return x end })
-}
-local Error = {
-	TYPE_MISMATCH = setmetatable({}, { __call = function() end }),
-	UNSUPPORTED_OPERATION = setmetatable({}, { __call = function() end }),
-}
+Type = { TABLE = IDENTITY, STRING = IDENTITY, FUNCTION = IDENTITY }
+Error = { TYPE_MISMATCH = SENTINEL, UNSUPPORTED_OPERATION = SENTINEL }
 
 --[[
 -- Constructs a new meta-table, creating a read-only table when set as a metatable
@@ -75,140 +72,127 @@ local init_read_only_mt = (function()
 	end
 end)()
 
-local read_only_meta_table = (function()
-	local function __newindex()
-		Error.UNSUPPORTED_OPERATION(ADDON_NAME, "Ready-only table cannot be modified.") end
-	return function(private)
-		return {
-			__newindex = __newindex, -- Reject any mutations to the read-only table
-			-- Redirect lookups to the private table without exposing the table itself
-			__index = function(_, index) return private[index] end,
-			-- Prevent access to the metatable but work-around for Lua 5.1 no '__len' metamethod
-			__metatable = function() return #private end
-		}
-	end
-end)()
 
+Table = (function()
+	local self = {
+		--[[
+		-- Constructs a read-only view into a private table
+		--
+		-- Read-only tables cannot be modified.
+		-- An error will be thrown upon __newindex being called.
+		-- Read-only tables do not support the length operator '#' (Lua 5.1 limitation)
+		-- Calling 'getmetatable(...)' will retrieve the length of the underlying table.
+		--
+		-- Meta-methods may be provided in order to further customize the read-only table.
+		-- '__metatable', '__index', and '__newindex' meta-methods are ignored.
+		--
+		-- @param private [table] Map of fields
+		-- @param meta_methods [table] (optional) meta_methods to be included into the table
+		-- @return [table] Read-only variant of the private table
+		]]--
+		read_only = function(private, meta_methods)
 
-local __Table = (function()
-	local self = { }
+			local mt = init_read_only_mt({ __index = Type.TABLE(private) })
+			if meta_methods ~= nil then -- User wants additional meta-methods included
+				for k, v in pairs(Type.TABLE(meta_methods)) do
+					if mt[k] == nil then -- Existing meta-methods cannot be overwritten
+						mt[k] = v end end
+			end
+			return setmetatable({}, mt)
+		end,
 
-	--[[
-	-- Constructs a read-only view into a private table
-	--
-	-- Read-only tables cannot be modified.
-	-- An error will be thrown upon __newindex being called.
-	-- Read-only tables do not support the length operator '#' (Lua 5.1 limitation)
-	-- Calling 'getmetatable(...)' will retrieve the length of the underlying table.
-	--
-	-- Meta-methods may be provided in order to further customize the read-only table.
-	-- '__metatable', '__index', and '__newindex' meta-methods are ignored.
-	--
-	-- @param private [table] Map of fields
-	-- @param metamethods [table] (optional) Metamethods to be included into the table
-	-- @return [table] Read-only variant of the private table
-	]]--
-	function self.read_only(private, metamethods)
-		local mt = read_only_meta_table(Type.TABLE(private))
-		if metamethods ~= nil then -- User wants additional meta-methods included
-			for k, v in pairs(Type.TABLE(metamethods)) do
-				if mt[k] == nil then -- Existing meta-methods cannot be overwritten
-					mt[k] = v end end
-		end
-		return setmetatable({}, mt)
-	end
+		--[[
+		-- Associates the key with the default value, if said key has no existing pairing, then returns the current value
+		--
+		-- @param tbl [table] Table to query
+		-- @param key [?] Key of the pairing
+		-- @param default_value [?] Value to be paired if the key is not present
+		-- @return [?] Resulting value of the key-value pairing
+		]]--
+		put_default = function(tbl, key, default_value)
+			local v = Type.TABLE(tbl)[key]
+			if v == nil then
+				tbl[key] = default_value
+				return default_value end
+			return v
+		end,
 
-	--[[
-	-- Associates the key with the default value, if said key has no existing pairing, then returns the current value
-	--
-	-- @param tbl [table] Table to query
-	-- @param key [?] Key of the pairing
-	-- @param default_value [?] Value to be paired if the key is not present
-	-- @return [?] Resulting value of the key-value pairing
-	]]--
-	function self.put_default(tbl, key, default_value)
-		local v = Type.TABLE(tbl)[key]
-		if v == nil then
-			tbl[key] = default_value
-			return default_value end
-		return v
-	end
+		--[[
+		-- Associates the key with a computed value, if said key has no existing pairing, then returns the current value
+		--
+		-- @param tbl [table] Table to query
+		-- @param key [?] Key of the pairing
+		-- @param computer [function] Value to be paired if the key is not present
+		-- @return [?] Resulting value of the key-value pairing
+		]]--
+		put_compute = function(tbl, key, computer)
+			local v = Type.TABLE(tbl)[key]
+			if v == nil then
+				v = Type.FUNCTION(computer)(key)
+				tbl[key] = v
+			end
+			return v
+		end,
 
-	--[[
-	-- Associates the key with a computed value, if said key has no existing pairing, then returns the current value
-	--
-	-- @param tbl [table] Table to query
-	-- @param key [?] Key of the pairing
-	-- @param computer [function] Value to be paired if the key is not present
-	-- @return [?] Resulting value of the key-value pairing
-	]]--
-	function self.put_compute(tbl, key, computer)
-		local v = Type.TABLE(tbl)[key]
-		if v == nil then
-			v = Type.FUNCTION(computer)(key)
-			tbl[key] = v
-		end
-		return v
-	end
+		--[[
+		-- Constructs a set of specified values
+		--
+		-- Each value of the set is associated with boolean 'true'
+		--
+		-- @param [varargs] Values of the set
+		-- @return [table] Set of values
+		]]--
+		set = function(...)
+			local t = { }
+			for _, e in ipairs({ ... }) do
+				t[e] = true end
+			return t
+		end,
 
-	--[[
-	-- Constructs a set of specified values
-	--
-	-- Each value of the set is associated with boolean 'true'
-	--
-	-- @param [varargs] Values of the set
-	-- @return [table] Set of values
-	]]--
-	function self.set(...)
-		local t = { }
-		for _, e in ipairs({ ... }) do
-			t[e] = true end
-		return t
-	end
+		--[[
+		-- Sorts a table, using a custom comparator
+		--
+		-- Implementation uses a 2-partition Quicksort
+		--
+		-- @param tbl [table] Table to be sorted
+		-- @param comparator [function] Compares two elements, returning domain [-1, 1]
+		]]--
+		sort = (function()
+			local function swap(tbl, i, j) -- Swaps two indexes of a table
+				local temp = tbl[i] tbl[i] = tbl[j] tbl[j] = temp end
 
-	--[[
-	-- Sorts a table, using a custom comparator
-	--
-	-- Implementation uses a 2-partition Quicksort
-	--
-	-- @param tbl [table] Table to be sorted
-	-- @param comparator [function] Compares two elements, returning domain [-1, 1]
-	]]--
-	self.sort = (function()
-		local function swap(tbl, i, j) -- Swaps two indexes of a table
-			local temp = tbl[i] tbl[i] = tbl[j] tbl[j] = temp end
+			local function part(tbl, comparator, a, b)
+				local pivot = tbl[b] -- Pivot is always the right-hand element
+				local wall = a - 1 -- Divides the table into partitions
 
-		local function part(tbl, comparator, a, b)
-			local pivot = tbl[b] -- Pivot is always the right-hand element
-			local wall = a - 1 -- Divides the table into partitions
+				for i = a, b - 1 do -- Don't iterate on the pivot
+					if Type.NUMBER(comparator(tbl[i], pivot)) <= 0 then
+						wall = wall + 1
+						swap(tbl, wall, i) -- Add element to left partition
+					end
+				end
 
-			for i = a, b - 1 do -- Don't iterate on the pivot
-				if Type.NUMBER(comparator(tbl[i], pivot)) <= 0 then
-					wall = wall + 1
-					swap(tbl, wall, i) -- Add element to left partition
+				wall = wall + 1
+				swap(tbl, wall, b) -- Place pivot in its solved index
+				return wall
+			end
+
+			local function quick(tbl, comparator, a, b)
+				if a < b then -- Table is not yet sorted
+					local pivot = part(tbl, comparator, a, b)
+					quick(tbl, comparator, a, pivot - 1)
+					quick(tbl, comparator, pivot + 1, b)
 				end
 			end
 
-			wall = wall + 1
-			swap(tbl, wall, b) -- Place pivot in its solved index
-			return wall
-		end
-
-		local function quick(tbl, comparator, a, b)
-			if a < b then -- Table is not yet sorted
-				local pivot = part(tbl, comparator, a, b)
-				quick(tbl, comparator, a, pivot - 1)
-				quick(tbl, comparator, pivot + 1, b)
+			return function(tbl, comparator)
+				quick(Type.TABLE(tbl), Type.FUNCTION(comparator), 1, #tbl)
 			end
-		end
+		end)()
+	}
 
-		return function(tbl, comparator)
-			quick(Type.TABLE(tbl), Type.FUNCTION(comparator), 1, #tbl)
-		end
-	end)()
-
-	return self
-end)() Table = __Table.read_only(__Table)
+	return self:read_only()
+end)()
 
 
 --[[
@@ -315,19 +299,36 @@ end
 --   * @return [?] Value which was passed-in
 --   * @error TYPE_MISMATCH If the parameter's type does not match the instance
 ]]--
-Type = Enum({ "NIL", "STRING", "BOOLEAN","NUMBER", "FUNCTION", "USERDATA", "THREAD", "TABLE" },
-		function(instance, members)
-			members.type = lower(instance.name)
+Type = (function()
+	local cls, members = Enum({ "NIL", "STRING", "BOOLEAN", "NUMBER",
+								"FUNCTION", "USERDATA", "THREAD", "TABLE" },
+			function(instance, members)
+				members.type = lower(instance.name)
+				function members.match(value) return members.type == type(value) end
+			end, {
+				__call = function(tbl, value)
+					if tbl.type ~= type(value) then Error.TYPE_MISMATCH(ADDON_NAME,
+							"Received " .. type(value) .. ", Expected: " .. tbl.type) end
+					return value
+				end
+			})
 
-			function members.match(value) return members.type == type(value) end
-		end, {
-			__call = function(tbl, value)
-				if tbl.type ~= type(value) then Error.TYPE_MISMATCH(ADDON_NAME,
-						"Received " .. type(value) .. ", Expected: " .. tbl.type) end
-				return value
-			end
-		})
-FSL.Type = Type -- Mandatory because 'Type' was pre-declared
+	--[[
+    -- Ensures a specified parameter is non-nil
+    --
+    -- An argument whose value is nil will result in an NIL_POINTER error
+    --
+    -- @param [?] x Parameter to check
+    -- @return [?] x
+    ]]--
+	function members.non_nil(x)
+		if x == nil then
+			Error.NIL_POINTER(ADDON_NAME, "Required non-nil argument was nil") end
+		return x
+	end
+
+	return cls
+end)()
 
 
 --[[
@@ -369,23 +370,6 @@ Error = (function()
 		end
 	})
 end)() FSL.Error = Error -- Mandatory because 'Error' was pre-declared
-
-
---[[
--- Ensures a specified parameter is non-nil
---
--- An argument whose value is nil will result in an NIL_POINTER error
---
--- TODO: Determine if this should go into Type
---
--- @param [?] x Parameter to check
--- @return [?] x
-]]--
-function req_non_nil(x)
-	if x == nil then
-		Error.NIL_POINTER(ADDON_NAME, "Required non-nil argument was nil") end
-	return x
-end
 
 
 --[[
@@ -691,3 +675,15 @@ function sorted(iterable, comparator, callback)
 	Table.sort(t, Type.FUNCTION(comparator))
 	return t
 end
+
+
+--[[
+-- ==========================
+-- ======= String API =======
+-- ==========================
+]]--
+
+
+String = {
+
+}
