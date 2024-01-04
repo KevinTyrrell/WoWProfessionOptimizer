@@ -20,24 +20,17 @@ setfenv(1, WPO) -- Change environment
 
 
 Source = (function()
-    local values = { "DROP", "QUEST", "VENDOR", "TRAINER" }
     local ids = { 2, 4, 5, 6 }
-
-    local instances, internals = Enum(values, {
-        __tostring = function(tbl) return tbl.formal  end
-    })
-    for i = 1, getmetatable(instances)() do
-        local instance = instances[i]
-        local e = internals[instance]
-        e.formal = formals[i]
-        e.id = ids[i]
-    end
-    return instances
+    return Enum({ "DROP", "QUEST", "VENDOR", "TRAINER" },
+            function(instance, members)
+                members.id = ids[instance.ordinal]
+                members.formal = String.to_title_format(instance.name)
+            end, { __tostring = function(tbl) return tbl.formal end})
 end)()
 
 
 -- Maps source ID's to their corresponding Source enum values
-local source_by_id = collect(map(num_stream(1, getmetatable(Source)()),
+local source_by_id = collect(map(num_stream(1, Source.size),
         function(i) return Source[i].id, Source[i] end))
 
 

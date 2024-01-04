@@ -56,16 +56,12 @@ end)()
 -- @return [table] Profession data object
 ]]--
 Profession = (function()
-    local values = { "ALCHEMY", "BLACKSMITHING", "COOKING", "ENCHANTING", "ENGINEERING",
-                     "FIRST_AID", "INSCRIPTION", "JEWELCRAFTING", "LEATHERWORKING", "TAILORING" }
-    local formals = { "Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering",
-                      "First Aid", "Inscription", "Jewelcrafting", "Leatherworking", "Tailoring" }
     local expansions = Env.swap(Expansion, function()
         return { VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, VANILLA, WOTLK, TBC, VANILLA, VANILLA } end)
 
-    return Enum(values, function(instance, members)
-        local ordinal = instance.ordinal
-
+    return Enum({ "ALCHEMY", "BLACKSMITHING", "COOKING", "ENCHANTING", "ENGINEERING",
+                  "FIRST_AID", "INSCRIPTION", "JEWELCRAFTING", "LEATHERWORKING", "TAILORING" },
+            function(instance, members)
         function members.loadable(expac)
             local key = Type.TABLE(expac).name .. "-" .. instance.formal
             return RAW_JSON_DATA[key] ~= nil
@@ -78,8 +74,8 @@ Profession = (function()
             return LibParse:JSONDecode(data)
         end
 
-        members.formal = formals[ordinal]
-        members.expansion = expansions[ordinal]
+        members.formal = String.to_title_format(instance.name)
+        members.expansion = expansions[instance.ordinal]
     end, { __tostring = function(tbl) return tbl.formal end })
 end)()
 
@@ -94,11 +90,6 @@ end)()
 -- @return [number] Skill increase bonus given this race/profession combo
 ]]--
 Race = (function()
-    local values = { "BLOOD_ELF", "DRAENEI", "DWARF", "GNOME", "HUMAN",
-                     "NIGHT_ELF", "ORC", "TAUREN", "TROLL", "UNDEAD" }
-    local formals = { "Blood Elf", "Draenei", "Dwarf", "Gnome", "Human",
-                      "Night Elf", "Orc", "Tauren", "Troll", "Undead" }
-
     local function sentinel() return 0 end
     local func_tbl = collect(map(num_stream(1, 10),
             function(n) return n, sentinel end))
@@ -106,9 +97,10 @@ Race = (function()
     func_tbl[2] = function(prof) return prof.ordinal == 8 and 5 or 0 end
     func_tbl[4] = function(prof) return prof.ordinal == 5 and 15 or 0 end
 
-    return Enum(values, function(instance, members)
-        local ordinal = instance.ordinal
-        members.bonus = func_tbl[ordinal]
-        members.formal = formals[ordinal]
-    end)
+    return Enum({ "BLOOD_ELF", "DRAENEI", "DWARF", "GNOME", "HUMAN",
+                  "NIGHT_ELF", "ORC", "TAUREN", "TROLL", "UNDEAD" },
+            function(instance, members)
+        members.bonus = func_tbl[instance.ordinal]
+        members.formal = String.to_title_format(instance.name)
+    end, { __tostring = function(tbl) return tbl.formal end})
 end)()
