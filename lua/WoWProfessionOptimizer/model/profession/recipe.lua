@@ -21,7 +21,6 @@ setfenv(1, WPO) -- Change environment
 
 Source = (function()
     local values = { "DROP", "QUEST", "VENDOR", "TRAINER" }
-    local formals = { "Drop", "Quest", "Vendor", "Trainer" }
     local ids = { 2, 4, 5, 6 }
 
     local instances, internals = Enum(values, {
