@@ -667,7 +667,6 @@ end
 --
 -- Sort is a terminating stream operation.
 -- The stream is closed and no further stream operations are applicable.
---
 ]]--
 function sorted(iterable, comparator, callback)
 	Type.FUNCTION(callback)
@@ -684,6 +683,19 @@ end
 ]]--
 
 
-String = {
+String = Table.read_only({
+    --[[
+    -- Formalizes a string, capitalizing each word
+    --
+    -- Underscore characters passed in the parameter are treated as whitespace
+    --
+    -- @param s [string] String to be made into a title
+    -- @return [string] Formalized string
+    ]]--
+	to_title_format = function(s)
+		s = Type.STRING(s):gsub("_", " ") -- Consider `_` as word separators
+		return (s:gsub("%w+", function(word)
+			return word:sub(1, 1):upper() .. word:sub(2):lower() end))
+	end
+})
 
-}
