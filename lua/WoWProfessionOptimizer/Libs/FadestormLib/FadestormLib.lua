@@ -51,8 +51,6 @@ Error = { TYPE_MISMATCH = SENTINEL, UNSUPPORTED_OPERATION = SENTINEL }
 --[[
 -- Constructs a new meta-table, creating a read-only table when set as a metatable
 --
--- TODO: Replace other read-only MT functions using this helper function
---
 -- @param [meta_methods] [table] (Optional) Meta-methods to be copied into the resulting meta table
 -- @return [table] Read-only meta-table
 ]]--
@@ -203,6 +201,7 @@ end)()
 -- * size [number]: Number of declared enumeration constants
 -- * Enum constants access [i] , where `i` is the ordinal of the constant
 -- * Enum constants access s, where `s` is the identifier of the constant
+-- * function stream(): Returns a stream of all instances of the enum
 --
 -- Enum Constants Members
 -- =======================
@@ -270,6 +269,11 @@ function Enum(values, callback, meta_methods)
 			__index = members -- Defer searching to the members table if key not found
 		})
 		callback(read_only, members) -- Pseudo constructor for the user to define members
+	end
+
+	function cls_members.stream() -- Stream support
+		return map(num_stream(1, cls_read_only.size),
+				function(n) return n, cls_read_only[n] end)
 	end
 
 	return cls_read_only, cls_members
