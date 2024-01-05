@@ -31,12 +31,12 @@ local RAW_JSON_DATA = Profession -- JSON profession data
 -- @field formal [string] Formal name of the expansion
 ]]--
 Expansion = (function()
-    local values = { "WOTLK", "TBC", "VANILLA" }
     local max_skills = { 450, 375, 300 }
     local formals =  { "Wrath of the Lich King", "The Burning Crusade", "World of Warcraft" }
     local colors = { "74A7D6", "AAD46C", "FCDA2A" }
 
-    return Enum(values, function(instance, members)
+    return Enum({ "WOTLK", "TBC", "VANILLA" },
+            function(instance, members)
         local ordinal = instance.ordinal
         members.max_skill = max_skills[ordinal]
         members.color = colors[ordinal]

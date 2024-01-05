@@ -30,8 +30,7 @@ end)()
 
 
 -- Maps source ID's to their corresponding Source enum values
-local source_by_id = collect(map(num_stream(1, Source.size),
-        function(i) return Source[i].id, Source[i] end))
+local source_by_id = collect(map(Source.stream(), function(_, e) return e.id, e end))
 
 
 Recipe = (function()

@@ -19,6 +19,7 @@ local ADDON_NAME, WPO = ...
 setfenv(1, WPO) -- Change environment
 
 
-Catalog = function(prof, expac, start, target)
+Catalog = function(prof, race, expac, start, target)
+
 
 end
