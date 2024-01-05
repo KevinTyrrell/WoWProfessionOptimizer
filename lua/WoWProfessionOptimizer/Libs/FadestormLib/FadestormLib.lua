@@ -202,6 +202,7 @@ end)()
 -- * Enum constants access [i] , where `i` is the ordinal of the constant
 -- * Enum constants access s, where `s` is the identifier of the constant
 -- * function stream(): Returns a stream of all instances of the enum
+-- * function assert_instance(tbl): Returns param & checks it is an enum instance
 --
 -- Enum Constants Members
 -- =======================
@@ -274,6 +275,12 @@ function Enum(values, callback, meta_methods)
 	function cls_members.stream() -- Stream support
 		return map(num_stream(1, cls_read_only.size),
 				function(n) return n, cls_read_only[n] end)
+	end
+
+	function cls_members.assert_instance(tbl) -- Enum type-checking
+		if cls_read_only[Type.TABLE(tbl)] == nil then
+			Error.TYPE_MISMATCH(ADDON_NAME, "Table parameter is not an instance of the enum") end
+		return tbl
 	end
 
 	return cls_read_only, cls_members
@@ -373,7 +380,7 @@ Error = (function()
 			print(msg) error(msg)
 		end
 	})
-end)() FSL.Error = Error -- Mandatory because 'Error' was pre-declared
+end)()
 
 
 --[[
