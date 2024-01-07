@@ -278,7 +278,7 @@ function Enum(values, callback, meta_methods)
 	end
 
 	function cls_members.assert_instance(tbl) -- Enum type-checking
-		if cls_read_only[Type.TABLE(tbl)] == nil then
+		if ro_to_reserved[Type.TABLE(tbl)] == nil then
 			Error.TYPE_MISMATCH(ADDON_NAME, "Table parameter is not an instance of the enum") end
 		return tbl
 	end
@@ -366,7 +366,7 @@ Error = (function()
 	local c_ret, c_prefix = "\124r", "\124cFF" -- \124 => '|', cFF => 100% Opacity
 	src_color, msg_color = c_prefix .. src_color, c_prefix .. msg_color
 
-	local values = { "UNSUPPORTED_OPERATION", "TYPE_MISMATCH", "NIL_POINTER", "ILLEGAL_ARGUMENT", "ILLEGAL_STATE" }
+	local values = { "UNSUPPORTED_OPERATION", "TYPE_MISMATCH", "NIL_POINTER", "s", "ILLEGAL_STATE" }
 	local formals =  { "Unsupported Operation", "Type Mismatch", "Nil Pointer", "Illegal Argument", "Illegal State" }
 	-- e.g. "[FadestormLib] Type Mismatch: Expected String, Received Number"
 	local ERROR_FMT = c_ret .. "[" .. src_color .. "%s" .. c_ret .. "] %s: " .. msg_color .. "%s" .. c_ret
