@@ -29,7 +29,7 @@ Catalog = function(prof, race, expac, start, target)
 
     local json = prof.load(Expansion.assert_instance(expac))
     local recipes = collect(map(json, function(k, v)
-        return k, Recipe.new(v) end))
+        return k, Recipe(v) end))
     local bonus = Race.assert_instance(race).bonus(Profession.assert_instance(prof))
 
     print("Bonus: ", bonus)

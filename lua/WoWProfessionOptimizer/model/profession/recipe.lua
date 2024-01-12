@@ -38,13 +38,15 @@ local parse_sources = (function()
 
     return function(name, sources)
         if #Type.TABLE(sources) <= 0 then
-            Error.ILLEGAL_STATE(ADDON_NAME, "Recipe has empty source data: " .. Type.STRING(name)) end
+            Error.ILLEGAL_STATE(ADDON_NAME, "Recipe has empty source data:", Type.STRING(name)) end
         return collect(map(filter(sources,
                 function(_, e) return ignored_sources[Type.NUMBER(e)] ~= true end), -- Filter
                 function(i, id) -- Map to enum
                     local source = source_by_id[id]
-                    if src == nil then Error.ILLEGAL_STATE(ADDON_NAME, "Recipe has unrecognized source(s): " .. name)
-                end end))
+                    if source == nil then Error.ILLEGAL_STATE(ADDON_NAME,
+                            "Recipe has unrecognized source(s):", name) end
+                    return source
+                end))
     end
 end)()
 
@@ -84,27 +86,27 @@ function Recipe(jso)
     if #levels ~= 5 then
         Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Recipe level table is invalid: " .. jso.name) end
     for_each(levels, function(_, e) -- Levels domain check
-        if Type.NUMBER(e) < 1 or e >= 500 then Error.ILLEGAL_ARGUMENT(ADDON_NAME, string.format(
-                "Recipe level(s) are out of bounds: %s[%s]", name, Table.concat(levels, ", "))) end end)
-    for_each(num_stream(2, 5), function(n) -- Levels sorted check
-        if levels[n - 1] > levels[n] then Error.ILLEGAL_ARGUMENT(ADDON_NAME, string.format(
-                "Recipe level(s) are invalid: %s[%s]", name, Table.concat(levels, ", "))) end end)
+        if Type.NUMBER(e) < 0 or e >= 500 then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
+                "Recipe level(s) are out of bounds:", name, "[", table.concat(levels, ", "), "]") end end)
+    for_each(num_stream(3, 5), function(n) -- Levels sorted check
+        if levels[n - 1] > levels[n] then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
+                "Recipe level(s) are invalid:", name, "[", table.concat(levels, ", "), "]") end end)
 
     local yield = jso.produces == nil and 1 or Type.NUMBER(jso.produces) -- '1' is implied
-    local spec = jso.spec == nil and nil or Type.STRING(jso.spec) -- Only some recipes have a spec
+    local spec = jso.spec; if spec ~= nil then Type.NUMBER(spec) end -- Few recipes have a specialization
     local reagents = collect(map(Type.TABLE(jso.reagents),
             function(k, v) -- Item ID comes as a string, conver to number
                 return tonumber(Type.STRING(k)), Type.NUMBER(v) end))
 
     return {
         name = name,
-        product = Type.NUMBER(jso.product),
+        product = tonumber(Type.STRING(jso.product)),
         yield = yield,
         orange = levels[1],
         yellow = levels[3],
         grey = levels[5],
         reagents = reagents,
-        sources = parse_sources(jso.name, jso.sources),
+        sources = parse_sources(jso.name, jso.source),
         spec = spec,
     }
 end
