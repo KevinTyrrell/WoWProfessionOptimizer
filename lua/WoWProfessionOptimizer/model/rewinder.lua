@@ -15,25 +15,13 @@
 --    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]--
 
-local ADDON_NAME, WPO = ...
-setfenv(1, WPO) -- Change environment
-
 
 --[[
--- Catalog Class
+-- TODO: Class contains a List[List[RewindPayload]]
+-- TODO: where 'RewindPayload' is the following:
+-- TODO: { Class, Function, Payload }
+--
+-- TODO: An event that added 50 gold to the player could be the following:
+-- TODO: { Wallet, AddGold, 50 }
 ]]--
-Catalog = function(prof, race, expac, start, target)
-    if Type.NUMBER(start) >= Type.NUMBER(target) then
-        Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Skill [start, target] domain is non-contiguous: ["
-            .. tostring(start) .. ", " .. tostring(target) .. "]") end
 
-    local json = prof.load(Expansion.assert_instance(expac))
-    local recipes = collect(map(json, function(k, v)
-        return k, Recipe.new(v) end))
-    local bonus = Race.assert_instance(race).bonus(Profession.assert_instance(prof))
-
-    print("Bonus: ", bonus)
-    print(recipes[1])
-end
-
-Catalog(Profession.ENGINEERING, Race.ORC, Expansion.WOTLK, 1, 450)

@@ -32,63 +32,79 @@ end)()
 -- Maps source ID's to their corresponding Source enum values
 local source_by_id = collect(map(Source.stream(), function(_, e) return e.id, e end))
 
+-- Parses, checks validity of, and tranforms sources
+local parse_sources = (function()
+    local ignored_sources = Table.set(16, 21) -- Likely Fishing & Pickpocketing
 
-Recipe = (function()
-    local cls = { }
-
-    -- Helper function for filtering recipe sources
-    local filter_sources = (function()
-        --[[
-        -- Some known sources are nonsense, ignore known sources
-        -- 16 & 21: Likely Fishing & Pickpocketing
-        ]]--
-        local ignored = Table.set(16, 21)
-        return function(recipe)
-            local sources = Type.TABLE(recipe.source)
-            if #sources <= 0 then
-                Error.ILLEGAL_STATE(ADDON_NAME, "Recipe has empty source data: " .. recipe.name) end
-            return collect(map(filter(sources,
-                    function(_, e) return ignored[Type.NUMBER(e)] ~= true end), -- Filter
-                    function(i, e) -- Map
-                local src = source_by_id[e]
-                if src == nil then
-                    Error.ILLEGAL_STATE(ADDON_NAME, "Recipe has unrecognized source(s): " .. recipe.name) end
-                return i, src
-            end))
-        end
-    end)()
-
-    --[[
-    -- @param [table] jso JSON object detailing all fields of the recipe
-    -- @return [table] Formalized table describing the recipe
-    ]]--
-    function cls.new(jso)
-        local obj = {
-            name = Type.STRING(Type.TABLE(jso).name),
-            product = tonumber(Type.STRING(jso.product)),
-            reagents = collect(map(Type.TABLE(jso.reagents),
-                    function(k, v) -- Map "id": quantity -> { id, quantity }
-                        return { tonumber(Type.STRING(k)), Type.NUMBER(v) }
-                    end)),
-            sources = filter_sources(jso),
-        }
-        -- Recipe yield
-        local yield = jso.produces
-        if yield == nil then obj.produces = 1 -- Most recipes produce a singular item
-        else obj.yield = Type.NUMBER(yield) end
-        -- Recipe specialization
-        local spec = jso.spec
-        if spec ~= nil then -- Not all recipes have specializations
-            obj.spec = Type.NUMBER(spec) end
-        -- Recipe levels
-        local levels = Type.TABLE(jso.levels)
-        if #levels ~= 5 then
-            Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Recipe has invalid level data: " .. obj.name) end
-        obj.learned = levels[1]
-        obj.levels = collect(map(num_stream(2, 5),
-                function(i) return Type.NUMBER(levels[i]) end))
-        return obj
+    return function(name, sources)
+        if #Type.TABLE(sources) <= 0 then
+            Error.ILLEGAL_STATE(ADDON_NAME, "Recipe has empty source data: " .. Type.STRING(name)) end
+        return collect(map(filter(sources,
+                function(_, e) return ignored_sources[Type.NUMBER(e)] ~= true end), -- Filter
+                function(i, id) -- Map to enum
+                    local source = source_by_id[id]
+                    if src == nil then Error.ILLEGAL_STATE(ADDON_NAME, "Recipe has unrecognized source(s): " .. name)
+                end end))
     end
-
-    return Table.read_only(cls)
 end)()
+
+
+--[[
+-- Recipe class
+--
+-- JSON object format:
+-- {
+--      name:       string
+--      product:    number
+--      reagents:   { id: number --> quantity: number }
+--      sources:    { id: number, ... }
+--      levels:     { min: number, orange: number, yellow: number, green: number, grey: number }
+--      (produces):   number
+--      (spec):       string
+-- }
+--
+-- Recipe instance:
+-- @field name [string] Name of the recipe
+-- @field product [number] Item ID of the product
+-- @field yield [number] Amount produced per craft
+-- @field orange [number] Level in which the recipe requires to be learned
+-- @field yellow [number] Level in which further crafts begin decrementing level-up likelihood
+-- @field grey [number] Level in which crafts will no longer grant level-ups
+-- @field reagents [table] { id: number --> quantity: number, ... }
+-- @field sources [table] { id: boolean, ... }
+-- @field (spec) [string] Specialization requirement
+--
+-- @param [table] jso JSON recipe object
+-- @return [table] Recipe instance
+]]--
+function Recipe(jso)
+    local name = Type.STRING(Type.TABLE(jso).name)
+    local levels = Type.TABLE(jso.levels)
+
+    if #levels ~= 5 then
+        Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Recipe level table is invalid: " .. jso.name) end
+    for_each(levels, function(_, e) -- Levels domain check
+        if Type.NUMBER(e) < 1 or e >= 500 then Error.ILLEGAL_ARGUMENT(ADDON_NAME, string.format(
+                "Recipe level(s) are out of bounds: %s[%s]", name, Table.concat(levels, ", "))) end end)
+    for_each(num_stream(2, 5), function(n) -- Levels sorted check
+        if levels[n - 1] > levels[n] then Error.ILLEGAL_ARGUMENT(ADDON_NAME, string.format(
+                "Recipe level(s) are invalid: %s[%s]", name, Table.concat(levels, ", "))) end end)
+
+    local yield = jso.produces == nil and 1 or Type.NUMBER(jso.produces) -- '1' is implied
+    local spec = jso.spec == nil and nil or Type.STRING(jso.spec) -- Only some recipes have a spec
+    local reagents = collect(map(Type.TABLE(jso.reagents),
+            function(k, v) -- Item ID comes as a string, conver to number
+                return tonumber(Type.STRING(k)), Type.NUMBER(v) end))
+
+    return {
+        name = name,
+        product = Type.NUMBER(jso.product),
+        yield = yield,
+        orange = levels[1],
+        yellow = levels[3],
+        grey = levels[5],
+        reagents = reagents,
+        sources = parse_sources(jso.name, jso.sources),
+        spec = spec,
+    }
+end
