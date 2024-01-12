@@ -84,13 +84,15 @@ function Recipe(jso)
     local levels = Type.TABLE(jso.levels)
 
     if #levels ~= 5 then
-        Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Recipe level table is invalid: " .. jso.name) end
-    for_each(levels, function(_, e) -- Levels domain check
+        Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Recipe level table is invalid:", jso.name) end
+    for_each(levels, function(_, e)
         if Type.NUMBER(e) < 0 or e >= 500 then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
                 "Recipe level(s) are out of bounds:", name, "[", table.concat(levels, ", "), "]") end end)
-    for_each(num_stream(3, 5), function(n) -- Levels sorted check
+    for_each(num_stream(3, 5), function(n)
         if levels[n - 1] > levels[n] then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
                 "Recipe level(s) are invalid:", name, "[", table.concat(levels, ", "), "]") end end)
+    if levels[1] > levels[3] then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
+            "Recipe minimum level is invalid:", name, "[", table.concat(levels, ","), "]") end
 
     local yield = jso.produces == nil and 1 or Type.NUMBER(jso.produces) -- '1' is implied
     local spec = jso.spec; if spec ~= nil then Type.NUMBER(spec) end -- Few recipes have a specialization

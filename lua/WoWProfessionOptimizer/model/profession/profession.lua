@@ -70,7 +70,7 @@ Profession = (function()
         function members.load(expac)
             local key = Type.TABLE(expac).name .. "-" .. instance.formal
             local data = RAW_JSON_DATA[key]
-            if data == nil then Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Profession data does not exist: " .. key) end
+            if data == nil then Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Profession data does not exist:", key) end
             return LibParse:JSONDecode(data)
         end
 
