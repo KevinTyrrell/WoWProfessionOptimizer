@@ -39,7 +39,7 @@ Interface = function(contract, mt)
             local func = private[key]
             if contract[key] then -- Check if key is associated with an interface contract
                 if func == nil then Error.UNSUPPORTED_OPERATION(ADDON_NAME,
-                        "Interface member was not implemented: " .. Type.STRING(key))
+                        "Interface member was not implemented:", Type.STRING(key))
                 else Type.FUNCTION(func) end -- Ensure contract leads to a function
             end
             return func
@@ -49,7 +49,7 @@ Interface = function(contract, mt)
     if mt ~= nil then
         for_each(Type.TABLE(mt), function(k, v)
             if default_mt[k] then
-                Error.ILLEGAL_STATE(ADDON_NAME, "Interface metamethod is reserved: " .. k) end
+                Error.ILLEGAL_STATE(ADDON_NAME, "Interface meta-method is reserved:", k) end
             default_mt[k] = Type.FUNCTION(v)
         end)
     end

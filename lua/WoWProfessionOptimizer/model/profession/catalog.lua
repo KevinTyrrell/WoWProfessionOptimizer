@@ -24,9 +24,7 @@ setfenv(1, WPO) -- Change environment
 ]]--
 Catalog = function(prof, race, expac, start, target)
     if Type.NUMBER(start) >= Type.NUMBER(target) then
-        Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Skill [start, target] domain is non-contiguous: ["
-            .. tostring(start) .. ", " .. tostring(target) .. "]") end
-
+        Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Skill domain is non-contiguous: [", start, ",", target, "]") end
     local json = prof.load(Expansion.assert_instance(expac))
     local recipes = collect(map(json, function(k, v)
         return k, Recipe(v) end))
