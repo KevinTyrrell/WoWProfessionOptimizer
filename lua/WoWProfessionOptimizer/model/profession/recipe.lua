@@ -19,6 +19,7 @@ local ADDON_NAME, WPO = ...
 setfenv(1, WPO) -- Change environment
 
 
+-- TODO: doc
 Source = (function()
     local ids = { 2, 4, 5, 6 }
     return Enum({ "DROP", "QUEST", "VENDOR", "TRAINER" },
@@ -49,6 +50,15 @@ local parse_sources = (function()
                 end))
     end
 end)()
+
+-- "Bronze Bar{420392}[*1]: [125, 145, 160]"
+local RECIPE_FORMAT = "%s{%d}[*%d]: [%d, %d, %d]"
+local mt = {
+    __metatable = false,
+    __tostring = function(tbl)
+        return RECIPE_FORMAT:format(tbl.name, tbl.product, tbl.yield, tbl.orange, tbl.yellow, tbl.grey)
+    end
+}
 
 
 --[[
@@ -100,7 +110,7 @@ function Recipe(jso)
             function(k, v) -- Item ID comes as a string, conver to number
                 return tonumber(Type.STRING(k)), Type.NUMBER(v) end))
 
-    return {
+    return setmetatable({
         name = name,
         product = tonumber(Type.STRING(jso.product)),
         yield = yield,
@@ -110,5 +120,5 @@ function Recipe(jso)
         reagents = reagents,
         sources = parse_sources(jso.name, jso.source),
         spec = spec,
-    }
+    }, mt)
 end
