@@ -21,6 +21,7 @@ setfenv(1, WPO) -- Change environment
 
 local huge = math.huge -- Used as 'infinity' (unlimited)
 
+
 --[[
 -- Limiter class
 --
