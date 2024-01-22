@@ -21,6 +21,7 @@ setfenv(1, WPO) -- Change environment
 
 -- Imported standard library functions
 local GetItemInfo = GetItemInfo
+local next = next
 
 local EVENT_ITEM_INFO = "GET_ITEM_INFO_RECEIVED"
 
@@ -45,6 +46,7 @@ ItemDB = (function()
     local waiting = { } -- Set[item_id]
     local num_waiting = 0 -- # of items waiting for server to reply with
 
+    -- Event handler for GET_ITEM_INFO_RECEIVED
     function Addon:GET_ITEM_INFO_RECEIVED(_, item_id, success)
         if success == nil or item_id == nil then return end -- Should never happen?
         if waiting[item_id] == true then
@@ -61,9 +63,20 @@ ItemDB = (function()
         end
     end
 
+    --[[
+    -- Retrieves information regarding a specified item
+    --
+    -- Upon asking for an item that is not cached, a server request will be made.
+    -- When the item info is received from the server, the item's info will be updated.
+    --
+    -- To ensure item data is returned by this function, call and check `ready()`.
+    --
+    -- @param item_id [number] Item ID for the specified item
+    -- @return [table] Item data
+    -- @see self.ready
+    ]]--
     function self.get_item(item_id)
         local info = db[Type.NUMBER(item_id)]
-
         if info == nil then
             local payload = { GetItemInfo(item_id) }
             if payload[1] == nil then -- Response was nil, wait for server to reply
@@ -85,11 +98,26 @@ ItemDB = (function()
         return info
     end
 
-    function self.waiting()
-        return waiting
+    --[[
+    -- Determines if the database has no items in its waiting queue
+    --
+    -- To ensure `get_item` returns info for items which have already been
+    -- requested, check this function before making a `get_item` function call.
+    -- Note: `while ItemDB.ready()` is unsafe, as server requests are not asyncronous.
+    -- Ideally, check `ItemDB.ready()` only inside of handlers such as `Ticker` or `OnUpdate`.
+    --
+    -- @return [boolean] True if the database is not waiting on any items
+    -- @see get_item
+    ]]--
+    function self.ready()
+        if num_waiting <= 0 then return true end
+        local item_id = next(waiting) -- Pick an item at random that we're waiting on
+        Logger:Message("ItemDB not ready, waiting on [%d]", item_id)
+        GetItemInfo(item_id) -- Request it again from the server again
+        return false
     end
 
     return Table.read_only(self)
 end)()
 
-_G.t = ItemDB
+_G.ItemDB = ItemDB -- Testing
