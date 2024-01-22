@@ -19,30 +19,6 @@ local ADDON_NAME, WPO = ...
 setfenv(1, WPO) -- Change environment
 
 
---[[
--- Catalog Class
---
--- TODO: Consider using the builder pattern
--- TODO: Banned, limited, and required crafts
-]]--
-Catalog = (function()
-    local self = { }
-
-
-    local builder
-
-
-
-
-
-
-
-
-end)()
-
-
-
-
 Catalog = function(prof, race, expac, start, target)
     if Type.NUMBER(start) >= Type.NUMBER(target) then
         Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Skill domain is non-contiguous: [", start, ",", target, "]") end
@@ -52,7 +28,9 @@ Catalog = function(prof, race, expac, start, target)
     local bonus = Race.assert_instance(race).bonus(Profession.assert_instance(prof))
 
     print("Bonus: ", bonus)
-    print(recipes[1])
+    for i = 1, 3 do
+        print(recipes[i])
+    end
 end
 
 Catalog(Profession.ENGINEERING, Race.GNOME, Expansion.WOTLK, 1, 450)

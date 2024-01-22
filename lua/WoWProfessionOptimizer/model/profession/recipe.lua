@@ -52,11 +52,14 @@ local parse_sources = (function()
 end)()
 
 -- "Bronze Bar{420392}[*1]: [125, 145, 160]"
-local RECIPE_FORMAT = "%s{%d}[*%d]: [%d, %d, %d]"
+local RECIPE_FORMAT = "%s{%d}[*%d]: [%s, %s, %s]"
 local mt = {
     __metatable = false,
     __tostring = function(tbl)
-        return RECIPE_FORMAT:format(tbl.name, tbl.product, tbl.yield, tbl.orange, tbl.yellow, tbl.grey)
+        return RECIPE_FORMAT:format(tbl.name, tbl.product, tbl.yield,
+                Color.RED(tostring(tbl.level)),
+                Color.YELLOW(tostring(tbl.yellow)),
+                Color.GRAY(tostring(tbl.grey)))
     end
 }
 
@@ -79,7 +82,7 @@ local mt = {
 -- @field name [string] Name of the recipe
 -- @field product [number] Item ID of the product
 -- @field yield [number] Amount produced per craft
--- @field orange [number] Level in which the recipe requires to be learned
+-- @field level [number] Level in which the recipe requires to be learned
 -- @field yellow [number] Level in which further crafts begin decrementing level-up likelihood
 -- @field grey [number] Level in which crafts will no longer grant level-ups
 -- @field reagents [table] { id: number --> quantity: number, ... }
@@ -101,8 +104,6 @@ function Recipe(jso)
     for_each(num_stream(3, 5), function(n)
         if levels[n - 1] > levels[n] then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
                 "Recipe level(s) are invalid:", name, "[", table.concat(levels, ", "), "]") end end)
-    if levels[1] > levels[3] then Error.ILLEGAL_ARGUMENT(ADDON_NAME,
-            "Recipe minimum level is invalid:", name, "[", table.concat(levels, ","), "]") end
 
     local yield = jso.produces == nil and 1 or Type.NUMBER(jso.produces) -- '1' is implied
     local spec = jso.spec; if spec ~= nil then Type.NUMBER(spec) end -- Few recipes have a specialization
@@ -114,7 +115,7 @@ function Recipe(jso)
         name = name,
         product = tonumber(Type.STRING(jso.product)),
         yield = yield,
-        orange = levels[1],
+        level = levels[1],
         yellow = levels[3],
         grey = levels[5],
         reagents = reagents,

@@ -24,17 +24,17 @@ local AceDB = LibStub("AceDB-3.0")
 local LibLogger = LibStub("LibLogger")
 
 -- Setup addon table
-addon = AceAddon:NewAddon(ADDON_NAME, "AceConsole-3.0")
-logger = LibLogger:New() -- Logger made now, attach to 'SavedVariables' later on
-logger:SetSeverity(LibLogger.SEVERITY.TRACE)
-logger:SetPrefix(ADDON_NAME)
+Addon = AceAddon:NewAddon(ADDON_NAME, "AceConsole-3.0", "AceEvent-3.0")
+Logger = LibLogger:New() -- Logger made now, attach to 'SavedVariables' later on
+Logger:SetSeverity(LibLogger.SEVERITY.TRACE)
+Logger:SetPrefix(ADDON_NAME)
 Profession = { } -- Prepare table for loaded JSON data
 
 -- Called when the addon is completely initialized
-function addon:OnInitialize()
+function Addon:OnInitialize()
     AceDB = AceDB:New(ADDON_NAME .. "DB")
     local logger_db = { }
     AceDB.global.logger = logger_db -- Delete
-    logger:SetDatabase(logger_db)
-    logger:Info("Addon Initialized.")
+    Logger:SetDatabase(logger_db)
+    Logger:Info("Addon Initialized.")
 end

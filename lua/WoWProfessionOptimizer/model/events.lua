@@ -1,0 +1,2 @@
+--TODO: Consider event class which manages lists of callbacks
+--TODO: Each can be individually registered or unregistered

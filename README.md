@@ -87,7 +87,7 @@ chance = (greySkill - yourSkill) / (greySkill - yellowSkill)
 chance = (240 - 235) / (240 - 220) // 0.25 or 25%
 ```
 
-This means you would have only a <span style="color: white;">25%</span> chance of getting a skill-up from crafting an <span style="color: white;">[Unstable Trigger]</span> at <span style="color: lightblue;">235</span>. The add-on takes the inverse of this <span style="color: white;">1 / 0.25 => 4</span>, indicating four crafts of <span style="color: white;">[Unstable Trigger]</span> are needed to reach <span style="color: lightblue;">240</span>.
+This means you would have only a <span style="color: white;">25%</span> chance of getting a skill-up from crafting an <span style="color: white;">[Unstable Trigger]</span> at <span style="color: lightblue;">235</span>. The add-on takes the inverse of this <span style="color: white;">1 / 0.25 => 4</span>, indicating four crafts of <span style="color: white;">[Unstable Trigger]</span> are needed to reach <span style="color: lightblue;">236</span>.
 
 ---
 
