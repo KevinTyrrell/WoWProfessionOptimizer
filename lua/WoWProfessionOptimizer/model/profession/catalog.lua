@@ -19,6 +19,12 @@ local ADDON_NAME, WPO = ...
 setfenv(1, WPO) -- Change environment
 
 
+-- Caches all items into the item database
+-- Returns Map[item_id, List[Recipe]]
+local function load_craftables(recipes)
+end
+
+
 Catalog = function(prof, race, expac, start, target)
     if Type.NUMBER(start) >= Type.NUMBER(target) then
         Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Skill domain is non-contiguous: [", start, ",", target, "]") end

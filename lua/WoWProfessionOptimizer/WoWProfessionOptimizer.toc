@@ -22,10 +22,10 @@ data\embeds.xml
 util\interface.lua
 
 # Model
+model\item_db.lua
 model\profession\profession.lua
 model\profession\recipe.lua
 model\profession\catalog.lua
-model\item_db.lua
 
 # Entry-Point
 wow_profession_optimizer.lua
