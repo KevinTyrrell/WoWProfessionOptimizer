@@ -25,12 +25,6 @@ local function load_craftables(recipes)
 end
 
 
-local t = { 9, 8, 3, 1, 8, 7, 8, 9, 3, 2 }
-local i = 0
-local u = collect(map(unique(t), function(k, v) i = i + 1; return i, v end))
-print(table.concat(u, ", "))
-
-
 Catalog = function(prof, race, expac, start, target)
     if Type.NUMBER(start) >= Type.NUMBER(target) then
         Error.ILLEGAL_ARGUMENT(ADDON_NAME, "Skill domain is non-contiguous: [", start, ",", target, "]") end
