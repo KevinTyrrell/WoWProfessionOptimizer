@@ -101,65 +101,6 @@ def clean_json_obj(jso: dict | list) -> dict | list | None:
     return clean
 
 
-def save_json_file(jso: dict | list, dir_path: str, filename: str):
-    """
-    :param jso: JSON object
-    :param dir_path: Absolute path to the directory of where the file will be saved
-    :param filename: Name of the output file, without extension
-    """
-    with open(f"{dir_path}/{filename}.json", "w") as file:
-        json.dump(jso, file, indent=4)
-
-
-def save_lua_file(jso: dict | list, dir_path: str, filename: str):
-    """
-    :param jso: JSON object
-    :param dir_path: Absolute path to the directory of where the file will be saved
-    :param filename: Name of the output file, without extension
-    """
-
-    """
-    Saves the JSON object, making it compatible with the Lua programming language
-
-    Certain changes are made to accommodate Lua's environment:
-    * JSON object is single-lined, spaces removed, and surrounded by asteriks
-    * JSON string is assigned to a Lua table variable, based on 'filename'
-    * JSON string has asteriks escaped out
-    * JSON string has quotes escaped out
-
-    This function modifies the JSON object
-    """
-    for e in jso:
-        name: str = e["name"]
-        # TODO: Escaping characters here seems to cause double escapes e.g.: \\\"
-        # TODO: I have tried using rStrings or varying backslashes but dumps() adds extras
-        # TODO: NOTE -- Names with quotes MUST be double escaped: \\"
-        # name = name.replace('"', '\\"')  # Escape quotation
-        e["name"] = name
-    with open(f"{dir_path}/{filename}.lua", "w") as file:
-        s = json.dumps(jso, separators=(",", ":"), ensure_ascii=False)
-        s = s.replace("'", "\\'")  # Escape apostrophe
-        file.write(f"select(2, ...)[\"Profession\"][\"{filename}\"] = '{s}'")
-
-
-def get_and_save(url: str, filename: str) -> None:
-    """
-    :param url: URL to retrieve table data
-    :param filename: Filename (without extension) to be saved
-    """
-    raw = get_raw_table_data(url)
-    if not raw:
-        raise RuntimeError("No matching <script> tag detected on the web page.")
-    jso = parse_json_to_obj(raw)
-    cleaned = [clean_json_obj(e) for e in jso if clean_json_obj(e) is not None]
-
-    DATA_RELATIVE_PATH = "../../lua/WoWProfessionOptimizer/data/"
-    abs_path = path.join(path.dirname(path.abspath(__file__)), DATA_RELATIVE_PATH)
-
-    save_json_file(cleaned, f"{abs_path}/json/", filename)
-    save_lua_file(cleaned, f"{abs_path}/strings/", filename)
-
-
 class ProfIOController:
     def __init__(self, home_path: str, ext: str):
         """
@@ -206,14 +147,38 @@ class ProfIOController:
 
 # Path to JSON and Lua JSON profession folder
 PROF_DATA_RELATIVE_PATH = "../../lua/WoWProfessionOptimizer/data/"
+json_controller = ProfIOController(f"/{PROF_DATA_RELATIVE_PATH}/json/", ".json")
+lua_controller = ProfIOController(f"/{PROF_DATA_RELATIVE_PATH}/lua/", ".lua")
 
 
 def create_json_data(expansion: str, profession: str, url: str) -> None:
-    pass  # TODO:
+    table_data = get_raw_table_data(require_non_none(url))
+    if not table_data:
+        raise RuntimeError("No matching <script> tag detected on the web page.")
+    jso = parse_json_to_obj(table_data)
+    cleaned = [clean_json_obj(e) for e in jso if clean_json_obj(e) is not None]
+    json_controller.write(expansion, profession, lambda f: json.dump(jso, f, indent=4))
 
 
 def create_lua_data(expansion: str, profession: str) -> None:
-    pass  # TODO:
+    """
+    Maps an existing JSON profession file into its Lua equivalent.
+    The resulting Lua file will be saved to the storage medium.
+
+    Certain changes are made to accommodate Lua's environment:
+    * JSON string will be single-lined, spaces removed, and treated as a Lua string
+    * JSON string is assigned to Lua table value corresponding with expac/prof
+    * JSON string has asteriks and quotation marks escaped out
+
+    :param expansion: Expansion name
+    :param profession: Profession name
+    """
+    json_raw = json_controller.read(expansion, profession)
+    jso = json.loads(json_raw)
+    json_raw = json.dumps(jso, separators=(",", ":"), ensure_ascii=False)
+    json_raw = json_raw.replace("'", "\\'")  # Escape apostrophe
+    json_raw = f"select(, ...)[\"Profession\"][\"{expansion}-{profession}\"] = '{json_raw}'"
+    lua_controller.write(expansion, profession, lambda f: f.write(json_raw))
 
 
 expansions = [
