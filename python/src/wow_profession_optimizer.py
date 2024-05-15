@@ -17,13 +17,19 @@
 """
 
 from __future__ import annotations
+from typing import Callable, IO
 import requests
 from bs4 import BeautifulSoup
 
 import re
 import json
 import argparse
+import os
 from os import path
+from os.path import join
+
+from util import require_non_none
+from util import FileValidator as FV
 
 
 def get_raw_table_data(url: str) -> str:
@@ -152,6 +158,54 @@ def get_and_save(url: str, filename: str) -> None:
 
     save_json_file(cleaned, f"{abs_path}/json/", filename)
     save_lua_file(cleaned, f"{abs_path}/strings/", filename)
+
+
+class ProfIOController:
+    def __init__(self, home_path: str, ext: str):
+        """
+        :param home_path: Relative or absolute path for the controller to manage
+        :param ext: Extension in which the controller reads/writes to
+        """
+        if path.isabs(require_non_none(home_path)):
+            self.__home_path = home_path
+        else:
+            self.__home_path = path.join(path.dirname(path.abspath(__file__)), home_path)
+        self.__ext = require_non_none(ext)
+
+    def read(self, expansion: str, profession: str) -> str:
+        """
+        Reads a file and stores the contents in a string
+
+        :param expansion: Expansion name
+        :param profession: Profession name
+        :return: Contents of the file, as a string
+        """
+        FV.DirExists().validate(self.__home_path)
+        file_path = self._get_file_path(require_non_none(expansion), require_non_none(profession))
+        with open(FV.FileExists(FV.PathWritable()).validate(file_path), "r") as file:
+            return file.read()
+
+    def write(self, expansion: str, profession: str, cb: Callable[[IO[str]], None]) -> None:
+        """
+        Prepares a profession file to-be written to
+
+        :param expansion: Expansion name
+        :param profession: Profession name
+        :param cb: Callback(file) callback for writing to the file
+        """
+        FV.DirExists().validate(self.__home_path)
+        file_path = self._get_file_path(require_non_none(expansion), require_non_none(profession))
+        if path.isfile(file_path):
+            FV.PathWritable().validate(file_path)
+        with open(file_path, "w") as file:
+            cb(file)
+
+    def _get_file_path(self, expansion: str, profession: str) -> str:
+        return join(self.__home_path, f"/{expansion}-{profession}{self.__ext}")
+
+
+# Path to JSON and Lua JSON profession folder
+PROF_DATA_RELATIVE_PATH = "../../lua/WoWProfessionOptimizer/data/"
 
 
 def create_json_data(expansion: str, profession: str, url: str) -> None:
