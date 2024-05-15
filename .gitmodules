@@ -1,0 +1,5 @@
+[submodule "lua/WoWProfessionOptimizer/Libs/FadestormLib"]
+	path = lua/WoWProfessionOptimizer/Libs/FadestormLib
+	url = git@github.com:KevinTyrrell/FadestormLib.git
+	branch = master
+	update = none

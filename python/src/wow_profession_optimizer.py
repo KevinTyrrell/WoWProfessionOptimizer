@@ -16,13 +16,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from __future__ import annotations
 import requests
 from bs4 import BeautifulSoup
 
 import re
 import json
 import argparse
-from math import floor
 from os import path
 
 
@@ -50,25 +50,28 @@ def get_raw_table_data(url: str) -> str:
             return match.group(1)
 
 
-def parse_json(raw: str) -> dict | list:
+def parse_json_to_obj(raw_json: str) -> dict | list:
     """
-    :param raw: JSON string to parse into a JSON object
+    :param raw_json: JSON string to parse into a JSON object
     :return: parsed JSON object
     """
-    raw = raw.replace("popularity:", "\"popularity\":")
-    raw = raw.replace("quality:", "\"quality\":")
-    return json.loads(raw)
+    raw_json = raw_json.replace("popularity:", "\"popularity\":")
+    raw_json = raw_json.replace("quality:", "\"quality\":")
+    return json.loads(raw_json)
 
 
-def clean_json(jso: dict | list) -> dict | list | None:
+def clean_json_obj(jso: dict | list) -> dict | list | None:
     """
-    Cleans a JSON object, trimming un-needed data
+    Cleans a JSON object, trimming un-needed members & formatting data
 
     :param jso: JSON object
     :return: cleaned JSON object
     """
-    if "colors" not in jso or "creates" not in jso or "reagents" not in jso:
-        return  # Entries without 'colors', 'creates', or 'reagents' are not actual crafting skills
+
+    # Attempt to filter out 'recipes' which are not actually crafting skills
+    # Note: Most enchanting recipes don't 'create' items, thus null "creates" should not be ignored
+    if "colors" not in jso or "reagents" not in jso:
+        return
 
     product = jso["creates"]
     clean = {
@@ -82,30 +85,33 @@ def clean_json(jso: dict | list) -> dict | list | None:
     if "specialization" in jso:  # Certain crafts require specializations in their given profession
         clean["spec"] = jso["specialization"]
 
-    low = product[1]
-    high = low if len(product) <= 2 else product[2]
-    if high != low:  # Crafting recipe varies in how much it produces
-        low = (low + high) / 2
-    high = floor(low)
-    if low == high:  # Whole number
-        if high != 1:  # 'produces' of 1 is implied and is thus omitted
-            clean["produces"] = high
-    else:
-        clean["produces"] = low
+    min_product = product[1]
+    if len(product) <= 2:  # Product amount per-craft does not vary
+        if min_product != 1:
+            clean["produces"] = min_product
+    else:  # Note: Should be impossible for avg(min,max) to be 1
+        clean["produces"] = (min_product + product[2]) / 2
+
     return clean
 
 
-def save_json_file(jso: dict | list, path: str, filename: str):
+def save_json_file(jso: dict | list, dir_path: str, filename: str):
     """
     :param jso: JSON object
-    :param path: Absolute path to the directory of where the file will be saved
+    :param dir_path: Absolute path to the directory of where the file will be saved
     :param filename: Name of the output file, without extension
     """
-    with open(f"{path}/{filename}.json", "w") as file:
+    with open(f"{dir_path}/{filename}.json", "w") as file:
         json.dump(jso, file, indent=4)
 
 
-def save_lua_file(jso: dict | list, path: str, filename: str):
+def save_lua_file(jso: dict | list, dir_path: str, filename: str):
+    """
+    :param jso: JSON object
+    :param dir_path: Absolute path to the directory of where the file will be saved
+    :param filename: Name of the output file, without extension
+    """
+
     """
     Saves the JSON object, making it compatible with the Lua programming language
 
@@ -124,7 +130,7 @@ def save_lua_file(jso: dict | list, path: str, filename: str):
         # TODO: NOTE -- Names with quotes MUST be double escaped: \\"
         # name = name.replace('"', '\\"')  # Escape quotation
         e["name"] = name
-    with open(f"{path}/{filename}.lua", "w") as file:
+    with open(f"{dir_path}/{filename}.lua", "w") as file:
         s = json.dumps(jso, separators=(",", ":"), ensure_ascii=False)
         s = s.replace("'", "\\'")  # Escape apostrophe
         file.write(f"select(2, ...)[\"Profession\"][\"{filename}\"] = '{s}'")
@@ -138,8 +144,8 @@ def get_and_save(url: str, filename: str) -> None:
     raw = get_raw_table_data(url)
     if not raw:
         raise RuntimeError("No matching <script> tag detected on the web page.")
-    jso = parse_json(raw)
-    cleaned = [clean_json(e) for e in jso if clean_json(e) is not None]
+    jso = parse_json_to_obj(raw)
+    cleaned = [clean_json_obj(e) for e in jso if clean_json_obj(e) is not None]
 
     DATA_RELATIVE_PATH = "../../lua/WoWProfessionOptimizer/data/"
     abs_path = path.join(path.dirname(path.abspath(__file__)), DATA_RELATIVE_PATH)
@@ -148,14 +154,124 @@ def get_and_save(url: str, filename: str) -> None:
     save_lua_file(cleaned, f"{abs_path}/strings/", filename)
 
 
-def main():
-    # Create an argument parser
-    parser = argparse.ArgumentParser(description="Retrieves table information from specified profession page")
-    parser.add_argument("url", type=str, help="Profession webpage URL")
-    parser.add_argument("profession", type=str, help="Name of the profession, used for JSON file output")
-    args = parser.parse_args()
+def create_json_data(expansion: str, profession: str, url: str) -> None:
+    pass  # TODO:
 
-    get_and_save(args.url, args.profession)
+
+def create_lua_data(expansion: str, profession: str) -> None:
+    pass  # TODO:
+
+
+expansions = [
+    ("World of Warcraft", "WOW"),
+    ("The Burning Crusade", "TBC"),
+    ("Wrath of the Lich King", "WOLTK"),
+    ("Season of Discovery", "SOD"),
+    ("Cataclysm", "CATA"),
+    ("Mists of Pandaria", "MOP"),
+    ("Warlords of Draenor", "WOD"),
+    ("Legion", "LEGION"),
+    ("Battle for Azeroth", "BFA"),
+    ("Shadowlands", "SL"),
+    ("Dragonflight", "DF")
+]
+
+
+# Double up in order to match the expansions structure
+professions = [(x, x) for x in ["Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering",
+                                "Inscription", "Jewelcrafting", "Leatherworking", "Mining", "Tailoring"]]
+
+
+class ArpStrings:
+    PROG_NAME = "WoWProfessionOptimizer"
+    PROG_DESC = """Retrieves profession information from WoWHead as a JSON object,
+      and/or formats a profession JSON object into a Lua profession object."""
+    EXPANSION_ARG = "expansion"
+    EXPANSION_HELP = "Expansion associated with the recipe data (by ID, see: help)"
+    PROFESSION_ARG = "profession"
+    PROFESSION_HELP = "Profession associated with the recipe data (by ID, see: help)"
+    JSON_ARG = "json"
+    JSON_ARG1 = f"--{JSON_ARG}"
+    JSON_ARG2 = f"-{JSON_ARG[0]}"
+    JSON_HELP = "Profession data URL in which to iterate and save as a JSON object"
+    LUA_ARG = "lua"
+    LUA_ARG1 = f"--{LUA_ARG}"
+    LUA_ARG2 = f"-{LUA_ARG[0]}"
+    LUA_HELP = "Parses and saves the existing JSON file for this query into a Lua object"
+
+
+class ChoiceTranslator:
+    def __init__(self, choices: list[tuple[str, str]]):
+        self.__choices = choices
+
+    def verify(self, choice: int) -> int:
+        """
+        :param choice: Index to be range-checked
+        :return: Identity
+        """
+        try:
+            choice = int(choice)
+            if choice < 1 or choice > len(self.__choices):
+                raise argparse.ArgumentTypeError(f"Index '{choice}' is not of the domain: [1, {len(self.__choices)}]")
+            return choice
+        except ValueError:
+            raise argparse.ArgumentTypeError(f"Parameter type mismatch, expected integer: {choice}")
+
+    def translate(self, choice: int) -> str:
+        return self.__choices[choice - 1][1]
+
+    def choices_text(self) -> str:
+        return "\n  ".join([f"{i+1:>2}:   {self.__choices[i][0]}" for i in range(len(self.__choices))])
+
+
+exp_translator = ChoiceTranslator(expansions)
+prof_translator = ChoiceTranslator(professions)
+
+choice_mapper = {  # Maps arg keys --> arg translators
+    ArpStrings.EXPANSION_ARG: exp_translator,
+    ArpStrings.PROFESSION_ARG: prof_translator
+}
+
+
+class ChoiceHelpFormatter(argparse.HelpFormatter):
+    help_shown = False  # Flag which indicates whether argparse has shown the help screen
+
+    def format_help(self):
+        ChoiceHelpFormatter.help_shown = True
+        return super().format_help()
+
+    def _format_action_invocation(self, action):
+        if action.choices and action.dest in choice_mapper:
+            return choice_mapper[action.dest].choices_text()
+        # noinspection PyProtectedMember
+        return super()._format_action_invocation(action)
+
+
+def main():
+    parser = argparse.ArgumentParser(prog=ArpStrings.PROG_NAME, description=ArpStrings.PROG_DESC,
+                                     formatter_class=ChoiceHelpFormatter)
+    parser.add_argument(ArpStrings.EXPANSION_ARG,
+                        type=lambda x: exp_translator.verify(x),
+                        choices=[i+1 for i in range(len(expansions))],
+                        help=ArpStrings.EXPANSION_HELP)
+    parser.add_argument(ArpStrings.PROFESSION_ARG,
+                        type=lambda x: prof_translator.verify(x),
+                        choices=[i+1 for i in range(len(professions))],
+                        help=ArpStrings.PROFESSION_HELP)
+    parser.add_argument(ArpStrings.JSON_ARG1, ArpStrings.JSON_ARG2,
+                        type=str, help=ArpStrings.JSON_HELP)
+    parser.add_argument(ArpStrings.LUA_ARG1, ArpStrings.LUA_ARG2,
+                        action="store_true", help=ArpStrings.LUA_HELP)
+
+    args = parser.parse_args()
+    if not ChoiceHelpFormatter.help_shown:  # Avoid printing help menu twice
+        parser.print_help()
+    exp = exp_translator.translate(args[ArpStrings.EXPANSION_ARG])
+    prof = prof_translator.translate(args[ArpStrings.PROFESSION_ARG])
+    if args[ArpStrings.JSON_ARG]:
+        create_json_data(exp, prof, args[ArpStrings.JSON_ARG])
+    if args[ArpStrings.LUA_ARG]:
+        create_lua_data(exp, prof)
 
 
 if __name__ == '__main__':
