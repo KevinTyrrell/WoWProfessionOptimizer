@@ -24,12 +24,11 @@ from bs4 import BeautifulSoup
 import re
 import json
 import argparse
-import os
 from os import path
 from os.path import join
 
 from util import require_non_none
-from util import FileValidator as FV
+from util import FileValidator as Fv
 
 
 def get_raw_table_data(url: str) -> str:
@@ -39,6 +38,7 @@ def get_raw_table_data(url: str) -> str:
     :param url: URL of the web page
     :return: json string, possibly malformed
     """
+
     # Send a GET request to the URL
     response = requests.get(url)
     # Create a BeautifulSoup object from the response content
@@ -66,6 +66,9 @@ def parse_json_to_obj(raw_json: str) -> dict | list:
     return json.loads(raw_json)
 
 
+
+
+
 def clean_json_obj(jso: dict | list) -> dict | list | None:
     """
     Cleans a JSON object, trimming un-needed members & formatting data
@@ -85,8 +88,10 @@ def clean_json_obj(jso: dict | list) -> dict | list | None:
         "levels": [jso["learnedat"]] + jso["colors"],  # Merge 'learnedat' with 'colors'
         "reagents": {sub[0]: sub[1] for sub in jso["reagents"]},
         "product": str(product[0]),  # Turn into string since most IDs are already strings
-        "source": [6] if "source" not in jso else jso["source"]  # [6] is 'Trainer'
+        #"source": [6] if "source" not in jso else jso["source"]  # [6] is 'Trainer'
     }
+
+    if
 
     if "specialization" in jso:  # Certain crafts require specializations in their given profession
         clean["spec"] = jso["specialization"]
@@ -110,7 +115,8 @@ class ProfIOController:
         if path.isabs(require_non_none(home_path)):
             self.__home_path = home_path
         else:
-            self.__home_path = path.join(path.dirname(path.abspath(__file__)), home_path)
+            home_path = path.join(path.dirname(path.abspath(__file__)), home_path)
+            self.__home_path = path.abspath(home_path)
         self.__ext = require_non_none(ext)
 
     def read(self, expansion: str, profession: str) -> str:
@@ -121,9 +127,9 @@ class ProfIOController:
         :param profession: Profession name
         :return: Contents of the file, as a string
         """
-        FV.DirExists().validate(self.__home_path)
+        Fv.DirExists().validate(self.__home_path)
         file_path = self._get_file_path(require_non_none(expansion), require_non_none(profession))
-        with open(FV.FileExists(FV.PathWritable()).validate(file_path), "r") as file:
+        with open(Fv.FileExists(Fv.PathWritable()).validate(file_path), "r") as file:
             return file.read()
 
     def write(self, expansion: str, profession: str, cb: Callable[[IO[str]], None]) -> None:
@@ -134,21 +140,21 @@ class ProfIOController:
         :param profession: Profession name
         :param cb: Callback(file) callback for writing to the file
         """
-        FV.DirExists().validate(self.__home_path)
+        Fv.DirExists().validate(self.__home_path)
         file_path = self._get_file_path(require_non_none(expansion), require_non_none(profession))
         if path.isfile(file_path):
-            FV.PathWritable().validate(file_path)
+            Fv.PathWritable().validate(file_path)
         with open(file_path, "w") as file:
             cb(file)
 
     def _get_file_path(self, expansion: str, profession: str) -> str:
-        return join(self.__home_path, f"/{expansion}-{profession}{self.__ext}")
+        return join(self.__home_path, f"{expansion}-{profession}{self.__ext}")
 
 
 # Path to JSON and Lua JSON profession folder
 PROF_DATA_RELATIVE_PATH = "../../lua/WoWProfessionOptimizer/data/"
-json_controller = ProfIOController(f"/{PROF_DATA_RELATIVE_PATH}/json/", ".json")
-lua_controller = ProfIOController(f"/{PROF_DATA_RELATIVE_PATH}/lua/", ".lua")
+json_controller = ProfIOController(f"{PROF_DATA_RELATIVE_PATH}/json/", ".json")
+lua_controller = ProfIOController(f"{PROF_DATA_RELATIVE_PATH}/lua/", ".lua")
 
 
 def create_json_data(expansion: str, profession: str, url: str) -> None:
@@ -157,7 +163,7 @@ def create_json_data(expansion: str, profession: str, url: str) -> None:
         raise RuntimeError("No matching <script> tag detected on the web page.")
     jso = parse_json_to_obj(table_data)
     cleaned = [clean_json_obj(e) for e in jso if clean_json_obj(e) is not None]
-    json_controller.write(expansion, profession, lambda f: json.dump(jso, f, indent=4))
+    json_controller.write(expansion, profession, lambda f: json.dump(cleaned, f, indent=4))
 
 
 def create_lua_data(expansion: str, profession: str) -> None:
@@ -197,7 +203,7 @@ expansions = [
 
 
 # Double up in order to match the expansions structure
-professions = [(x, x) for x in ["Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering",
+professions = [(x, x) for x in ["Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering", "First Aid",
                                 "Inscription", "Jewelcrafting", "Leatherworking", "Mining", "Tailoring"]]
 
 
@@ -282,7 +288,7 @@ def main():
     parser.add_argument(ArpStrings.LUA_ARG1, ArpStrings.LUA_ARG2,
                         action="store_true", help=ArpStrings.LUA_HELP)
 
-    args = parser.parse_args()
+    args = vars(parser.parse_args())
     if not ChoiceHelpFormatter.help_shown:  # Avoid printing help menu twice
         parser.print_help()
     exp = exp_translator.translate(args[ArpStrings.EXPANSION_ARG])
