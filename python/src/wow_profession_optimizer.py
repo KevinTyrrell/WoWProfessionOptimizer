@@ -66,9 +66,6 @@ def parse_json_to_obj(raw_json: str) -> dict | list:
     return json.loads(raw_json)
 
 
-
-
-
 def clean_json_obj(jso: dict | list) -> dict | list | None:
     """
     Cleans a JSON object, trimming un-needed members & formatting data
@@ -91,7 +88,8 @@ def clean_json_obj(jso: dict | list) -> dict | list | None:
         #"source": [6] if "source" not in jso else jso["source"]  # [6] is 'Trainer'
     }
 
-    if
+    # TODO: Sources is very bugged. Current idea is if 'learnedat' is 1, then automatically consider it 'trainer'
+    # TODO: Otherwise no sources = pattern
 
     if "specialization" in jso:  # Certain crafts require specializations in their given profession
         clean["spec"] = jso["specialization"]
