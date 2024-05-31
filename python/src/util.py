@@ -17,7 +17,7 @@
 """
 
 from __future__ import annotations
-from typing import TypeVar, Any, Callable, Iterable
+from typing import TypeVar, Any, Callable, Iterable, Generic
 from abc import ABC, abstractmethod
 import os
 from os import path
@@ -73,3 +73,12 @@ class FileValidator(ABC):
             if self._decorator is not None:
                 return self._decorator.validate(path_str)
             return path_str
+
+
+class SetWrapper(Generic[__T]):
+    def __init__(self, base: set[__T] = None):
+        pass
+
+
+
+

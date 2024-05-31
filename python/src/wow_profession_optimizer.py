@@ -29,6 +29,7 @@ from os.path import join
 
 from util import require_non_none
 from util import FileValidator as Fv
+from json_builder import JSONTransformer
 
 
 def get_raw_table_data(url: str) -> str:
@@ -78,6 +79,10 @@ def clean_json_obj(jso: dict | list) -> dict | list | None:
     # Note: Most enchanting recipes don't 'create' items, thus null "creates" should not be ignored
     if "colors" not in jso or "reagents" not in jso:
         return
+
+    builder = JSONTransformer(jso)
+    builder.include({ "name", })
+
 
     product = jso["creates"]
     clean = {

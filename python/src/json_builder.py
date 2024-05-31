@@ -18,7 +18,7 @@
 
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Callable, Any
+from typing import Callable, Any, Generator
 
 from util import require_non_none
 
