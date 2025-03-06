@@ -22,6 +22,8 @@ from typing import Callable, Any, Generator
 
 from util import require_non_none
 
+JSON = dict[str, Any] | list  # Shorthand annotation for JSON objects
+
 
 class JSONTransformer(ABC):
     def __new__(cls, members: dict[str, Any] | list, inclusive: bool = True):

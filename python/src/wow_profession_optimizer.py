@@ -78,11 +78,10 @@ def clean_json_obj(jso: dict | list) -> dict | list | None:
     # Attempt to filter out 'recipes' which are not actually crafting skills
     # Note: Most enchanting recipes don't 'create' items, thus null "creates" should not be ignored
     if "colors" not in jso or "reagents" not in jso:
-        return
+        return None
 
     builder = JSONTransformer(jso)
-    builder.include({ "name", })
-
+    builder.include({"name"})
 
     product = jso["creates"]
     clean = {
@@ -90,7 +89,7 @@ def clean_json_obj(jso: dict | list) -> dict | list | None:
         "levels": [jso["learnedat"]] + jso["colors"],  # Merge 'learnedat' with 'colors'
         "reagents": {sub[0]: sub[1] for sub in jso["reagents"]},
         "product": str(product[0]),  # Turn into string since most IDs are already strings
-        #"source": [6] if "source" not in jso else jso["source"]  # [6] is 'Trainer'
+        # "source": [6] if "source" not in jso else jso["source"]  # [6] is 'Trainer'
     }
 
     # TODO: Sources is very bugged. Current idea is if 'learnedat' is 1, then automatically consider it 'trainer'

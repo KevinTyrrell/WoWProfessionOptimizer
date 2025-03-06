@@ -1,0 +1,4761 @@
+[
+    {
+        "name": "Handstitched Leather Boots",
+        "levels": [
+            1,
+            1,
+            40,
+            55,
+            70
+        ],
+        "reagents": {
+            "2318": 2,
+            "2320": 1
+        },
+        "product": "2302",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Light Armor Kit",
+        "levels": [
+            1,
+            1,
+            30,
+            45,
+            60
+        ],
+        "reagents": {
+            "2318": 1
+        },
+        "product": "2304",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Handstitched Leather Pants",
+        "levels": [
+            15,
+            15,
+            45,
+            60,
+            75
+        ],
+        "reagents": {
+            "2318": 4,
+            "2320": 1
+        },
+        "product": "2303",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Fine Leather Boots",
+        "levels": [
+            90,
+            90,
+            120,
+            135,
+            150
+        ],
+        "reagents": {
+            "2318": 7,
+            "2320": 2
+        },
+        "product": "2307",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Fine Leather Cloak",
+        "levels": [
+            85,
+            85,
+            105,
+            120,
+            135
+        ],
+        "reagents": {
+            "2318": 10,
+            "2321": 2
+        },
+        "product": "2308",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Embossed Leather Vest",
+        "levels": [
+            40,
+            40,
+            70,
+            85,
+            100
+        ],
+        "reagents": {
+            "2318": 8,
+            "2320": 4
+        },
+        "product": "2300",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Embossed Leather Boots",
+        "levels": [
+            55,
+            55,
+            85,
+            100,
+            115
+        ],
+        "reagents": {
+            "2318": 8,
+            "2320": 5
+        },
+        "product": "2309",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Embossed Leather Cloak",
+        "levels": [
+            60,
+            60,
+            90,
+            105,
+            120
+        ],
+        "reagents": {
+            "2318": 5,
+            "2320": 2
+        },
+        "product": "2310",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "White Leather Jerkin",
+        "levels": [
+            60,
+            60,
+            90,
+            105,
+            120
+        ],
+        "reagents": {
+            "2318": 8,
+            "2320": 2,
+            "2324": 1
+        },
+        "product": "2311",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Fine Leather Gloves",
+        "levels": [
+            75,
+            75,
+            105,
+            120,
+            135
+        ],
+        "reagents": {
+            "4231": 1,
+            "2318": 4,
+            "2320": 2
+        },
+        "product": "2312",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Medium Armor Kit",
+        "levels": [
+            100,
+            100,
+            115,
+            122,
+            130
+        ],
+        "reagents": {
+            "2319": 4,
+            "2320": 1
+        },
+        "product": "2313",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Toughened Leather Armor",
+        "levels": [
+            120,
+            120,
+            145,
+            157,
+            170
+        ],
+        "reagents": {
+            "2319": 10,
+            "4231": 2,
+            "2321": 2
+        },
+        "product": "2314",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dark Leather Boots",
+        "levels": [
+            100,
+            100,
+            125,
+            137,
+            150
+        ],
+        "reagents": {
+            "2319": 4,
+            "2321": 2,
+            "4340": 1
+        },
+        "product": "2315",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dark Leather Cloak",
+        "levels": [
+            110,
+            110,
+            135,
+            147,
+            160
+        ],
+        "reagents": {
+            "2319": 8,
+            "2321": 1,
+            "4340": 1
+        },
+        "product": "2316",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dark Leather Tunic",
+        "levels": [
+            100,
+            100,
+            125,
+            137,
+            150
+        ],
+        "reagents": {
+            "2319": 6,
+            "2321": 1,
+            "4340": 1
+        },
+        "product": "2317",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Light Leather",
+        "levels": [
+            1,
+            1,
+            20,
+            30,
+            40
+        ],
+        "reagents": {
+            "2934": 3
+        },
+        "product": "2318",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Handstitched Leather Belt",
+        "levels": [
+            25,
+            25,
+            55,
+            70,
+            85
+        ],
+        "reagents": {
+            "2318": 6,
+            "2320": 1
+        },
+        "product": "4237",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Embossed Leather Gloves",
+        "levels": [
+            55,
+            55,
+            85,
+            100,
+            115
+        ],
+        "reagents": {
+            "2318": 3,
+            "2320": 2
+        },
+        "product": "4239",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Embossed Leather Pants",
+        "levels": [
+            75,
+            75,
+            105,
+            120,
+            135
+        ],
+        "reagents": {
+            "4231": 1,
+            "2318": 6,
+            "2320": 2
+        },
+        "product": "4242",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Hillman's Cloak",
+        "levels": [
+            150,
+            150,
+            170,
+            180,
+            190
+        ],
+        "reagents": {
+            "4234": 5,
+            "2321": 2
+        },
+        "product": "3719",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Fine Leather Tunic",
+        "levels": [
+            85,
+            85,
+            115,
+            130,
+            145
+        ],
+        "reagents": {
+            "4231": 3,
+            "2318": 6,
+            "2320": 4
+        },
+        "product": "4243",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Hillman's Leather Vest",
+        "levels": [
+            100,
+            100,
+            125,
+            137,
+            150
+        ],
+        "reagents": {
+            "4243": 1,
+            "4231": 2,
+            "2320": 2
+        },
+        "product": "4244",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Fine Leather Belt",
+        "levels": [
+            80,
+            80,
+            110,
+            125,
+            140
+        ],
+        "reagents": {
+            "2318": 6,
+            "2320": 2
+        },
+        "product": "4246",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Hillman's Leather Gloves",
+        "levels": [
+            145,
+            145,
+            170,
+            182,
+            195
+        ],
+        "reagents": {
+            "2319": 14,
+            "2321": 4
+        },
+        "product": "4247",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dark Leather Gloves",
+        "levels": [
+            120,
+            120,
+            155,
+            167,
+            180
+        ],
+        "reagents": {
+            "2312": 1,
+            "4233": 1,
+            "2321": 1,
+            "4340": 1
+        },
+        "product": "4248",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dark Leather Belt",
+        "levels": [
+            125,
+            125,
+            150,
+            162,
+            175
+        ],
+        "reagents": {
+            "4246": 1,
+            "4233": 1,
+            "2321": 2,
+            "4340": 1
+        },
+        "product": "4249",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Hillman's Belt",
+        "levels": [
+            120,
+            120,
+            145,
+            157,
+            170
+        ],
+        "reagents": {
+            "2319": 8,
+            "3383": 1,
+            "2321": 2
+        },
+        "product": "4250",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Hillman's Shoulders",
+        "levels": [
+            130,
+            130,
+            155,
+            167,
+            180
+        ],
+        "reagents": {
+            "4233": 1,
+            "2319": 4,
+            "2321": 1
+        },
+        "product": "4251",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dark Leather Shoulders",
+        "levels": [
+            140,
+            140,
+            165,
+            177,
+            190
+        ],
+        "reagents": {
+            "2319": 12,
+            "3390": 1,
+            "4340": 1,
+            "2321": 2
+        },
+        "product": "4252",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Toughened Leather Gloves",
+        "levels": [
+            135,
+            135,
+            160,
+            172,
+            185
+        ],
+        "reagents": {
+            "2319": 4,
+            "4233": 2,
+            "3389": 2,
+            "3182": 2,
+            "2321": 2
+        },
+        "product": "4253",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Barbaric Gloves",
+        "levels": [
+            150,
+            150,
+            170,
+            180,
+            190
+        ],
+        "reagents": {
+            "4234": 6,
+            "5637": 2,
+            "2321": 1
+        },
+        "product": "4254",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Green Leather Armor",
+        "levels": [
+            155,
+            155,
+            175,
+            185,
+            195
+        ],
+        "reagents": {
+            "4234": 9,
+            "2605": 2,
+            "2321": 4
+        },
+        "product": "4255",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Guardian Armor",
+        "levels": [
+            175,
+            175,
+            195,
+            205,
+            215
+        ],
+        "reagents": {
+            "4236": 2,
+            "4234": 12,
+            "3824": 1,
+            "2321": 2
+        },
+        "product": "4256",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Green Leather Belt",
+        "levels": [
+            160,
+            160,
+            180,
+            190,
+            200
+        ],
+        "reagents": {
+            "4236": 1,
+            "4234": 5,
+            "2321": 1,
+            "2605": 1,
+            "7071": 1
+        },
+        "product": "4257",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Guardian Belt",
+        "levels": [
+            170,
+            170,
+            190,
+            200,
+            210
+        ],
+        "reagents": {
+            "4236": 2,
+            "4234": 4,
+            "2321": 1,
+            "7071": 1
+        },
+        "product": "4258",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Green Leather Bracers",
+        "levels": [
+            180,
+            180,
+            200,
+            210,
+            220
+        ],
+        "reagents": {
+            "4236": 2,
+            "4234": 6,
+            "2605": 1,
+            "2321": 1
+        },
+        "product": "4259",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Guardian Leather Bracers",
+        "levels": [
+            195,
+            195,
+            215,
+            225,
+            235
+        ],
+        "reagents": {
+            "4234": 6,
+            "4236": 2,
+            "4291": 1
+        },
+        "product": "4260",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Gem-studded Leather Belt",
+        "levels": [
+            185,
+            185,
+            205,
+            215,
+            225
+        ],
+        "reagents": {
+            "4236": 4,
+            "5500": 2,
+            "1529": 2,
+            "3864": 1,
+            "2321": 1
+        },
+        "product": "4262",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Barbaric Belt",
+        "levels": [
+            200,
+            200,
+            220,
+            230,
+            240
+        ],
+        "reagents": {
+            "4234": 6,
+            "4236": 2,
+            "4096": 2,
+            "5633": 1,
+            "4291": 1,
+            "7071": 1
+        },
+        "product": "4264",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Armor Kit",
+        "levels": [
+            150,
+            150,
+            170,
+            180,
+            190
+        ],
+        "reagents": {
+            "4234": 5,
+            "2321": 1
+        },
+        "product": "4265",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Cured Light Hide",
+        "levels": [
+            35,
+            35,
+            55,
+            65,
+            75
+        ],
+        "reagents": {
+            "783": 1,
+            "4289": 1
+        },
+        "product": "4231",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Cured Medium Hide",
+        "levels": [
+            100,
+            100,
+            115,
+            122,
+            130
+        ],
+        "reagents": {
+            "4232": 1,
+            "4289": 1
+        },
+        "product": "4233",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Cured Heavy Hide",
+        "levels": [
+            150,
+            150,
+            160,
+            165,
+            170
+        ],
+        "reagents": {
+            "4235": 1,
+            "4289": 3
+        },
+        "product": "4236",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Raptor Hide Harness",
+        "levels": [
+            165,
+            165,
+            185,
+            195,
+            205
+        ],
+        "reagents": {
+            "4461": 6,
+            "4234": 4,
+            "2321": 2
+        },
+        "product": "4455",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Raptor Hide Belt",
+        "levels": [
+            165,
+            165,
+            185,
+            195,
+            205
+        ],
+        "reagents": {
+            "4461": 4,
+            "4234": 4,
+            "2321": 2
+        },
+        "product": "4456",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Kodo Hide Bag",
+        "levels": [
+            40,
+            40,
+            70,
+            85,
+            100
+        ],
+        "reagents": {
+            "5082": 3,
+            "2318": 4,
+            "2320": 1
+        },
+        "product": "5081",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Barbaric Harness",
+        "levels": [
+            190,
+            190,
+            210,
+            220,
+            230
+        ],
+        "reagents": {
+            "4234": 14,
+            "2321": 2,
+            "7071": 1
+        },
+        "product": "5739",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Murloc Scale Belt",
+        "levels": [
+            90,
+            90,
+            120,
+            135,
+            150
+        ],
+        "reagents": {
+            "5784": 8,
+            "2318": 6,
+            "2321": 1
+        },
+        "product": "5780",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Murloc Scale Breastplate",
+        "levels": [
+            95,
+            95,
+            125,
+            140,
+            155
+        ],
+        "reagents": {
+            "5784": 12,
+            "4231": 1,
+            "2318": 8,
+            "2321": 1
+        },
+        "product": "5781",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Thick Murloc Armor",
+        "levels": [
+            170,
+            170,
+            190,
+            200,
+            210
+        ],
+        "reagents": {
+            "5785": 12,
+            "4236": 1,
+            "4234": 10,
+            "2321": 3
+        },
+        "product": "5782",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Murloc Scale Bracers",
+        "levels": [
+            190,
+            190,
+            210,
+            220,
+            230
+        ],
+        "reagents": {
+            "5785": 16,
+            "4236": 1,
+            "4234": 14,
+            "4291": 1
+        },
+        "product": "5783",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Handstitched Leather Vest",
+        "levels": [
+            1,
+            1,
+            40,
+            55,
+            70
+        ],
+        "reagents": {
+            "2318": 3,
+            "2320": 1
+        },
+        "product": "5957",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Fine Leather Pants",
+        "levels": [
+            105,
+            105,
+            130,
+            142,
+            155
+        ],
+        "reagents": {
+            "2319": 8,
+            "2997": 1,
+            "2321": 1
+        },
+        "product": "5958",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dark Leather Pants",
+        "levels": [
+            115,
+            115,
+            140,
+            152,
+            165
+        ],
+        "reagents": {
+            "2319": 12,
+            "4340": 1,
+            "2321": 1
+        },
+        "product": "5961",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Guardian Pants",
+        "levels": [
+            160,
+            160,
+            180,
+            190,
+            200
+        ],
+        "reagents": {
+            "4234": 12,
+            "4305": 2,
+            "2321": 2
+        },
+        "product": "5962",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Barbaric Leggings",
+        "levels": [
+            170,
+            170,
+            190,
+            200,
+            210
+        ],
+        "reagents": {
+            "4234": 10,
+            "2321": 2,
+            "1206": 1
+        },
+        "product": "5963",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Barbaric Shoulders",
+        "levels": [
+            175,
+            175,
+            195,
+            205,
+            215
+        ],
+        "reagents": {
+            "4234": 8,
+            "4236": 1,
+            "2321": 2
+        },
+        "product": "5964",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Guardian Cloak",
+        "levels": [
+            185,
+            185,
+            205,
+            215,
+            225
+        ],
+        "reagents": {
+            "4234": 14,
+            "4305": 2,
+            "4291": 2
+        },
+        "product": "5965",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Guardian Gloves",
+        "levels": [
+            190,
+            190,
+            210,
+            220,
+            230
+        ],
+        "reagents": {
+            "4234": 4,
+            "4236": 1,
+            "4291": 1
+        },
+        "product": "5966",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Deviate Scale Cloak",
+        "levels": [
+            90,
+            90,
+            120,
+            135,
+            150
+        ],
+        "reagents": {
+            "6470": 8,
+            "4231": 1,
+            "2321": 1
+        },
+        "product": "6466",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Deviate Scale Gloves",
+        "levels": [
+            105,
+            105,
+            130,
+            142,
+            155
+        ],
+        "reagents": {
+            "6471": 2,
+            "6470": 6,
+            "2321": 2
+        },
+        "product": "6467",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Deviate Scale Belt",
+        "levels": [
+            115,
+            115,
+            140,
+            152,
+            165
+        ],
+        "reagents": {
+            "6471": 10,
+            "6470": 10,
+            "2321": 2
+        },
+        "product": "6468",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Moonglow Vest",
+        "levels": [
+            90,
+            90,
+            115,
+            130,
+            145
+        ],
+        "reagents": {
+            "2318": 6,
+            "4231": 1,
+            "2320": 4,
+            "5498": 1
+        },
+        "product": "6709",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Handstitched Leather Cloak",
+        "levels": [
+            1,
+            1,
+            40,
+            55,
+            70
+        ],
+        "reagents": {
+            "2318": 2,
+            "2320": 1
+        },
+        "product": "7276",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Handstitched Leather Bracers",
+        "levels": [
+            1,
+            1,
+            40,
+            55,
+            70
+        ],
+        "reagents": {
+            "2318": 2,
+            "2320": 3
+        },
+        "product": "7277",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Light Leather Quiver",
+        "levels": [
+            30,
+            30,
+            60,
+            75,
+            90
+        ],
+        "reagents": {
+            "2318": 4,
+            "2320": 2
+        },
+        "product": "7278",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Small Leather Ammo Pouch",
+        "levels": [
+            30,
+            30,
+            60,
+            75,
+            90
+        ],
+        "reagents": {
+            "2318": 3,
+            "2320": 4
+        },
+        "product": "7279",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Rugged Leather Pants",
+        "levels": [
+            35,
+            35,
+            65,
+            80,
+            95
+        ],
+        "reagents": {
+            "2318": 5,
+            "2320": 5
+        },
+        "product": "7280",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Light Leather Bracers",
+        "levels": [
+            70,
+            70,
+            100,
+            115,
+            130
+        ],
+        "reagents": {
+            "2318": 6,
+            "2320": 4
+        },
+        "product": "7281",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Light Leather Pants",
+        "levels": [
+            95,
+            95,
+            125,
+            140,
+            155
+        ],
+        "reagents": {
+            "2318": 10,
+            "4231": 1,
+            "2321": 1
+        },
+        "product": "7282",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Black Whelp Cloak",
+        "levels": [
+            100,
+            100,
+            125,
+            137,
+            150
+        ],
+        "reagents": {
+            "7286": 12,
+            "2319": 4,
+            "2321": 1
+        },
+        "product": "7283",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Red Whelp Gloves",
+        "levels": [
+            120,
+            120,
+            145,
+            157,
+            170
+        ],
+        "reagents": {
+            "7287": 6,
+            "2319": 4,
+            "2321": 1
+        },
+        "product": "7284",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Nimble Leather Gloves",
+        "levels": [
+            120,
+            120,
+            145,
+            157,
+            170
+        ],
+        "reagents": {
+            "2457": 1,
+            "2319": 6,
+            "2321": 1
+        },
+        "product": "7285",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Fletcher's Gloves",
+        "levels": [
+            125,
+            125,
+            150,
+            162,
+            175
+        ],
+        "reagents": {
+            "2319": 8,
+            "5116": 4,
+            "2321": 2
+        },
+        "product": "7348",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Herbalist's Gloves",
+        "levels": [
+            135,
+            135,
+            160,
+            172,
+            185
+        ],
+        "reagents": {
+            "2319": 8,
+            "3356": 4,
+            "2321": 2
+        },
+        "product": "7349",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Earthen Leather Shoulders",
+        "levels": [
+            135,
+            135,
+            160,
+            172,
+            185
+        ],
+        "reagents": {
+            "2319": 6,
+            "7067": 1,
+            "2321": 2
+        },
+        "product": "7352",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Pilferer's Gloves",
+        "levels": [
+            140,
+            140,
+            165,
+            177,
+            190
+        ],
+        "reagents": {
+            "2319": 10,
+            "5373": 2,
+            "2321": 2
+        },
+        "product": "7358",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Earthen Gloves",
+        "levels": [
+            145,
+            145,
+            170,
+            182,
+            195
+        ],
+        "reagents": {
+            "2319": 12,
+            "7067": 2,
+            "2997": 2,
+            "2321": 2
+        },
+        "product": "7359",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Quiver",
+        "levels": [
+            150,
+            150,
+            170,
+            180,
+            190
+        ],
+        "reagents": {
+            "4234": 8,
+            "2321": 2
+        },
+        "product": "7371",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Leather Ammo Pouch",
+        "levels": [
+            150,
+            150,
+            170,
+            180,
+            190
+        ],
+        "reagents": {
+            "4234": 8,
+            "2321": 2
+        },
+        "product": "7372",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dusky Leather Leggings",
+        "levels": [
+            165,
+            165,
+            185,
+            195,
+            205
+        ],
+        "reagents": {
+            "4234": 10,
+            "2325": 1,
+            "2321": 2
+        },
+        "product": "7373",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dusky Leather Armor",
+        "levels": [
+            175,
+            175,
+            195,
+            205,
+            215
+        ],
+        "reagents": {
+            "4234": 10,
+            "3824": 1,
+            "2321": 2
+        },
+        "product": "7374",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Green Whelp Armor",
+        "levels": [
+            175,
+            175,
+            195,
+            205,
+            215
+        ],
+        "reagents": {
+            "7392": 4,
+            "4234": 10,
+            "2321": 2
+        },
+        "product": "7375",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Frost Leather Cloak",
+        "levels": [
+            180,
+            180,
+            200,
+            210,
+            220
+        ],
+        "reagents": {
+            "4234": 6,
+            "7067": 2,
+            "7070": 2,
+            "2321": 2
+        },
+        "product": "7377",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dusky Bracers",
+        "levels": [
+            185,
+            185,
+            205,
+            215,
+            225
+        ],
+        "reagents": {
+            "4234": 16,
+            "2325": 1,
+            "4291": 2
+        },
+        "product": "7378",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Green Whelp Bracers",
+        "levels": [
+            190,
+            190,
+            210,
+            220,
+            230
+        ],
+        "reagents": {
+            "7392": 6,
+            "4234": 8,
+            "4291": 2
+        },
+        "product": "7386",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dusky Belt",
+        "levels": [
+            195,
+            195,
+            215,
+            225,
+            235
+        ],
+        "reagents": {
+            "4234": 10,
+            "4305": 2,
+            "2325": 2,
+            "7071": 1
+        },
+        "product": "7387",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dusky Boots",
+        "levels": [
+            200,
+            200,
+            220,
+            230,
+            240
+        ],
+        "reagents": {
+            "4234": 8,
+            "7428": 2,
+            "3824": 1,
+            "4291": 2
+        },
+        "product": "7390",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Swift Boots",
+        "levels": [
+            200,
+            200,
+            220,
+            230,
+            240
+        ],
+        "reagents": {
+            "4234": 10,
+            "2459": 2,
+            "4337": 2,
+            "4291": 1
+        },
+        "product": "7391",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Cured Thick Hide",
+        "levels": [
+            200,
+            200,
+            200,
+            200,
+            200
+        ],
+        "reagents": {
+            "8169": 1,
+            "8150": 1
+        },
+        "product": "8172",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Thick Armor Kit",
+        "levels": [
+            200,
+            200,
+            220,
+            230,
+            240
+        ],
+        "reagents": {
+            "4304": 5,
+            "4291": 1
+        },
+        "product": "8173",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Comfortable Leather Hat",
+        "levels": [
+            200,
+            200,
+            220,
+            230,
+            240
+        ],
+        "reagents": {
+            "4234": 12,
+            "4236": 2,
+            "4291": 2
+        },
+        "product": "8174",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Nightscape Tunic",
+        "levels": [
+            205,
+            205,
+            225,
+            235,
+            245
+        ],
+        "reagents": {
+            "4304": 7,
+            "4291": 2
+        },
+        "product": "8175",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Nightscape Headband",
+        "levels": [
+            205,
+            205,
+            225,
+            235,
+            245
+        ],
+        "reagents": {
+            "4304": 5,
+            "4291": 2
+        },
+        "product": "8176",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Turtle Scale Gloves",
+        "levels": [
+            205,
+            205,
+            225,
+            235,
+            245
+        ],
+        "reagents": {
+            "4304": 6,
+            "8167": 8,
+            "8343": 1
+        },
+        "product": "8187",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Turtle Scale Breastplate",
+        "levels": [
+            210,
+            210,
+            230,
+            240,
+            250
+        ],
+        "reagents": {
+            "4304": 6,
+            "8167": 12,
+            "8343": 1
+        },
+        "product": "8189",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Nightscape Shoulders",
+        "levels": [
+            210,
+            210,
+            230,
+            240,
+            250
+        ],
+        "reagents": {
+            "4304": 8,
+            "4338": 6,
+            "4291": 3
+        },
+        "product": "8192",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Turtle Scale Bracers",
+        "levels": [
+            210,
+            210,
+            230,
+            240,
+            250
+        ],
+        "reagents": {
+            "4304": 8,
+            "8167": 12,
+            "8343": 1
+        },
+        "product": "8198",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Big Voodoo Robe",
+        "levels": [
+            215,
+            215,
+            235,
+            245,
+            255
+        ],
+        "reagents": {
+            "4304": 10,
+            "8151": 4,
+            "8343": 1
+        },
+        "product": "8200",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Tough Scorpid Breastplate",
+        "levels": [
+            220,
+            220,
+            240,
+            250,
+            260
+        ],
+        "reagents": {
+            "4304": 12,
+            "8154": 12,
+            "4291": 4
+        },
+        "product": "8203",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wild Leather Shoulders",
+        "levels": [
+            220,
+            220,
+            240,
+            250,
+            260
+        ],
+        "reagents": {
+            "4304": 10,
+            "8153": 1,
+            "8172": 1
+        },
+        "product": "8210",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Big Voodoo Mask",
+        "levels": [
+            220,
+            220,
+            240,
+            250,
+            260
+        ],
+        "reagents": {
+            "4304": 8,
+            "8151": 6,
+            "8343": 1
+        },
+        "product": "8201",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Tough Scorpid Bracers",
+        "levels": [
+            220,
+            220,
+            240,
+            250,
+            260
+        ],
+        "reagents": {
+            "4304": 10,
+            "8154": 4,
+            "4291": 2
+        },
+        "product": "8205",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Tough Scorpid Gloves",
+        "levels": [
+            225,
+            225,
+            245,
+            255,
+            265
+        ],
+        "reagents": {
+            "4304": 6,
+            "8154": 8,
+            "4291": 2
+        },
+        "product": "8204",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wild Leather Vest",
+        "levels": [
+            225,
+            225,
+            245,
+            255,
+            265
+        ],
+        "reagents": {
+            "4304": 12,
+            "8153": 2,
+            "8172": 1
+        },
+        "product": "8211",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wild Leather Helmet",
+        "levels": [
+            225,
+            225,
+            245,
+            255,
+            265
+        ],
+        "reagents": {
+            "4304": 10,
+            "8153": 2,
+            "8172": 1
+        },
+        "product": "8214",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Nightscape Pants",
+        "levels": [
+            230,
+            230,
+            250,
+            260,
+            270
+        ],
+        "reagents": {
+            "4304": 14,
+            "4291": 4
+        },
+        "product": "8193",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Turtle Scale Helm",
+        "levels": [
+            230,
+            230,
+            250,
+            260,
+            270
+        ],
+        "reagents": {
+            "4304": 14,
+            "8167": 24,
+            "8343": 1
+        },
+        "product": "8191",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Tough Scorpid Boots",
+        "levels": [
+            235,
+            235,
+            255,
+            265,
+            275
+        ],
+        "reagents": {
+            "4304": 12,
+            "8154": 12,
+            "4291": 6
+        },
+        "product": "8209",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Turtle Scale Leggings",
+        "levels": [
+            235,
+            235,
+            255,
+            265,
+            275
+        ],
+        "reagents": {
+            "4304": 14,
+            "8167": 28,
+            "8343": 1
+        },
+        "product": "8185",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Nightscape Boots",
+        "levels": [
+            235,
+            235,
+            255,
+            265,
+            275
+        ],
+        "reagents": {
+            "4304": 16,
+            "8343": 2
+        },
+        "product": "8197",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Big Voodoo Pants",
+        "levels": [
+            240,
+            240,
+            260,
+            270,
+            280
+        ],
+        "reagents": {
+            "4304": 10,
+            "8152": 6,
+            "8343": 2
+        },
+        "product": "8202",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Big Voodoo Cloak",
+        "levels": [
+            240,
+            240,
+            260,
+            270,
+            280
+        ],
+        "reagents": {
+            "4304": 14,
+            "8152": 4,
+            "8343": 2
+        },
+        "product": "8216",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Tough Scorpid Shoulders",
+        "levels": [
+            240,
+            240,
+            260,
+            270,
+            280
+        ],
+        "reagents": {
+            "4304": 12,
+            "8154": 16,
+            "8343": 2
+        },
+        "product": "8207",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wild Leather Boots",
+        "levels": [
+            245,
+            245,
+            265,
+            275,
+            285
+        ],
+        "reagents": {
+            "4304": 14,
+            "8153": 4,
+            "8172": 2
+        },
+        "product": "8213",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Tough Scorpid Leggings",
+        "levels": [
+            245,
+            245,
+            265,
+            275,
+            285
+        ],
+        "reagents": {
+            "4304": 14,
+            "8154": 8,
+            "8343": 2
+        },
+        "product": "8206",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Tough Scorpid Helm",
+        "levels": [
+            250,
+            250,
+            270,
+            280,
+            290
+        ],
+        "reagents": {
+            "4304": 10,
+            "8154": 20,
+            "8343": 2
+        },
+        "product": "8208",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wild Leather Leggings",
+        "levels": [
+            250,
+            250,
+            270,
+            280,
+            290
+        ],
+        "reagents": {
+            "4304": 16,
+            "8153": 6,
+            "8172": 2
+        },
+        "product": "8212",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wild Leather Cloak",
+        "levels": [
+            250,
+            250,
+            270,
+            280,
+            290
+        ],
+        "reagents": {
+            "4304": 16,
+            "8153": 6,
+            "8172": 2
+        },
+        "product": "8215",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dragonscale Gauntlets",
+        "levels": [
+            225,
+            225,
+            245,
+            255,
+            265
+        ],
+        "reagents": {
+            "4304": 24,
+            "8165": 12,
+            "8343": 4,
+            "8172": 2
+        },
+        "product": "8347",
+        "source": [
+            6
+        ],
+        "spec": 10656,
+        "produces": 1.0
+    },
+    {
+        "name": "Wolfshead Helm",
+        "levels": [
+            225,
+            225,
+            245,
+            255,
+            265
+        ],
+        "reagents": {
+            "4304": 18,
+            "8368": 2,
+            "8146": 8,
+            "8343": 4,
+            "8172": 2
+        },
+        "product": "8345",
+        "source": [
+            6
+        ],
+        "spec": 10660,
+        "produces": 1.0
+    },
+    {
+        "name": "Gauntlets of the Sea",
+        "levels": [
+            230,
+            230,
+            250,
+            260,
+            270
+        ],
+        "reagents": {
+            "4304": 20,
+            "7079": 8,
+            "7075": 2,
+            "8172": 1,
+            "8343": 4
+        },
+        "product": "8346",
+        "source": [
+            6
+        ],
+        "spec": 10658,
+        "produces": 1.0
+    },
+    {
+        "name": "Helm of Fire",
+        "levels": [
+            250,
+            250,
+            270,
+            280,
+            290
+        ],
+        "reagents": {
+            "4304": 40,
+            "7077": 8,
+            "7075": 4,
+            "8172": 2,
+            "8343": 4
+        },
+        "product": "8348",
+        "source": [
+            6
+        ],
+        "spec": 10658,
+        "produces": 1.0
+    },
+    {
+        "name": "Feathered Breastplate",
+        "levels": [
+            250,
+            250,
+            270,
+            280,
+            290
+        ],
+        "reagents": {
+            "4304": 40,
+            "8168": 40,
+            "7971": 2,
+            "8172": 4,
+            "8343": 4
+        },
+        "product": "8349",
+        "source": [
+            6
+        ],
+        "spec": 10660,
+        "produces": 1.0
+    },
+    {
+        "name": "Dragonscale Breastplate",
+        "levels": [
+            255,
+            255,
+            275,
+            285,
+            295
+        ],
+        "reagents": {
+            "4304": 40,
+            "8165": 30,
+            "8343": 4,
+            "8172": 4
+        },
+        "product": "8367",
+        "source": [
+            6
+        ],
+        "spec": 10656,
+        "produces": 1.0
+    },
+    {
+        "name": "Quickdraw Quiver",
+        "levels": [
+            225,
+            225,
+            245,
+            255,
+            265
+        ],
+        "reagents": {
+            "4304": 12,
+            "8172": 1,
+            "8949": 1,
+            "4291": 4
+        },
+        "product": "8217",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Thick Leather Ammo Pouch",
+        "levels": [
+            225,
+            225,
+            245,
+            255,
+            265
+        ],
+        "reagents": {
+            "4304": 10,
+            "8172": 1,
+            "8951": 1,
+            "4291": 6
+        },
+        "product": "8218",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Cured Rugged Hide",
+        "levels": [
+            250,
+            250,
+            250,
+            255,
+            260
+        ],
+        "reagents": {
+            "8171": 1,
+            "15409": 1
+        },
+        "product": "15407",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Scorpid Bracers",
+        "levels": [
+            255,
+            255,
+            275,
+            285,
+            295
+        ],
+        "reagents": {
+            "8170": 4,
+            "15408": 4,
+            "14341": 1
+        },
+        "product": "15077",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wicked Leather Gauntlets",
+        "levels": [
+            260,
+            260,
+            280,
+            290,
+            300
+        ],
+        "reagents": {
+            "8170": 8,
+            "2325": 1,
+            "14341": 1
+        },
+        "product": "15083",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Green Dragonscale Breastplate",
+        "levels": [
+            260,
+            260,
+            280,
+            290,
+            300
+        ],
+        "reagents": {
+            "8170": 20,
+            "15412": 25,
+            "14341": 2
+        },
+        "product": "15045",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Scorpid Vest",
+        "levels": [
+            265,
+            265,
+            285,
+            295,
+            305
+        ],
+        "reagents": {
+            "8170": 6,
+            "15408": 6,
+            "14341": 1
+        },
+        "product": "15076",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wicked Leather Bracers",
+        "levels": [
+            265,
+            265,
+            285,
+            295,
+            305
+        ],
+        "reagents": {
+            "8170": 8,
+            "2325": 1,
+            "14341": 1
+        },
+        "product": "15084",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Chimeric Gloves",
+        "levels": [
+            265,
+            265,
+            285,
+            295,
+            305
+        ],
+        "reagents": {
+            "8170": 6,
+            "15423": 6,
+            "14341": 1
+        },
+        "product": "15074",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Red Dragonscale Breastplate",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 40,
+            "15414": 30,
+            "14341": 1
+        },
+        "product": "15047",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Runic Leather Gauntlets",
+        "levels": [
+            270,
+            270,
+            290,
+            300,
+            310
+        ],
+        "reagents": {
+            "8170": 10,
+            "14047": 6,
+            "14341": 1
+        },
+        "product": "15091",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Rugged Armor Kit",
+        "levels": [
+            250,
+            250,
+            250,
+            260,
+            270
+        ],
+        "reagents": {
+            "8170": 5
+        },
+        "product": "15564",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Volcanic Leggings",
+        "levels": [
+            270,
+            270,
+            290,
+            300,
+            310
+        ],
+        "reagents": {
+            "8170": 6,
+            "7078": 1,
+            "7075": 1,
+            "14341": 1
+        },
+        "product": "15054",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Green Dragonscale Leggings",
+        "levels": [
+            270,
+            270,
+            290,
+            300,
+            310
+        ],
+        "reagents": {
+            "8170": 20,
+            "15412": 25,
+            "14341": 1
+        },
+        "product": "15046",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Living Shoulders",
+        "levels": [
+            270,
+            270,
+            290,
+            300,
+            310
+        ],
+        "reagents": {
+            "8170": 12,
+            "12803": 4,
+            "14341": 1
+        },
+        "product": "15061",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Ironfeather Shoulders",
+        "levels": [
+            270,
+            270,
+            290,
+            300,
+            310
+        ],
+        "reagents": {
+            "8170": 24,
+            "15420": 80,
+            "1529": 2,
+            "14341": 1
+        },
+        "product": "15067",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Chimeric Boots",
+        "levels": [
+            275,
+            275,
+            295,
+            305,
+            315
+        ],
+        "reagents": {
+            "8170": 4,
+            "15423": 8,
+            "14341": 1
+        },
+        "product": "15073",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Scorpid Gauntlets",
+        "levels": [
+            275,
+            275,
+            295,
+            305,
+            315
+        ],
+        "reagents": {
+            "8170": 6,
+            "15408": 8,
+            "14341": 1
+        },
+        "product": "15078",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Runic Leather Bracers",
+        "levels": [
+            275,
+            275,
+            295,
+            305,
+            315
+        ],
+        "reagents": {
+            "8170": 6,
+            "7971": 1,
+            "14047": 6,
+            "14341": 1
+        },
+        "product": "15092",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Frostsaber Boots",
+        "levels": [
+            275,
+            275,
+            295,
+            305,
+            315
+        ],
+        "reagents": {
+            "8170": 4,
+            "15422": 6,
+            "14341": 1
+        },
+        "product": "15071",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Stormshroud Pants",
+        "levels": [
+            275,
+            275,
+            295,
+            305,
+            315
+        ],
+        "reagents": {
+            "8170": 16,
+            "7080": 2,
+            "7082": 2,
+            "14341": 1
+        },
+        "product": "15057",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Warbear Harness",
+        "levels": [
+            275,
+            275,
+            295,
+            305,
+            315
+        ],
+        "reagents": {
+            "8170": 28,
+            "15419": 12,
+            "14341": 1
+        },
+        "product": "15064",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Scorpid Belt",
+        "levels": [
+            280,
+            280,
+            300,
+            310,
+            320
+        ],
+        "reagents": {
+            "8170": 6,
+            "15408": 8,
+            "14341": 1
+        },
+        "product": "15082",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wicked Leather Headband",
+        "levels": [
+            280,
+            280,
+            300,
+            310,
+            320
+        ],
+        "reagents": {
+            "8170": 12,
+            "2325": 1,
+            "14341": 1
+        },
+        "product": "15086",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Runic Leather Belt",
+        "levels": [
+            280,
+            280,
+            300,
+            310,
+            320
+        ],
+        "reagents": {
+            "8170": 12,
+            "14047": 10,
+            "14341": 1
+        },
+        "product": "15093",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Chimeric Leggings",
+        "levels": [
+            280,
+            280,
+            300,
+            310,
+            320
+        ],
+        "reagents": {
+            "8170": 8,
+            "15423": 8,
+            "14341": 1
+        },
+        "product": "15072",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Frostsaber Leggings",
+        "levels": [
+            285,
+            285,
+            305,
+            315,
+            325
+        ],
+        "reagents": {
+            "8170": 6,
+            "15422": 8,
+            "14341": 1
+        },
+        "product": "15069",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Scorpid Leggings",
+        "levels": [
+            285,
+            285,
+            305,
+            315,
+            325
+        ],
+        "reagents": {
+            "8170": 8,
+            "15408": 12,
+            "14341": 1
+        },
+        "product": "15079",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Volcanic Breastplate",
+        "levels": [
+            285,
+            285,
+            305,
+            315,
+            325
+        ],
+        "reagents": {
+            "8170": 8,
+            "7078": 1,
+            "7076": 1,
+            "14341": 1
+        },
+        "product": "15053",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Blue Dragonscale Breastplate",
+        "levels": [
+            285,
+            285,
+            305,
+            315,
+            325
+        ],
+        "reagents": {
+            "8170": 28,
+            "15415": 30,
+            "15407": 1,
+            "14341": 1
+        },
+        "product": "15048",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Living Leggings",
+        "levels": [
+            285,
+            285,
+            305,
+            315,
+            325
+        ],
+        "reagents": {
+            "8170": 16,
+            "12803": 6,
+            "15407": 1,
+            "14341": 1
+        },
+        "product": "15060",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Stormshroud Armor",
+        "levels": [
+            285,
+            285,
+            305,
+            315,
+            325
+        ],
+        "reagents": {
+            "8170": 16,
+            "7080": 3,
+            "7082": 3,
+            "15407": 1,
+            "14341": 1
+        },
+        "product": "15056",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Warbear Woolies",
+        "levels": [
+            285,
+            285,
+            305,
+            315,
+            325
+        ],
+        "reagents": {
+            "8170": 24,
+            "15419": 14,
+            "14341": 1
+        },
+        "product": "15065",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Chimeric Vest",
+        "levels": [
+            290,
+            290,
+            310,
+            320,
+            330
+        ],
+        "reagents": {
+            "8170": 10,
+            "15423": 10,
+            "14341": 1
+        },
+        "product": "15075",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Runic Leather Headband",
+        "levels": [
+            290,
+            290,
+            310,
+            320,
+            330
+        ],
+        "reagents": {
+            "8170": 14,
+            "14047": 10,
+            "14341": 1
+        },
+        "product": "15094",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wicked Leather Pants",
+        "levels": [
+            290,
+            290,
+            310,
+            320,
+            330
+        ],
+        "reagents": {
+            "8170": 16,
+            "15407": 1,
+            "2325": 3,
+            "14341": 1
+        },
+        "product": "15087",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Devilsaur Gauntlets",
+        "levels": [
+            290,
+            290,
+            310,
+            320,
+            330
+        ],
+        "reagents": {
+            "8170": 30,
+            "15417": 8,
+            "14341": 1
+        },
+        "product": "15063",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Black Dragonscale Breastplate",
+        "levels": [
+            290,
+            290,
+            310,
+            320,
+            330
+        ],
+        "reagents": {
+            "8170": 40,
+            "15416": 60,
+            "15407": 1,
+            "14341": 2
+        },
+        "product": "15050",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Ironfeather Breastplate",
+        "levels": [
+            290,
+            290,
+            310,
+            320,
+            330
+        ],
+        "reagents": {
+            "8170": 40,
+            "15420": 120,
+            "1529": 1,
+            "15407": 1,
+            "14341": 1
+        },
+        "product": "15066",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Frostsaber Gloves",
+        "levels": [
+            295,
+            295,
+            315,
+            325,
+            335
+        ],
+        "reagents": {
+            "8170": 6,
+            "15422": 10,
+            "14341": 1
+        },
+        "product": "15070",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Scorpid Helm",
+        "levels": [
+            295,
+            295,
+            315,
+            325,
+            335
+        ],
+        "reagents": {
+            "8170": 8,
+            "15408": 12,
+            "15407": 1,
+            "14341": 1
+        },
+        "product": "15080",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Blue Dragonscale Shoulders",
+        "levels": [
+            295,
+            295,
+            315,
+            325,
+            335
+        ],
+        "reagents": {
+            "8170": 28,
+            "15415": 30,
+            "12810": 2,
+            "15407": 1,
+            "14341": 1
+        },
+        "product": "15049",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Stormshroud Shoulders",
+        "levels": [
+            295,
+            295,
+            315,
+            325,
+            335
+        ],
+        "reagents": {
+            "8170": 12,
+            "7080": 3,
+            "7082": 3,
+            "12810": 2,
+            "14341": 1
+        },
+        "product": "15058",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Runic Leather Pants",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 18,
+            "14047": 12,
+            "12810": 2,
+            "14341": 1
+        },
+        "product": "15095",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wicked Leather Belt",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 14,
+            "2325": 2,
+            "14341": 2
+        },
+        "product": "15088",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Onyxia Scale Cloak",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "15410": 1,
+            "14044": 1,
+            "14341": 1
+        },
+        "product": "15138",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Black Dragonscale Shoulders",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 44,
+            "15416": 45,
+            "12810": 2,
+            "15407": 1,
+            "14341": 1
+        },
+        "product": "15051",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Living Breastplate",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 16,
+            "12803": 8,
+            "14342": 2,
+            "15407": 1,
+            "14341": 2
+        },
+        "product": "15059",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Devilsaur Leggings",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 30,
+            "15417": 14,
+            "15407": 1,
+            "14341": 1
+        },
+        "product": "15062",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Wicked Leather Armor",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 20,
+            "15407": 2,
+            "14256": 6,
+            "2325": 4,
+            "14341": 2
+        },
+        "product": "15085",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Scorpid Shoulders",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 14,
+            "15408": 14,
+            "15407": 1,
+            "14341": 2
+        },
+        "product": "15081",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Volcanic Shoulders",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 10,
+            "7078": 1,
+            "7076": 1,
+            "14341": 2
+        },
+        "product": "15055",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Runic Leather Armor",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 22,
+            "12810": 4,
+            "14047": 16,
+            "15407": 1,
+            "14341": 2
+        },
+        "product": "15090",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Runic Leather Shoulders",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 16,
+            "12810": 4,
+            "14047": 18,
+            "15407": 1,
+            "14341": 2
+        },
+        "product": "15096",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Frostsaber Tunic",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 12,
+            "15422": 12,
+            "15407": 1,
+            "14341": 2
+        },
+        "product": "15068",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Black Dragonscale Leggings",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 40,
+            "15416": 60,
+            "12810": 4,
+            "15407": 1,
+            "14341": 2
+        },
+        "product": "15052",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Medium Leather",
+        "levels": [
+            100,
+            100,
+            100,
+            105,
+            110
+        ],
+        "reagents": {
+            "2318": 4
+        },
+        "product": "2319",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Leather",
+        "levels": [
+            150,
+            150,
+            150,
+            155,
+            160
+        ],
+        "reagents": {
+            "2319": 5
+        },
+        "product": "4234",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Thick Leather",
+        "levels": [
+            200,
+            200,
+            200,
+            202,
+            205
+        ],
+        "reagents": {
+            "4234": 6
+        },
+        "product": "4304",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Corehound Boots",
+        "levels": [
+            295,
+            295,
+            315,
+            325,
+            335
+        ],
+        "reagents": {
+            "17012": 20,
+            "17010": 6,
+            "17011": 2,
+            "14341": 2
+        },
+        "product": "16982",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Molten Helm",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "17012": 15,
+            "17010": 3,
+            "17011": 6,
+            "14341": 2
+        },
+        "product": "16983",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Black Dragonscale Boots",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "12810": 6,
+            "15416": 30,
+            "17010": 4,
+            "17011": 3,
+            "14341": 2
+        },
+        "product": "16984",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Gloves of the Greatfather",
+        "levels": [
+            190,
+            190,
+            210,
+            220,
+            230
+        ],
+        "reagents": {
+            "4234": 8,
+            "7067": 4,
+            "4291": 1
+        },
+        "product": "17721",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Rugged Leather",
+        "levels": [
+            250,
+            250,
+            250,
+            250,
+            250
+        ],
+        "reagents": {
+            "4304": 6
+        },
+        "product": "8170",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Shadowskin Gloves",
+        "levels": [
+            200,
+            200,
+            210,
+            220,
+            230
+        ],
+        "reagents": {
+            "4304": 6,
+            "7428": 8,
+            "7971": 2,
+            "4236": 2,
+            "1210": 4,
+            "8343": 1
+        },
+        "product": "18238",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Core Armor Kit",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "17012": 3,
+            "14341": 2
+        },
+        "product": "18251",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Gordok Ogre Suit",
+        "levels": [
+            285,
+            0,
+            285,
+            290,
+            295
+        ],
+        "reagents": {
+            "8170": 4,
+            "14048": 2,
+            "18240": 1,
+            "14341": 1
+        },
+        "product": "18258",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Girdle of Insight",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 12,
+            "12804": 12,
+            "15407": 2,
+            "14341": 4
+        },
+        "product": "18504",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Mongoose Boots",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 12,
+            "7082": 6,
+            "11754": 4,
+            "15407": 2,
+            "14341": 4
+        },
+        "product": "18506",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Swift Flight Bracers",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 12,
+            "18512": 8,
+            "15420": 60,
+            "15407": 4,
+            "14341": 4
+        },
+        "product": "18508",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Chromatic Cloak",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 30,
+            "12607": 12,
+            "15416": 30,
+            "15414": 30,
+            "15407": 5,
+            "14341": 8
+        },
+        "product": "18509",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Hide of the Wild",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 30,
+            "12803": 12,
+            "7080": 10,
+            "18512": 8,
+            "15407": 3,
+            "14341": 8
+        },
+        "product": "18510",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Shifting Cloak",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 30,
+            "7082": 12,
+            "12753": 4,
+            "12809": 8,
+            "15407": 4,
+            "14341": 8
+        },
+        "product": "18511",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Heavy Leather Ball",
+        "levels": [
+            150,
+            150,
+            150,
+            155,
+            160
+        ],
+        "reagents": {
+            "4234": 2,
+            "2321": 1
+        },
+        "product": "18662",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Barbaric Bracers",
+        "levels": [
+            155,
+            155,
+            175,
+            185,
+            195
+        ],
+        "reagents": {
+            "4234": 8,
+            "4236": 2,
+            "5498": 4,
+            "4461": 1,
+            "5637": 4
+        },
+        "product": "18948",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Might of the Timbermaw",
+        "levels": [
+            290,
+            290,
+            310,
+            320,
+            330
+        ],
+        "reagents": {
+            "8170": 30,
+            "12804": 2,
+            "12803": 4,
+            "15407": 2,
+            "14341": 2
+        },
+        "product": "19044",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Timbermaw Brawlers",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "12810": 8,
+            "12804": 6,
+            "12803": 6,
+            "15407": 2,
+            "14227": 2
+        },
+        "product": "19049",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Dawn Treaders",
+        "levels": [
+            290,
+            290,
+            310,
+            320,
+            330
+        ],
+        "reagents": {
+            "8170": 30,
+            "12809": 2,
+            "7080": 4,
+            "15407": 2,
+            "14341": 2
+        },
+        "product": "19052",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Golden Mantle of the Dawn",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "12810": 8,
+            "12803": 4,
+            "12809": 4,
+            "15407": 2,
+            "14341": 2
+        },
+        "product": "19058",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Lava Belt",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "17011": 5,
+            "15407": 4,
+            "14227": 4
+        },
+        "product": "19149",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Chromatic Gauntlets",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "17010": 5,
+            "17011": 2,
+            "17012": 4,
+            "12607": 4,
+            "15407": 4,
+            "14227": 4
+        },
+        "product": "19157",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Corehound Belt",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "17010": 8,
+            "17012": 12,
+            "12810": 10,
+            "15407": 4,
+            "14227": 4
+        },
+        "product": "19162",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Molten Belt",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "17010": 2,
+            "17011": 7,
+            "7076": 6,
+            "15407": 4,
+            "14227": 4
+        },
+        "product": "19163",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Primal Batskin Jerkin",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "19767": 14,
+            "15407": 5,
+            "12803": 4,
+            "14341": 4
+        },
+        "product": "19685",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Primal Batskin Gloves",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "19767": 10,
+            "15407": 4,
+            "12803": 4,
+            "14341": 3
+        },
+        "product": "19686",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Primal Batskin Bracers",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "19767": 8,
+            "15407": 3,
+            "12803": 4,
+            "14341": 3
+        },
+        "product": "19687",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Blood Tiger Breastplate",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "19768": 35,
+            "19726": 2,
+            "15407": 3,
+            "14341": 3
+        },
+        "product": "19688",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Blood Tiger Shoulders",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "19768": 25,
+            "19726": 2,
+            "15407": 3,
+            "14341": 3
+        },
+        "product": "19689",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Blue Dragonscale Leggings",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "8170": 28,
+            "15415": 36,
+            "15407": 2,
+            "14341": 2
+        },
+        "product": "20295",
+        "source": [
+            6
+        ],
+        "spec": 10656,
+        "produces": 1.0
+    },
+    {
+        "name": "Green Dragonscale Gauntlets",
+        "levels": [
+            280,
+            280,
+            300,
+            310,
+            320
+        ],
+        "reagents": {
+            "8170": 20,
+            "15412": 30,
+            "15407": 1,
+            "14341": 2
+        },
+        "product": "20296",
+        "source": [
+            6
+        ],
+        "spec": 10656,
+        "produces": 1.0
+    },
+    {
+        "name": "Dreamscale Breastplate",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "12810": 12,
+            "20381": 6,
+            "12803": 4,
+            "15407": 4,
+            "14227": 6
+        },
+        "product": "20380",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Spitfire Bracers",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "20500": 1,
+            "20498": 20,
+            "7078": 2
+        },
+        "product": "20481",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Spitfire Gauntlets",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "20500": 2,
+            "20498": 30,
+            "7078": 2,
+            "15407": 1
+        },
+        "product": "20480",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Spitfire Breastplate",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "20500": 3,
+            "20498": 40,
+            "7078": 2,
+            "15407": 2
+        },
+        "product": "20479",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Sandstalker Bracers",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "20501": 1,
+            "20498": 20,
+            "18512": 2
+        },
+        "product": "20476",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Sandstalker Gauntlets",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "20501": 2,
+            "20498": 30,
+            "18512": 2,
+            "15407": 1
+        },
+        "product": "20477",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Sandstalker Breastplate",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "20501": 3,
+            "20498": 40,
+            "18512": 2,
+            "15407": 2
+        },
+        "product": "20478",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Black Whelp Tunic",
+        "levels": [
+            100,
+            100,
+            125,
+            137,
+            150
+        ],
+        "reagents": {
+            "2319": 8,
+            "7286": 8,
+            "4231": 1,
+            "2321": 2
+        },
+        "product": "20575",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Stormshroud Gloves",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "12810": 6,
+            "7080": 4,
+            "7082": 4,
+            "15407": 2,
+            "14227": 2
+        },
+        "product": "21278",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Polar Tunic",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "22682": 7,
+            "12810": 16,
+            "7080": 2,
+            "15407": 4,
+            "14227": 4
+        },
+        "product": "22661",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Polar Gloves",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "22682": 5,
+            "12810": 12,
+            "7080": 2,
+            "15407": 3,
+            "14227": 4
+        },
+        "product": "22662",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Polar Bracers",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "22682": 4,
+            "12810": 12,
+            "7080": 2,
+            "15407": 2,
+            "14227": 4
+        },
+        "product": "22663",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Icy Scale Breastplate",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "22682": 7,
+            "15408": 24,
+            "7080": 2,
+            "15407": 4,
+            "14227": 4
+        },
+        "product": "22664",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Icy Scale Gauntlets",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "22682": 5,
+            "15408": 16,
+            "7080": 2,
+            "15407": 3,
+            "14227": 4
+        },
+        "product": "22666",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Icy Scale Bracers",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "22682": 4,
+            "15408": 16,
+            "7080": 2,
+            "15407": 2,
+            "14227": 4
+        },
+        "product": "22665",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Bramblewood Helm",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "12810": 12,
+            "19726": 2,
+            "12803": 2,
+            "15407": 2
+        },
+        "product": "22759",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Bramblewood Boots",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "12810": 6,
+            "18512": 2,
+            "12803": 2,
+            "15407": 2
+        },
+        "product": "22760",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    },
+    {
+        "name": "Bramblewood Belt",
+        "levels": [
+            300,
+            300,
+            320,
+            330,
+            340
+        ],
+        "reagents": {
+            "12810": 4,
+            "12803": 2,
+            "15407": 1
+        },
+        "product": "22761",
+        "source": [
+            6
+        ],
+        "produces": 1.0
+    }
+]
