@@ -29,7 +29,6 @@ from os.path import join
 
 from util import require_non_none
 from util import FileValidator as Fv
-from json_builder import JSONTransformer
 
 
 def get_raw_table_data(url: str) -> str:
@@ -80,8 +79,9 @@ def clean_json_obj(jso: dict | list) -> dict | list | None:
     if "colors" not in jso or "reagents" not in jso:
         return None
 
-    builder = JSONTransformer(jso)
-    builder.include({"name"})
+    print(jso)
+    if jso:
+        return False
 
     product = jso["creates"]
     clean = {
