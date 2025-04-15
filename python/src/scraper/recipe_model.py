@@ -19,15 +19,24 @@
 from typing import Optional, Any, Annotated, TypeAlias
 from typing_extensions import Self
 
-from pydantic import BaseModel, Field, model_validator, AfterValidator, field_validator
+from pydantic import BaseModel, Field, model_validator, AfterValidator, field_validator, BeforeValidator
+
+from recipe_types import *
 
 
-def verify_positive(x):
-    if x <= 0: raise ValueError("must be positive")
-    return x
+def _verify_positive(value):
+    if value <= 0: raise ValueError("must be positive")
+    return value
 
 
-_PositiveInt: TypeAlias = Annotated[int, AfterValidator(verify_positive)]
+def _map_spec(value: Any) -> Optional[str]:
+    if value:
+        spec: Optional[SpecData] = SpecType.by_id(value)
+        if not spec: raise ValueError("specialization is unrecognized")
+        return spec.name
+
+
+_PositiveInt: TypeAlias = Annotated[int, AfterValidator(_verify_positive)]
 
 
 class RecipeModel(BaseModel):
@@ -39,12 +48,13 @@ class RecipeModel(BaseModel):
     yellow: _PositiveInt
     grey: _PositiveInt
     reagents: dict[_PositiveInt, _PositiveInt]
-    spec: Optional[int] = Field(None, alias="specialization")
-    cost: Optional[int] = Field(None, alias="trainingcost")
+    source: list[str]
+    spec: Optional[Annotated[str, BeforeValidator(_map_spec)]] = Field(None, alias="specialization")
+    cost: Optional[int] = Field(0, alias="trainingcost")
 
     @field_validator("reagents", mode="before")
     @staticmethod
-    def map_reagents(value: Any) -> Any:
+    def __map_reagents(value: Any) -> Any:
         if value and isinstance(value, list):
             result = {}
             for pair in value:
@@ -56,15 +66,29 @@ class RecipeModel(BaseModel):
                 result[key] = value
             return result
 
+    @field_validator("source", mode="before")
+    @staticmethod
+    def __before_source(value: Any) -> Any:
+        if value and isinstance(value, list):
+            sources: set[str] = set()
+            for source_id in value:
+                source_type: Optional[SourceData] = SourceType.by_id(source_id)
+                if source_type is None:
+                    raise ValueError("source type is unrecognized")
+                if source_type.major:
+                    sources.add(source_type.name)
+            if not sources: raise ValueError("no major sources found")
+            return list(sources)
+
     @model_validator(mode="after")
-    def check_yield_bounds(self) -> Self:
+    def __check_yield_bounds(self) -> Self:
         if self.min_yield > self.max_yield:
             raise ValueError("[min_yield, max_yield] domain is non-monotonic")
         return self
 
     @model_validator(mode="before")
     @classmethod
-    def map_creates(cls, values: dict[str, Any]) -> dict[str, Any]:
+    def __before_creates(cls, values: dict[str, Any]) -> dict[str, Any]:
         creates = values.get("creates")
         if creates and isinstance(creates, list):
             p = creates[0]
@@ -72,16 +96,14 @@ class RecipeModel(BaseModel):
                 n = x = creates[1]
             elif len(creates) >= 3:
                 n, x = creates[1], creates[2]
-            else:
-                n = x = 1
-        else:
-            p, n, x = creates, 1, 1
+            else: n = x = 1
+        else: p, n, x = creates, 1, 1
         values["creates"], values["min_yield"], values["max_yield"] = p, n, x
         return values
 
     @model_validator(mode="before")
     @classmethod
-    def map_colors(cls, values: dict[str, Any]) -> dict[str, Any]:
+    def __before_colors(cls, values: dict[str, Any]) -> dict[str, Any]:
         colors = values.get("colors")
         if not isinstance(colors, list) or len(colors) != 4:
             raise ValueError("colors must be of list[int, int, int, int]")

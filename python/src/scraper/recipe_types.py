@@ -22,8 +22,8 @@ from dataclasses import dataclass
 from typing import Optional
 
 
-_reverse_source: dict[int, _SourceData] = {}
-_reverse_spec: dict[int, _SpecData] = {}
+_reverse_source: dict[int, SourceData] = {}
+_reverse_spec: dict[int, SpecData] = {}
 
 
 def _setup_class(cls):  # Hook into class initialization
@@ -33,7 +33,7 @@ def _setup_class(cls):  # Hook into class initialization
 
 
 @dataclass(frozen=True)
-class _SourceData:
+class SourceData:
     name: str
     id: int
     major: bool = True  # Source is relevant / irrelevant
@@ -49,15 +49,15 @@ class SourceType(Enum):
 
     Some recipe sources are redundant or unrealistic (e.g. fishing/pickpocketing).
     """
-    CRAFT = _SourceData("Craft", 1)  # Not verified, found by induction
-    DROP = _SourceData("Drop", 2)
-    PVP = _SourceData("PvP", 3, False)  # Not verified, found by induction
-    QUEST = _SourceData("Quest", 4)
-    VENDOR = _SourceData("Vendor", 5)
-    TRAINER = _SourceData("Trainer", 6)
-    STARTER = _SourceData("Starter", 7, False)  # Not verified, found by induction
-    FISHING = _SourceData("Fishing", 16, False)
-    PICKPOCKET = _SourceData("Pickpocket", 21, False)
+    CRAFT = SourceData("Craft", 1)  # Not verified, found by induction
+    DROP = SourceData("Drop", 2)
+    PVP = SourceData("PvP", 3, False)  # Not verified, found by induction
+    QUEST = SourceData("Quest", 4)
+    VENDOR = SourceData("Vendor", 5)
+    TRAINER = SourceData("Trainer", 6)
+    STARTER = SourceData("Starter", 7, False)  # Not verified, found by induction
+    FISHING = SourceData("Fishing", 16, False)
+    PICKPOCKET = SourceData("Pickpocket", 21, False)
 
     @classmethod
     def setup(cls):
@@ -65,12 +65,12 @@ class SourceType(Enum):
             _reverse_source[member.value] = member
 
     @classmethod
-    def by_id(cls, value: int) -> Optional[_SourceData]:
+    def by_id(cls, value: int) -> Optional[SourceData]:
         return _reverse_source.get(value, None)
 
 
 @dataclass(frozen=True)
-class _SpecData:
+class SpecData:
     name: str
     id: int
 
@@ -80,8 +80,8 @@ class _SpecData:
 
 @_setup_class
 class SpecType(Enum):
-    GOBLIN = _SpecData("Goblin", 20222)
-    GNOMISH = _SpecData("Gnomish", 20219)
+    GOBLIN = SpecData("Goblin", 20222)
+    GNOMISH = SpecData("Gnomish", 20219)
 
     @classmethod
     def setup(cls):
@@ -89,5 +89,5 @@ class SpecType(Enum):
             _reverse_spec[member.value] = member
 
     @classmethod
-    def by_id(cls, value: int) -> Optional[_SpecData]:
+    def by_id(cls, value: int) -> Optional[SpecData]:
         return _reverse_spec.get(value, None)
