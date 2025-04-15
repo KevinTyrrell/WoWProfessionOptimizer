@@ -16,10 +16,20 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from __future__ import annotations
 from enum import Enum
 from dataclasses import dataclass
-from functools import lru_cache
 from typing import Optional
+
+
+_reverse_source: dict[int, _SourceData] = {}
+_reverse_spec: dict[int, _SpecData] = {}
+
+
+def _setup_class(cls):  # Hook into class initialization
+    if hasattr(cls, "setup"):
+        cls.setup()
+    return cls
 
 
 @dataclass(frozen=True)
@@ -32,6 +42,7 @@ class _SourceData:
         return self.name
 
 
+@_setup_class
 class SourceType(Enum):
     """
     Method in which a recipe can be learned/obtained.
@@ -49,8 +60,34 @@ class SourceType(Enum):
     PICKPOCKET = _SourceData("Pickpocket", 21, False)
 
     @classmethod
-    @lru_cache  # Transforms this function into O(1)
-    def by_id(cls, source_id: int) -> Optional[_SourceData]:
-        for source in SourceType:
-            if source.value.id == source_id:
-                return source.value
+    def setup(cls):
+        for member in cls.__members__.values():
+            _reverse_source[member.value] = member
+
+    @classmethod
+    def by_id(cls, value: int) -> Optional[_SourceData]:
+        return _reverse_source.get(value, None)
+
+
+@dataclass(frozen=True)
+class _SpecData:
+    name: str
+    id: int
+
+    def __str__(self) -> str:
+        return self.name
+
+
+@_setup_class
+class SpecType(Enum):
+    GOBLIN = _SpecData("Goblin", 20222)
+    GNOMISH = _SpecData("Gnomish", 20219)
+
+    @classmethod
+    def setup(cls):
+        for member in cls.__members__.values():
+            _reverse_spec[member.value] = member
+
+    @classmethod
+    def by_id(cls, value: int) -> Optional[_SpecData]:
+        return _reverse_spec.get(value, None)
