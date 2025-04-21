@@ -24,10 +24,10 @@ import os
 from os import path
 
 
-__T = TypeVar("__T")
+_T = TypeVar("_T")
 
 
-def require_non_none(obj: __T) -> __T:
+def require_non_none(obj: _T) -> _T:
     """
     :param obj: Object which should not be None
     :return: Identity
@@ -75,35 +75,3 @@ class FileValidator(ABC):
             if self._decorator is not None:
                 return self._decorator.validate(path_str)
             return path_str
-
-
-class SetWrapper(Generic[__T], ABC, MutableSet):
-    def __new__(cls, internal: Container[__T] = None):
-        pass
-
-    def __init__(self, internal: Container[__T] = None):  # TODO: The internal should not be a set
-        """
-        Creates
-
-        :param internal:
-        """
-        self._internal: set[__T] = internal.copy() if internal else set()
-
-    def __contains__(self, item) -> bool:
-        return item in self._internal
-    def __iter__(self) -> Iterable[__T]:
-        return iter(self._internal)
-    def __len__(self) -> int:
-        return len(self._internal)
-    def add(self, value) -> None:
-        return self._internal.add(value)
-    def discard(self, value) -> None:
-        return self._internal.discard(value)
-    def clear(self) -> None:
-        return self._internal.clear()
-    def pop(self) -> __T:
-        return self._internal.pop()
-    def remove(self, value) -> None:
-        return self._internal.remove(value)
-    def __repr__(self) -> str:
-        return f'{self.__class__.__name__}({list(self._internal)})'
