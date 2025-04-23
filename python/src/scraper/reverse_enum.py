@@ -28,7 +28,7 @@ class _ReverseEnumMeta(EnumMeta):
         enum_cls = super().__new__(metacls, cls_name, bases, cls_dict)
 
         # Allow implementing classes to override `_reverse_key`
-        mapper: Callable[[_ReverseEnumMeta, Any], _T] = getattr(enum_cls, "_reverse_key", lambda v: v)
+        mapper: Callable = getattr(enum_cls, "_reverse_key", lambda v: v)
 
         # Default pairing of map[Enum value -> Enum instance]
         reverse_lookup = {

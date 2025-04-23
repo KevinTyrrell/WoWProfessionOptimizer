@@ -17,67 +17,71 @@
 """
 
 from __future__ import annotations
-from enum import Enum
 from dataclasses import dataclass
-from typing import Optional
 
-
-_reverse_expac: dict[str, ExpacType] = {}
-_reverse_prof: dict[int, ProfType] = {}
-
-
-def _setup_class(cls):  # Hook into class initialization
-    if hasattr(cls, "setup"):
-        cls.setup()
-    return cls
+from reverse_enum import *
 
 
 @dataclass(frozen=True)
-class ExpacData:
+class ExpansionData:
     name: str
     id: str
     version: int
-
-    
 
     def __str__(self) -> str:
         return self.name
 
 
-@_setup_class
-class ExpacType(Enum):
-    WORLD_OF_WARCRAFT = ExpacData("World of Warcraft", "WOW", 1)
-    SEASON_OF_DISCOVERY = ExpacData("Season of Discovery", "SOD", 1)
-    BURNING_CRUSADE = ExpacData("The Burning Crusade", "TBC", 2)
-    WRATH_OF_LICH_KING = ExpacData("Wrath of the Lich King", "WOLTK", 3)
-    CATACLYSM = ExpacData("Cataclysm", "CATA", 4)
-    MISTS_OF_PANDARIA = ExpacData("Mists of Pandaria", "MOP", 5)
-    WARLORDS_OF_DRAENOR = ExpacData("Warlords of Draenor", "WOD", 6)
-    LEGION = ExpacData("Legion", "LEGION", 7)
-    BATTLE_FOR_AZEROTH = ExpacData("Battle for Azeroth", "BFA", 8)
-    SHADOWLANDS = ExpacData("Shadowlands", "SL", 9)
-    DRAGONFLIGHT = ExpacData("Dragonflight", "DF", 10)
-    WAR_WITHIN = ExpacData("The War Within", "TWW", 11)
-    MIDNIGHT = ExpacData("Midnight", "MIDNIGHT", 12)
-    LAST_TITAN = ExpacData("The Last Titan", "TLT", 13)
+class ExpansionType(ReverseEnum):
+    WORLD_OF_WARCRAFT = ExpansionData("World of Warcraft", "WOW", 1)
+    SEASON_OF_DISCOVERY = ExpansionData("Season of Discovery", "SOD", 1)
+    BURNING_CRUSADE = ExpansionData("The Burning Crusade", "TBC", 2)
+    WRATH_OF_LICH_KING = ExpansionData("Wrath of the Lich King", "WOLTK", 3)
+    CATACLYSM = ExpansionData("Cataclysm", "CATA", 4)
+    MISTS_OF_PANDARIA = ExpansionData("Mists of Pandaria", "MOP", 5)
+    WARLORDS_OF_DRAENOR = ExpansionData("Warlords of Draenor", "WOD", 6)
+    LEGION = ExpansionData("Legion", "LEGION", 7)
+    BATTLE_FOR_AZEROTH = ExpansionData("Battle for Azeroth", "BFA", 8)
+    SHADOWLANDS = ExpansionData("Shadowlands", "SL", 9)
+    DRAGONFLIGHT = ExpansionData("Dragonflight", "DF", 10)
+    WAR_WITHIN = ExpansionData("The War Within", "TWW", 11)
+    MIDNIGHT = ExpansionData("Midnight", "MIDNIGHT", 12)
+    LAST_TITAN = ExpansionData("The Last Titan", "TLT", 13)
 
-    @classmethod
-    def setup(cls):
-        for member in cls.__members__.values():
-            _reverse_expac[member.value] = member
-
-    @classmethod
-    def by_id(cls, value: str) -> Optional[ExpacType]:
-        return _reverse_expac.get(value, None)
-
-
-# Double up in order to match the expansions structure
-professions = [(x, x) for x in ["Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering", "First Aid",
-                                "Inscription", "Jewelcrafting", "Leatherworking", "Mining", "Tailoring"]]
+    @staticmethod
+    def _reverse_key(value: ExpansionData) -> str:
+        return value.id
 
 
 @dataclass(frozen=True)
-class ProfData:
+class ProfessionData:
+    name: str
+    since: ExpansionType = ExpansionType.WORLD_OF_WARCRAFT
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class ProfessionType(ReverseEnum):
+    ALCHEMY = ProfessionData("Alchemy")
+    BLACKSMITHING = ProfessionData("Blacksmithing")
+    COOKING = ProfessionData("Cooking")
+    ENCHANTING = ProfessionData("Enchanting")
+    ENGINEERING = ProfessionData("Engineering")
+    FIRST_AID = ProfessionData("First-Aid")
+    INSCRIPTION = ProfessionData("Inscription", ExpansionType.WRATH_OF_LICH_KING)
+    JEWELCRAFTING = ProfessionData("Jewelcrafting", ExpansionType.BURNING_CRUSADE)
+    LEATHERWORKING = ProfessionData("Leatherworking")
+    MINING = ProfessionData("Mining")
+    TAILORING = ProfessionData("Tailoring")
+
+    @staticmethod
+    def _reverse_key(value: ProfessionData) -> str:
+        return value.name
+
+
+@dataclass(frozen=True)
+class SpecializationData:
     name: str
     id: int
 
@@ -85,19 +89,54 @@ class ProfData:
         return self.name
 
 
-@_setup_class
-class ProfType(Enum):
-    GOBLIN = ProfData("Goblin", 20222)
-    GNOMISH = ProfData("Gnomish", 20219)
+class SpecializationType(ReverseEnum):
+    GOBLIN = SpecializationData("Goblin", 20222)
+    GNOMISH = SpecializationData("Gnomish", 20219)
+    # Mooncloth Tailor
+    # Spellfire Tailor
+    # Shadoweave Tailor
+    # Armorsmith
+    # Weaponsmith
+    # Swordsmith
+    # Axesmith
+    # Hammersmith
+    # Tribal Leatherworking
+    # Dragonscale Leatherworking
+    # Elemental Leatherworking
+
+    @staticmethod
+    def _reverse_key(value: SpecializationData) -> int:
+        return value.id
+    def __str__(self) -> str:
+        return self.name
 
 
+@dataclass(frozen=True)
+class SourceData:
+    name: str
+    id: int
+    major: bool = True  # Source is relevant / irrelevant
+
+    def __str__(self) -> str:
+        return self.name
 
 
-    @classmethod
-    def setup(cls):
-        for member in cls.__members__.values():
-            _reverse_prof[member.value] = member
+class SourceType(Enum):
+    """
+    Method in which a recipe can be learned/obtained.
 
-    @classmethod
-    def by_id(cls, value: int) -> Optional[ProfData]:
-        return _reverse_prof.get(value, None)
+    Some recipe sources are redundant or unrealistic (e.g. fishing/pickpocketing).
+    """
+    CRAFT = SourceData("Craft", 1)  # Not verified, found by induction
+    DROP = SourceData("Drop", 2)
+    PVP = SourceData("PvP", 3, False)  # Not verified, found by induction
+    QUEST = SourceData("Quest", 4)
+    VENDOR = SourceData("Vendor", 5)
+    TRAINER = SourceData("Trainer", 6)
+    STARTER = SourceData("Starter", 7, False)  # Not verified, found by induction
+    FISHING = SourceData("Fishing", 16, False)
+    PICKPOCKET = SourceData("Pickpocket", 21, False)
+
+    @staticmethod
+    def _reverse_key(value: SourceData) -> int:
+        return value.id

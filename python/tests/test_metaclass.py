@@ -46,8 +46,8 @@ class TestMetaClass(unittest.TestCase):
             ALTMER = _RaceData("Altmer", "High Elves")
             DUNMER = _RaceData("Dunmer", "Dark Elves")
 
-            @classmethod
-            def _reverse_key(cls, data: _RaceData):
+            @staticmethod
+            def _reverse_key(data: _RaceData):
                 return data.name
 
         self.assertEqual(OblivionRace.ALTMER, OblivionRace.by_id("Altmer"))
